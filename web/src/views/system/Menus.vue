@@ -1,0 +1,162 @@
+<script setup>
+import { ref, reactive } from 'vue'
+import { ElMessageBox } from 'element-plus'
+import icons from "@/utils/Icons"
+
+// const { solids, outlines} = icons;
+    const dialogVisible = ref(false)
+    const menuData = reactive({
+        parent_id: "",
+        component: "",
+        menu_path: "",
+        menu_name: "",
+        menu_icon: "",
+        menu_disable: false,
+        Label: "",
+        sort: "",
+        remarks: ""
+    })
+    const iconArray = ref([])
+    const handleClose = (done) => {
+      ElMessageBox.confirm('是否取消添加菜单')
+        .then(() => {
+          done()
+        })
+        .catch(() => {
+          // catch error
+        })
+    }
+    const drawer = ref(false)
+    const direction = ref('rtl')
+    const openDialog = (done) => {
+        dialogVisible.value = true
+    }
+
+    const addMenu = () => {
+
+    }
+
+    const openDrawer = (type) => {
+        iconArray.value = icons[type]
+        drawer.value = true;
+    }
+
+    const seleckIcon = (name) => {
+        menuData.menu_icon = name;
+        drawer.value = false;
+    }
+
+</script>
+
+
+<template>
+    <div class="menus-container">
+          <div class="menus-header">
+              <el-button @click="openDialog" type="primary">新增根菜单</el-button>
+          </div>
+          
+        <el-dialog
+            v-model="dialogVisible"
+            title="编辑菜单"
+            width="40%"
+            :before-close="handleClose"
+        >
+              <el-form
+                label-position="right"
+                label-width="100px"
+                :model="menuData"
+            >
+                <el-form-item label="父节点">
+                    <el-input v-model="menuData.parent_id" placeholder="请输入父节点ID" ></el-input>
+                </el-form-item>
+                <el-form-item label="文件路径">
+                    <el-input v-model="menuData.component" placeholder="请输入组件的文件路径(输入英文字母)"></el-input>
+                </el-form-item>
+                <el-form-item label="路由路径">
+                    <el-input v-model="menuData.menu_path" placeholder="请输入组件的路由路径(输入英文字母)"></el-input>
+                </el-form-item>
+                <el-form-item label="图标">
+                    <el-row :gutter="24">
+                            <el-col :span="14"><el-input v-model="menuData.menu_icon" placeholder="请输入组件展示的名称"></el-input></el-col>
+                            <el-col :span="5"><el-button type="primary" @click="openDrawer('solids')" >线体图标</el-button></el-col>
+                            <el-col :span="5"><el-button type="primary" @click="openDrawer('outlines')" >实体图标</el-button></el-col>
+                      </el-row>
+                </el-form-item>
+                <el-form-item label="展示名">
+                      <el-input v-model="menuData.Label" placeholder="请输入组件的展示名称"></el-input>
+                </el-form-item>
+                <el-form-item label="是否禁用">
+                     <el-switch v-model="menuData.menu_disable" />
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="menuData.remarks" placeholder="有什么需要备注的吗？"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="addMenu">添加</el-button>
+            </span>
+            </template>
+        </el-dialog>
+
+          <el-drawer
+            v-model="drawer"
+            title="请选择图标"
+            :direction="direction"
+            :before-close="handleClose"
+        >
+          <ul class="icon-drawer">
+              <li v-for="(icon, index) of iconArray" :key="index" class="icon-li" @click="seleckIcon(icon.iconName)">
+                    <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        :content="icon.iconName"
+                    >
+                        <template #reference>
+                            <div class="icon-component"><el-icon> <component :is="icon.component"></component> </el-icon></div>
+                        </template>
+                    </el-popover>
+              </li>
+          </ul>
+        </el-drawer>
+    </div>
+</template>
+
+<style scoped lang="scss">
+
+
+.menus-container:deep(.el-drawer) {
+    overflow:auto !important;
+}
+.icon-drawer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: auto;
+    .icon-li {
+        box-sizing: border-box;
+        padding: 10px;
+        .icon-component {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            border-radius:10px;
+            cursor: pointer;
+        }
+        .icon-name {
+            text-align: center;
+        }
+    }
+}
+.menus-container {
+    padding: 10px;
+    box-sizing: border-box;
+    .menus-header {
+        
+    }
+}
+</style>
