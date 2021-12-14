@@ -1,7 +1,10 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
+import { menuRules } from '@/utils/validate'
+
+const menuFrom = ref(null)
 
 // const { solids, outlines} = icons;
     const dialogVisible = ref(false)
@@ -18,7 +21,23 @@ import icons from "@/utils/Icons"
     })
     const iconArray = ref([])
     const handleClose = (done) => {
-      ElMessageBox.confirm('是否取消添加菜单')
+      ElMessageBox.confirm('是否取消添加菜单',{
+            cancelButtonText: "继续添加",
+            confirmButtonText: "取消"
+        })
+        .then(() => {
+          done()
+        })
+        .catch(() => {
+          // catch error
+        })
+    }
+
+    const handleCloseIcon = (done) => {
+        ElMessageBox.confirm( "是否放弃添加菜单图标？", {
+            cancelButtonText: "添加",
+            confirmButtonText: "取消"
+        })
         .then(() => {
           done()
         })
@@ -33,7 +52,15 @@ import icons from "@/utils/Icons"
     }
 
     const addMenu = () => {
-
+        console.log("数据开始验证")
+        menuFrom.value.validate((fromState) => {
+            console.log("数据开始验证", fromState)
+            if (fromState) {
+                console.log("asdasd")
+            } else {
+                ElMessage.error('用户信息不完整')
+            }
+        })
     }
 
     const openDrawer = (type) => {
@@ -65,28 +92,33 @@ import icons from "@/utils/Icons"
                 label-position="right"
                 label-width="100px"
                 :model="menuData"
+                :rules="menuRules"
+                ref="menuFrom"
             >
-                <el-form-item label="父节点">
+                <el-form-item label="父节点" prop="parent_id">
                     <el-input v-model="menuData.parent_id" placeholder="请输入父节点ID" ></el-input>
                 </el-form-item>
-                <el-form-item label="文件路径">
+                <el-form-item label="文件路径" prop="component">
                     <el-input v-model="menuData.component" placeholder="请输入组件的文件路径(输入英文字母)"></el-input>
                 </el-form-item>
-                <el-form-item label="路由路径">
+                <el-form-item label="路由路径" prop="menu_path">
                     <el-input v-model="menuData.menu_path" placeholder="请输入组件的路由路径(输入英文字母)"></el-input>
                 </el-form-item>
                 <el-form-item label="图标">
                     <el-row :gutter="24">
-                            <el-col :span="14"><el-input v-model="menuData.menu_icon" placeholder="请输入组件展示的名称"></el-input></el-col>
-                            <el-col :span="5"><el-button type="primary" @click="openDrawer('solids')" >线体图标</el-button></el-col>
-                            <el-col :span="5"><el-button type="primary" @click="openDrawer('outlines')" >实体图标</el-button></el-col>
+                            <el-col :span="14"><el-input v-model="menuData.menu_icon" disabled  placeholder="请输入组件展示的名称"></el-input></el-col>
+                            <el-col :span="5"><el-button type="primary" @click="openDrawer('solids')" >实体图标</el-button></el-col>
+                            <el-col :span="5"><el-button type="primary" @click="openDrawer('outlines')" >线体图标</el-button></el-col>
                       </el-row>
                 </el-form-item>
-                <el-form-item label="展示名">
+                <el-form-item label="展示名" prop="Label">
                       <el-input v-model="menuData.Label" placeholder="请输入组件的展示名称"></el-input>
                 </el-form-item>
-                <el-form-item label="是否禁用">
+                <el-form-item label="是否禁用" prop="menu_disable">
                      <el-switch v-model="menuData.menu_disable" />
+                </el-form-item>
+                <el-form-item label="排序标记" prop="sort">
+                     <el-input v-model="menuData.sort" placeholder="请输入排序标记"></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input v-model="menuData.remarks" placeholder="有什么需要备注的吗？"></el-input>
@@ -104,7 +136,7 @@ import icons from "@/utils/Icons"
             v-model="drawer"
             title="请选择图标"
             :direction="direction"
-            :before-close="handleClose"
+            :before-close="handleCloseIcon"
         >
           <ul class="icon-drawer">
               <li v-for="(icon, index) of iconArray" :key="index" class="icon-li" @click="seleckIcon(icon.iconName)">
