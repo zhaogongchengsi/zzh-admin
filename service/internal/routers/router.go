@@ -20,6 +20,7 @@ func NewRouter() *gin.Engine {
 	app1 := r.Group("/api/v1").Use(middlewares.JWTAuth())
 	{
 		app1.POST("/menu/create_menu", v1.CreateMenu)
+		app1.POST("/menu/delete_menu", v1.DeleteMenu)
 		app1.GET("/menu/get_menu", v1.GetMenus)
 		app1.GET("/verify_code", v1.CreateVerificationCode)
 		app1.POST("/user/login", v1.Login)

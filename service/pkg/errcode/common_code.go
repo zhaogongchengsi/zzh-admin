@@ -17,4 +17,7 @@ const (
 	DataDoesNotExist                 = 504 // 数据查找失败
 	CreateAuthError                  = 405 // 角色创建失败
 	CreateMenuError                  = 406 // 角色创建失败
+
+	CreateError = 600 // 创建操作失败
+	DeleteError = 601 // 删除操作失败
 )

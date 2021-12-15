@@ -69,3 +69,25 @@ func GetMenus(c *gin.Context) {
 		return
 	}
 }
+
+
+// @Tags Menu
+// @Summary 删除菜单
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/menu/get_menu [post]
+func DeleteMenu(c *gin.Context) {
+	var menuId request.GetGormById
+	_ = c.ShouldBindJSON(&menuId)
+	err := service.DeleteMenuHandle(menuId.ID)
+	if err != nil {
+		deErr := response.Response{Err: err, State: response.State{
+			Code: errcode.DeleteError,
+			Message: "删除失败",
+		}}
+		deErr.SendError(c)
+		return
+	}
+	deOk := response.Response{}
+	deOk.Send(c)
+}

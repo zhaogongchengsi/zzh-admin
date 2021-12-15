@@ -21,3 +21,8 @@ func GetMenus() (me []model.Menu, err error) {
 	er := global.DBEngine.Model(&m).Find(&menus).Error
 	return menus, er
 }
+
+func DeleteMenuHandle(id float64) (err error)  {
+	err = global.DBEngine.Delete(&model.Menu{}, id).Error
+	return err
+}

@@ -11,3 +11,4 @@ type Menus struct {
 	Sort        int    `json:"sort" binding:"required"`
 	Remarks     string `json:"remarks"`
 }
+

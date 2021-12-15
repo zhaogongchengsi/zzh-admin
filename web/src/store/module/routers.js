@@ -17,6 +17,11 @@ function replaceRouter(routerTree, fileTree) {
   });
 }
 
+async function GetMenuData() {
+  const originlRouter = await GetRouter();
+  return dataToTree(originlRouter);
+}
+
 export const router = {
   namespaced: true,
   state: {
@@ -34,8 +39,7 @@ export const router = {
   actions: {
     // 从后台获取动态路由
     async SetAsyncRouter({ commit }) {
-      const originlRouter = await GetRouter();
-      const originData = dataToTree(originlRouter);
+      const originData = await GetMenuData();
       commit("setOriginRouter", originData);
       /*
        * 请求过来的路由数据 树形化之后 把里面所需要的路由数据拷贝出来
@@ -54,6 +58,11 @@ export const router = {
       //!  路由替换
 
       return true;
+    },
+
+    async SetOriginRouterData({ commit }) {
+      const originData = await GetMenuData();
+      commit("setOriginRouter", originData);
     },
   },
   getters: {

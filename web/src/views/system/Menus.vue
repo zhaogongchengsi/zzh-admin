@@ -23,7 +23,7 @@ const { solid, outline } = icons
     
     const iconArray = ref([])
     const MenuDataTree = ref([])
-
+    const drawer = ref(false)
     onMounted(() => {
        const originlRoutData = store.state.router.OriginlRoutData
        MenuDataTree.value = originlRoutData
@@ -55,8 +55,7 @@ const { solid, outline } = icons
           // catch error
         })
     }
-    const drawer = ref(false)
-    const direction = ref('rtl')
+
     const openDialog = (done) => {
         dialogVisible.value = true
     }
@@ -90,12 +89,36 @@ const { solid, outline } = icons
         drawer.value = false;
     }
 
-    const handleEdit = (index, data) => {
-        console.log("编辑的数据",index, data)
+    const handleEdit = (index, Id) => {
+        console.log("编辑的数据",index, Id)
     }
 
-    const handleDelete = (index, data) => {
-        console.log("需要删除的数据",index, data)
+    const handleDelete = (index, Id) => {
+        
+
+        ElMessageBox.confirm(
+            '删除该节点后不可恢复且连所属子节点一起删除，是否继续删除',
+            'Warning',
+            {
+                confirmButtonText: '继续删除',
+                cancelButtonText: '取消删除',
+                type: 'warning',
+            }
+        )
+        .then(() => {
+          ElMessage({
+            type: 'success',
+            message: '删除成功',
+          })
+        })
+        .catch(() => {
+          // 取消删除
+        })
+
+    }
+
+    const handleAddMenu = (index, Id) => {
+        console.log("增加子节点")
     }
 </script>
 
@@ -116,6 +139,7 @@ const { solid, outline } = icons
         >   
             <el-table-column prop="Sort" label="排序" sortable width="80" align="center" />
             <el-table-column prop="ParentId" label="父节点" width="80" align="center" />
+            <el-table-column prop="ID" label="ID" width="80" align="center" />
             <el-table-column prop="Path" label="路由路径"  width="180" />
             <el-table-column prop="Name" label="路由名称"  width="180" />
             <el-table-column prop="Component" label="文件路径"  width="250" />
@@ -134,13 +158,14 @@ const { solid, outline } = icons
             </el-table-column>
             <el-table-column prop="Label" label="展示的名称"  width="100" />
             <el-table-column prop="Remarks" label="备注"  width="auto" />
-                <el-table-column align="center"  label="操作"  width="200" >
+                <el-table-column align="center"  label="操作"  width="300" >
                 <template #default="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row.ID)">编辑</el-button>
+                    <el-button size="mini" @click="handleAddMenu(scope.$index, scope.row.ID)">添加子节点</el-button>
                     <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)"
+                        @click="handleDelete(scope.$index, scope.row.ID)"
                     >删除节点</el-button>
                 </template>
             </el-table-column>
@@ -202,7 +227,7 @@ const { solid, outline } = icons
           <el-drawer
             v-model="drawer"
             title="请选择图标"
-            :direction="direction"
+            direction="rtl"
             :before-close="handleCloseIcon"
         >
           <ul class="icon-drawer">
