@@ -23,7 +23,9 @@ const { solid, outline } = icons
     
     const iconArray = ref([])
     const MenuDataTree = ref([])
+    const isParent = ref(false)
     const drawer = ref(false)
+    const dialogTitle = ref("新增节点")
     onMounted(() => {
        const originlRoutData = store.state.router.OriginlRoutData
        MenuDataTree.value = originlRoutData
@@ -56,7 +58,8 @@ const { solid, outline } = icons
         })
     }
 
-    const openDialog = (done) => {
+    const openDialog = (title) => {
+        dialogTitle.value = title
         dialogVisible.value = true
     }
 
@@ -90,7 +93,7 @@ const { solid, outline } = icons
     }
 
     const handleEdit = (index, Id) => {
-        console.log("编辑的数据",index, Id)
+        openDialog("编辑菜单")
     }
 
     const handleDelete = (index, Id) => {
@@ -118,7 +121,9 @@ const { solid, outline } = icons
     }
 
     const handleAddMenu = (index, Id) => {
-        console.log("增加子节点")
+        menuData.parent_id = Id;
+        isParent.value = true;
+        openDialog("增加子节点")
     }
 </script>
 
@@ -126,7 +131,7 @@ const { solid, outline } = icons
 <template>
     <div class="menus-container">
           <div class="menus-header">
-              <el-button @click="openDialog" type="primary">新增根菜单</el-button>
+              <el-button @click="openDialog('新增跟节点')" type="primary">新增根菜单</el-button>
           </div>
 
         <el-table
@@ -173,7 +178,7 @@ const { solid, outline } = icons
 
         <el-dialog
             v-model="dialogVisible"
-            title="编辑菜单"
+            :title="dialogTitle"
             width="40%"
             :before-close="handleClose"
         >
@@ -185,7 +190,7 @@ const { solid, outline } = icons
                 ref="menuFrom"
             >
                 <el-form-item label="父节点">
-                    <el-input v-model.number="menuData.parent_id" placeholder="请输入父节点ID" ></el-input>
+                    <el-input v-model.number="menuData.parent_id" :disabled="isParent" placeholder="请输入父节点ID" ></el-input>
                 </el-form-item>
                 <el-form-item label="文件路径" prop="component">
                     <el-input v-model="menuData.component" placeholder="请输入组件的文件路径(输入英文字母)"></el-input>
