@@ -1,9 +1,11 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
 import { createMenu } from '@/api/menus'
+import { useStore } from 'vuex'
+const store = useStore()
 
     const menuFrom = ref(null)
     const dialogVisible = ref(false)
@@ -21,6 +23,13 @@ import { createMenu } from '@/api/menus'
     
     const iconArray = ref([])
     const MenuDataTree = ref([])
+
+    onMounted(() => {
+       const originlRoutData = store.state.router.OriginlRoutData
+       MenuDataTree.value = originlRoutData
+    //    console.log(originlRoutData)
+    })
+
     const handleClose = (done) => {
       ElMessageBox.confirm('是否取消添加菜单',{
             cancelButtonText: "继续添加",
@@ -97,15 +106,15 @@ import { createMenu } from '@/api/menus'
             border
             default-expand-all
         >   
-            <el-table-column prop="date" label="排序" sortable width="180" />
-            <el-table-column prop="date" label="父节点" width="180" />
-            <el-table-column prop="name" label="路由路径"  width="180" />
-            <el-table-column prop="name" label="路由名称"  width="180" />
-            <el-table-column prop="name" label="文件路径"  width="180" />
-            <el-table-column prop="name" label="菜单图标"  width="80" />
-            <el-table-column prop="name" label="是否开启"  width="80" />
-            <el-table-column prop="name" label="展示的名称"  width="100" />
-            <el-table-column prop="name" label="备注"  width="auto" />
+            <el-table-column prop="Sort" label="排序" sortable width="180" />
+            <el-table-column prop="ParentId" label="父节点" width="180" />
+            <el-table-column prop="Path" label="路由路径"  width="180" />
+            <el-table-column prop="Name" label="路由名称"  width="180" />
+            <el-table-column prop="Component" label="文件路径"  width="180" />
+            <el-table-column prop="Icon" label="菜单图标"  width="80" />
+            <el-table-column prop="Disabled" label="是否开启"  width="80" />
+            <el-table-column prop="Label" label="展示的名称"  width="100" />
+            <el-table-column prop="Remarks" label="备注"  width="auto" />
         </el-table>
 
         <el-dialog
@@ -217,7 +226,7 @@ import { createMenu } from '@/api/menus'
     padding: 10px;
     box-sizing: border-box;
     .menus-header {
-        
+        margin-bottom: 10px;
     }
 }
 </style>

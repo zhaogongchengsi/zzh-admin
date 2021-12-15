@@ -3,11 +3,12 @@ import { reactive, onMounted, ref } from "vue"
 import { GetVerifyCode, Login } from "@/api/index.js"
 import { useRouter } from "vue-router"
 import rules from "./validator.js"
-import { GetRouter } from '@/api/routerComponents.js'
-import routerStore from '@/store/router_store.js'
 import { ElMessage } from 'element-plus'
+import { useStore } from 'vuex'
 
-const formLabelAlign = reactive({ useradmin: '',  password: '', captcha: ''})
+const store = useStore()
+
+const formLabelAlign = reactive({ useradmin: '12345',  password: 'grcadmin', captcha: ''})
 const verifyCodd = ref({})
 const from = ref(null)
 const Router = useRouter()
@@ -22,21 +23,21 @@ const refreshCode = async () => {
     verifyCodd.value = vaCode
 }
 
-const onLogin = async () => {
-    from.value.validate(async (fromState) => {
+const onLogin = () => {
+    from.value.validate(async (fromState) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
         if (fromState) {
-         let loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
-            if (loginState.success) {
-                const _router = await GetRouter()
-                Router.addRoute({
-                    name: 'home',
-                    path: '/',
-                    component: () => import('@/views/home/index.vue'),
-                    children: _router,
-                });
-                routerStore.setMenus(_router)
-                Router.push("/")
+            try {
+                const loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
+                const routerState = await store.dispatch("router/SetAsyncRouter")
+
+                if (loginState.success && routerState) {
+
+                    Router.push("/")
+                }
+            } catch (e) {
+                ElMessage.error('登录失败 请重试！')
             }
+
         } else {
              ElMessage.error('用户信息不完整')
         }

@@ -4,15 +4,13 @@ import { onMounted, reactive, ref } from 'vue';
 // import { useRouter } from 'vue-router'
 // const router = useRouter()
 
-import routerStore from '@/store/router_store.js'
-
 const menuList = ref([])
 const asideState = ref(false)
 const asideWidth = ref("200px")
-onMounted(async () => {
-    menuList.value = routerStore.getMenus()
-    console.log('menuList', menuList.value);
-})
+// onMounted(async () => {
+//     menuList.value = routerStore.getMenus()
+//     console.log('menuList', menuList.value);
+// })
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
