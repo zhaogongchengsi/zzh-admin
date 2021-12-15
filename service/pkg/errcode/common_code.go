@@ -16,4 +16,5 @@ const (
 	UserAlreadyExists                = 206 // 用户已存在
 	DataDoesNotExist                 = 504 // 数据查找失败
 	CreateAuthError                  = 405 // 角色创建失败
+	CreateMenuError                  = 406 // 角色创建失败
 )

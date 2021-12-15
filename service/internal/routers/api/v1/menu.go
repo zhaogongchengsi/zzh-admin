@@ -17,9 +17,10 @@ import (
 // @Router /api/v1/role/create_role [post]
 func CreateMenu(c *gin.Context) {
 	var newMenu request.Menus
-	if err := c.ShouldBindJSON(&newMenu); err != nil {
+	err := c.ShouldBindJSON(&newMenu)
+	if  err != nil {
 		res := response.Response{Err: err}
-		res.Send(c)
+		res.SendInputParameterError(c)
 		return
 	}
 	menuW := &model.Menu{
@@ -35,7 +36,10 @@ func CreateMenu(c *gin.Context) {
 	}
 	menuItem, errMe := service.CreateMenu(menuW)
 	if errMe != nil {
-		Re := response.Response{Err: errMe}
+		Re := response.Response{Err: errMe, State: response.State{
+			Code: errcode.CreateMenuError,
+			Message: "角色创建失败",
+		}}
 		Re.SendError(c)
 		return
 	} else {

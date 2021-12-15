@@ -3,23 +3,24 @@ import { ref, reactive } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
+import { createMenu } from '@/api/menus'
 
-const menuFrom = ref(null)
-
-// const { solids, outlines} = icons;
+    const menuFrom = ref(null)
     const dialogVisible = ref(false)
     const menuData = reactive({
-        parent_id: "",
+        parent_id: 0,
         component: "",
         menu_path: "",
         menu_name: "",
         menu_icon: "",
-        menu_disable: false,
+        menu_disable: true,
         Label: "",
-        sort: "",
+        sort: 0,
         remarks: ""
     })
+    
     const iconArray = ref([])
+    const MenuDataTree = ref([])
     const handleClose = (done) => {
       ElMessageBox.confirm('是否取消添加菜单',{
             cancelButtonText: "继续添加",
@@ -52,11 +53,18 @@ const menuFrom = ref(null)
     }
 
     const addMenu = () => {
-        console.log("数据开始验证")
         menuFrom.value.validate((fromState) => {
-            console.log("数据开始验证", fromState)
             if (fromState) {
-                console.log("asdasd")
+                createMenu(menuData)
+                .then(res => {
+
+
+                    ElMessage.success('菜单创建成功')
+                    dialogVisible.value = false
+                })
+                .catch(err => {
+                    ElMessage.error('菜单创建失败')
+                })
             } else {
                 ElMessage.error('用户信息不完整')
             }
@@ -81,7 +89,25 @@ const menuFrom = ref(null)
           <div class="menus-header">
               <el-button @click="openDialog" type="primary">新增根菜单</el-button>
           </div>
-          
+
+        <el-table
+            :data="MenuDataTree"
+            style="width: 100%; margin-bottom: 20px"
+            row-key="id"
+            border
+            default-expand-all
+        >   
+            <el-table-column prop="date" label="排序" sortable width="180" />
+            <el-table-column prop="date" label="父节点" width="180" />
+            <el-table-column prop="name" label="路由路径"  width="180" />
+            <el-table-column prop="name" label="路由名称"  width="180" />
+            <el-table-column prop="name" label="文件路径"  width="180" />
+            <el-table-column prop="name" label="菜单图标"  width="80" />
+            <el-table-column prop="name" label="是否开启"  width="80" />
+            <el-table-column prop="name" label="展示的名称"  width="100" />
+            <el-table-column prop="name" label="备注"  width="auto" />
+        </el-table>
+
         <el-dialog
             v-model="dialogVisible"
             title="编辑菜单"
@@ -95,14 +121,17 @@ const menuFrom = ref(null)
                 :rules="menuRules"
                 ref="menuFrom"
             >
-                <el-form-item label="父节点" prop="parent_id">
-                    <el-input v-model="menuData.parent_id" placeholder="请输入父节点ID" ></el-input>
+                <el-form-item label="父节点">
+                    <el-input v-model.number="menuData.parent_id" placeholder="请输入父节点ID" ></el-input>
                 </el-form-item>
                 <el-form-item label="文件路径" prop="component">
                     <el-input v-model="menuData.component" placeholder="请输入组件的文件路径(输入英文字母)"></el-input>
                 </el-form-item>
                 <el-form-item label="路由路径" prop="menu_path">
                     <el-input v-model="menuData.menu_path" placeholder="请输入组件的路由路径(输入英文字母)"></el-input>
+                </el-form-item>
+                <el-form-item label="路由名称" prop="menu_path">
+                    <el-input v-model="menuData.menu_name" placeholder="请输入组件的路由名字"></el-input>
                 </el-form-item>
                 <el-form-item label="图标">
                     <el-row :gutter="24">
@@ -118,7 +147,7 @@ const menuFrom = ref(null)
                      <el-switch v-model="menuData.menu_disable" />
                 </el-form-item>
                 <el-form-item label="排序标记" prop="sort">
-                     <el-input v-model="menuData.sort" placeholder="请输入排序标记"></el-input>
+                     <el-input v-model.number="menuData.sort" placeholder="请输入排序标记"></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input v-model="menuData.remarks" placeholder="有什么需要备注的吗？"></el-input>
