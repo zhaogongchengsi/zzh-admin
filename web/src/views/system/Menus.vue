@@ -6,7 +6,7 @@ import { menuRules } from '@/utils/validate'
 import { createMenu } from '@/api/menus'
 import { useStore } from 'vuex'
 const store = useStore()
-
+const { solid, outline } = icons
     const menuFrom = ref(null)
     const dialogVisible = ref(false)
     const menuData = reactive({
@@ -27,7 +27,7 @@ const store = useStore()
     onMounted(() => {
        const originlRoutData = store.state.router.OriginlRoutData
        MenuDataTree.value = originlRoutData
-    //    console.log(originlRoutData)
+       console.log(originlRoutData)
     })
 
     const handleClose = (done) => {
@@ -90,6 +90,13 @@ const store = useStore()
         drawer.value = false;
     }
 
+    const handleEdit = (index, data) => {
+        console.log("编辑的数据",index, data)
+    }
+
+    const handleDelete = (index, data) => {
+        console.log("需要删除的数据",index, data)
+    }
 </script>
 
 
@@ -102,19 +109,41 @@ const store = useStore()
         <el-table
             :data="MenuDataTree"
             style="width: 100%; margin-bottom: 20px"
-            row-key="id"
+            row-key="ID"
             border
             default-expand-all
+            :stripe="true"
         >   
-            <el-table-column prop="Sort" label="排序" sortable width="180" />
-            <el-table-column prop="ParentId" label="父节点" width="180" />
+            <el-table-column prop="Sort" label="排序" sortable width="80" align="center" />
+            <el-table-column prop="ParentId" label="父节点" width="80" align="center" />
             <el-table-column prop="Path" label="路由路径"  width="180" />
             <el-table-column prop="Name" label="路由名称"  width="180" />
-            <el-table-column prop="Component" label="文件路径"  width="180" />
-            <el-table-column prop="Icon" label="菜单图标"  width="80" />
-            <el-table-column prop="Disabled" label="是否开启"  width="80" />
+            <el-table-column prop="Component" label="文件路径"  width="250" />
+            <el-table-column prop="Icon" label="菜单图标"  width="80" >
+                <template #default="scope">
+                   <div class="table-icon-cont">
+                        <div class="table-icon"><el-icon> <component :is="solid[scope.row.Icon]"></component> </el-icon></div>
+                        <div class="table-icon"><el-icon> <component :is="outline[scope.row.Icon]"></component> </el-icon></div>
+                   </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="Disabled" label="是否开启"  width="80" >
+                <template #default="scope">
+                     <el-switch v-model="scope.row.Disabled" />
+                </template>
+            </el-table-column>
             <el-table-column prop="Label" label="展示的名称"  width="100" />
             <el-table-column prop="Remarks" label="备注"  width="auto" />
+                <el-table-column align="center"  label="操作"  width="200" >
+                <template #default="scope">
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                    <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)"
+                    >删除节点</el-button>
+                </template>
+            </el-table-column>
         </el-table>
 
         <el-dialog
@@ -228,5 +257,10 @@ const store = useStore()
     .menus-header {
         margin-bottom: 10px;
     }
+}
+
+.table-icon-cont {
+    display: flex;
+    justify-content:space-around;
 }
 </style>
