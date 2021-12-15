@@ -20,7 +20,7 @@ func JWTAuth() gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		authHeader := c.Request.Header.Get("r_token")
+		authHeader := c.Request.Header.Get("z_token")
 		if authHeader == "" {
 			terr := response.Response{
 				State: response.State{

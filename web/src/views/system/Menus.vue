@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
@@ -27,10 +27,15 @@ const { solid, outline } = icons
     const drawer = ref(false)
     const dialogTitle = ref("新增节点")
     onMounted(() => {
-       const originlRoutData = store.state.router.OriginlRoutData
-       MenuDataTree.value = originlRoutData
-       console.log(originlRoutData)
+        store.dispatch("router/SetOriginRouterData")
     })
+
+    watch(
+        () => store.state.router.OriginlRoutData, 
+        (newValue, oldValue) => {
+             MenuDataTree.value = newValue
+        }
+    )
 
     const handleClose = (done) => {
       ElMessageBox.confirm('是否取消添加菜单',{
@@ -68,8 +73,6 @@ const { solid, outline } = icons
             if (fromState) {
                 createMenu(menuData)
                 .then(res => {
-
-
                     ElMessage.success('菜单创建成功')
                     dialogVisible.value = false
                 })
@@ -165,11 +168,11 @@ const { solid, outline } = icons
             <el-table-column prop="Remarks" label="备注"  width="auto" />
                 <el-table-column align="center"  label="操作"  width="300" >
                 <template #default="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row.ID)">编辑</el-button>
-                    <el-button size="mini" @click="handleAddMenu(scope.$index, scope.row.ID)">添加子节点</el-button>
+                    <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row.ID)">编辑</el-button>
+                    <el-button size="mini" type="text" @click="handleAddMenu(scope.$index, scope.row.ID)">添加子节点</el-button>
                     <el-button
                         size="mini"
-                        type="danger"
+                        type="text"
                         @click="handleDelete(scope.$index, scope.row.ID)"
                     >删除节点</el-button>
                 </template>
