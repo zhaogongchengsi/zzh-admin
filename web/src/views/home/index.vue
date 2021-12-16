@@ -35,24 +35,7 @@ const openAside = () => {
                         <div class="cms-logo"><img src="/images/logo.png" alt="logo" /></div>
                         <div class="cms-title">穿越之超级管理系统</div>
                     </div>
-                    <el-menu
-                        class="el-menu-vertical-demo"
-                        active-text-color="#fff"
-                        background-color="#545c64"
-                        :router="true"
-                        :collapse="asideState"
-                        :collapse-transition="false"
-                        mode="vertical"
-                        >
-                        <el-menu-item index="/menus" :key="1">
-                            <el-icon><DesktopComputerIcon class="h-20 w-20 text-Gray-900 " /></el-icon>
-                            <span>菜单管理</span>
-                        </el-menu-item>
-                        <el-menu-item index="/users" :key="2">
-                            <el-icon><UserGroupIcon class="h-20 w-20 text-Gray-900 " /></el-icon>
-                            <span>用户管理管理</span>
-                        </el-menu-item>
-                    </el-menu>
+                    <BaseMenus :menu-list="menuList" />
                 </div>
             </el-aside>
             <el-container>
