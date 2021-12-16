@@ -1,16 +1,17 @@
 <script setup>
-import { MenuIcon, DesktopComputerIcon } from '@heroicons/vue/solid'
+import { MenuIcon, DesktopComputerIcon, UserGroupIcon } from '@heroicons/vue/solid'
 import { onMounted, reactive, ref } from 'vue';
-// import { useRouter } from 'vue-router'
-// const router = useRouter()
+import { useStore } from 'vuex'
+import BaseMenus from "@/components/BaseMenus.vue"
+const store = useStore()
 
 const menuList = ref([])
 const asideState = ref(false)
 const asideWidth = ref("200px")
-// onMounted(async () => {
-//     menuList.value = routerStore.getMenus()
-//     console.log('menuList', menuList.value);
-// })
+onMounted(async () => {
+    menuList.value = store.state.router.OriginlRoutData
+    console.log('menuList', menuList.value);
+})
 
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
@@ -43,9 +44,13 @@ const openAside = () => {
                         :collapse-transition="false"
                         mode="vertical"
                         >
-                        <el-menu-item index="/menus">
+                        <el-menu-item index="/menus" :key="1">
                             <el-icon><DesktopComputerIcon class="h-20 w-20 text-Gray-900 " /></el-icon>
                             <span>菜单管理</span>
+                        </el-menu-item>
+                        <el-menu-item index="/users" :key="2">
+                            <el-icon><UserGroupIcon class="h-20 w-20 text-Gray-900 " /></el-icon>
+                            <span>用户管理管理</span>
                         </el-menu-item>
                     </el-menu>
                 </div>
