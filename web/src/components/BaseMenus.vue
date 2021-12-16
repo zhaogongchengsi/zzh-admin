@@ -1,6 +1,7 @@
 <script>
 import { h } from 'vue'
-import { ElMenu, ElSubMenu, ElMenuItem } from 'element-plus'
+import { ElMenu, ElSubMenu, ElMenuItem, ElIcon} from 'element-plus'
+import Icons from "@/utils/Icons.js"
 export default {
   name: "BaseMenus",
   props: {
@@ -58,6 +59,17 @@ export default {
     }
   },
   render () {
+
+    const { solid, outline } = Icons
+
+    function renderIcon (iconStr) {
+      return h(ElIcon,null, {
+        default: () => {
+          return h()
+        }
+      })
+    }
+
     function renderContextText (context) {
       return h("span", {/* props */}, {default: () => { return context.Label }})
     }
