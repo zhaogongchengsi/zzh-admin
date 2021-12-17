@@ -41,22 +41,15 @@ const onSelect = (index,path,item) => {
 
 <template>
     <div class="home-container">
-        <el-container>
-            <el-aside :width="asideWidth">
-                <div class="aside-container">
-                    <div class="aside-logo">
-                        <div class="cms-logo"><img src="/images/logo.png" alt="logo" /></div>
-                        <div class="cms-title">穿越之超级管理系统</div>
-                    </div>
-                    <BaseMenus :menu-list="menuList" background-color="#333" text-color="#fff" />
-                </div>
-            </el-aside>
-            <el-container>
+            <el-container direction="vertical">
                 <el-header>
                     <div class="header-container">
-                        <div class="header-left-x"> <MenuIcon class="h-10 w-10 text-Gray-900 cursor-pointer" /> </div>
+                        <div class="header-left-logo">
+                            <div class="header-logo-img"><img src="/images/logo.png" alt=""></div>
+                            <span class="header-logo-title">超级管理系统</span>
+                        </div>
                         <div class="header-center-x">
-                            <BaseMenus :menu-list="topNavs" text-color="#333" mode="horizontal" @select="onSelect" />
+                            <BaseMenus :menu-list="topNavs" text-color="#333" mode="horizontal" @select="onSelect" :router="true" />
                         </div>
                         <div class="header-right-x">
                             <el-dropdown>
@@ -80,26 +73,50 @@ const onSelect = (index,path,item) => {
                     </div>
                 </el-header>
                 <el-main>
-                    <div class="main-container">
-                        <div class="router-breadcrumb">
-                            <el-breadcrumb separator="/">
-                                <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-                                <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-                                <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-                            </el-breadcrumb>
+                    <el-scrollbar>
+                        <div class="main-container">
+                           <router-view />
                         </div>
-                        <router-view />
-                    </div>
+                    </el-scrollbar>
                 </el-main>
-                <el-footer>
-                    <span> 假装这就是备案 </span>
+                <el-footer height="30px">
+                    <div class="footer-container"><span> 假装这就是备案 </span></div>
                 </el-footer>
             </el-container>
-        </el-container>
     </div>
 </template>
 
 <style lang="scss" scoped>
+
+.main-dom {
+    height: 2000px;
+}
+
+.footer-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-left-logo {
+    width: 200px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    .header-logo-img {
+        width: 45px;
+        padding: 10px;
+        border:1px solid var(--el-border-color-base);
+        border-radius: 50%;
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+}
 
 .router-breadcrumb {
     padding: 10px 5px;
@@ -110,6 +127,15 @@ const onSelect = (index,path,item) => {
 .home-container:deep(.el-main) {
    padding: 0;
 }
+
+.home-container:deep(.el-header) {
+    border-bottom: 1px solid var(--el-border-color-base);
+}
+
+.home-container:deep(.el-footer) {
+    border-top: 1px solid var(--el-border-color-base);
+}
+
 .aside-container {
     height: 100vh;
     background-color: #333;
@@ -145,6 +171,7 @@ const onSelect = (index,path,item) => {
 }
 
 .header-container {
+    width: 100%;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -178,7 +205,13 @@ const onSelect = (index,path,item) => {
     }
 }
 
+.header-container:deep(.el-menu--horizontal) {
+    height: 60px;
+    box-sizing: border-box;
+}
+
 .main-container {
-   border-top: 1px solid var(--el-border-color-base);
+   height: calc(100vh - 90px);
+//    border-top: 1px solid var(--el-border-color-base);
 }
 </style>
