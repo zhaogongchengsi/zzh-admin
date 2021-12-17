@@ -1,5 +1,7 @@
 
 
 <template>
-  <router-view />
+  <BaseLayou>
+    <router-view />
+  </BaseLayou>
 </template>
