@@ -56,22 +56,24 @@ export default {
     collapseTransition: {
       type: Boolean,
       default: true
+    },
+    iconTheme:{
+      type: String,
+      default: "solid"
     }
   },
   render () {
-
-    const { solid, outline } = Icons
+    const iconTheme = this.iconTheme
 
     function renderIcon (iconStr) {
+     const iocnComponent = Icons[iconTheme]
       return h(ElIcon,null, {
         default: () => {
-          return h()
+          return h(iocnComponent[iconStr], {
+            class: "h-10 w-10 text-Gray-900"
+          })
         }
       })
-    }
-
-    function renderContextText (context) {
-      return h("span", {/* props */}, {default: () => { return context.Label }})
     }
 
     function menuItem(menu) {
@@ -82,13 +84,16 @@ export default {
           },
           {
             default: () => { 
-              return renderContextText(menu)
+              return h("div", null, [
+                renderIcon(menu.Icon),
+                h("span", null, menu.Label)
+              ])
             }
           }
       )
     }
 
-    const sunMenus = this.menuList.map(function (menu, index) {
+    const sunMenus = this.menuList.map(function (menu) {
       if (menu.children && menu.children.length > 0) {
         return h(
           ElSubMenu,
@@ -102,7 +107,10 @@ export default {
                 }, this)
             },
             title: () => {
-              return menu.Label
+              return h("div", null, [
+                renderIcon(menu.Icon),
+                h("span", null, menu.Label)
+              ])
             }
           }
         )
