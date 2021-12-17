@@ -1,5 +1,5 @@
 <script setup>
-import { MenuIcon, DesktopComputerIcon, UserGroupIcon } from '@heroicons/vue/solid'
+import { MenuIcon } from '@heroicons/vue/solid'
 import { onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex'
 import BaseMenus from "@/components/BaseMenus.vue"
@@ -8,6 +8,15 @@ const store = useStore()
 const menuList = ref([])
 const asideState = ref(false)
 const asideWidth = ref("200px")
+const topNavs = ref([
+    {
+        Path:"/system",
+        Label:"系统管理",
+        Icon: "DesktopComputerIcon",
+        router: "/"
+    }
+])
+
 onMounted(async () => {
     menuList.value = store.state.router.OriginlRoutData
     console.log('menuList', menuList.value);
@@ -20,6 +29,10 @@ const handleSelect = (key, keyPath) => {
 
 const openAside = () => {
     asideState.value = !asideState.value
+}
+
+const onSelect = (index,path,item) => {
+    console.log(index,path,item)
 }
 
 </script>
@@ -35,26 +48,16 @@ const openAside = () => {
                         <div class="cms-logo"><img src="/images/logo.png" alt="logo" /></div>
                         <div class="cms-title">穿越之超级管理系统</div>
                     </div>
-                    <BaseMenus :menu-list="menuList" />
+                    <BaseMenus :menu-list="menuList" background-color="#333" text-color="#fff" />
                 </div>
             </el-aside>
             <el-container>
                 <el-header>
                     <div class="header-container">
                         <div class="header-left-x"> <MenuIcon class="h-10 w-10 text-Gray-900 cursor-pointer" /> </div>
-                            <div class="header-center-x">
-                                <el-menu
-                                    :default-active="activeIndex"
-                                    class="el-menu-demo"
-                                    mode="horizontal"
-                                    @select="handleSelect"
-                                >
-                                <el-menu-item index="4">
-                                    <el-icon><DesktopComputerIcon class="h-20 w-20 text-Gray-900 cursor-pointer" /></el-icon>
-                                    <span>系统功能</span>
-                                </el-menu-item>
-                            </el-menu>
-                            </div>
+                        <div class="header-center-x">
+                            <BaseMenus :menu-list="topNavs" text-color="#333" mode="horizontal" @select="onSelect" />
+                        </div>
                         <div class="header-right-x">
                             <el-dropdown>
                                 <div class="header-avatar">

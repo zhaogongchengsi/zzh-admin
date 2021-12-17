@@ -83,9 +83,10 @@ export default {
             index:menu.Path
           },
           {
-            default: () => { 
+            default: () => {
+              const _icon = renderIcon(menu.Icon) || ""
               return h("div", null, [
-                renderIcon(menu.Icon),
+                _icon,
                 h("span", null, menu.Label)
               ])
             }
@@ -108,7 +109,7 @@ export default {
             },
             title: () => {
               return h("div", null, [
-                renderIcon(menu.Icon),
+                renderIcon(menu.Icon) || "",
                 h("span", null, menu.Label)
               ])
             }
@@ -118,7 +119,7 @@ export default {
         return menuItem(menu)
       }
     })
- 
+  
     return h(
       ElMenu,
       {
@@ -133,6 +134,9 @@ export default {
         menuTrigger: this.menuTrigger,
         router: this.router,
         collapseTransition: this.collapseTransition,
+        onSelect: this.$emit("select"),
+        onOpen:this.$emit("open"),
+        onClose:this.$emit("close")
       },
       {
         default: () => { 

@@ -11,14 +11,21 @@ const routes = [
     component: () => import("@/views/home/index.vue"),
     children: [
       {
-        path: "menus",
-        name: "Menus",
-        component: () => import("@/views/system/Menus.vue"),
-      },
-      {
-        path: "users",
-        name: "Users",
-        component: () => import("@/views/system/Users.vue"),
+        path: "system",
+        name: "System",
+        component: () => import("@/views/system/index.vue"),
+        children: [
+          {
+            path: "menus",
+            name: "Menus",
+            component: () => import("@/views/system/Menus.vue"),
+          },
+          {
+            path: "users",
+            name: "Users",
+            component: () => import("@/views/system/Users.vue"),
+          },
+        ],
       },
     ],
   },
