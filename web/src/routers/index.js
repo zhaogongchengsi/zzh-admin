@@ -7,7 +7,7 @@ const routes = [
   },
   {
     path: "/",
-    name: "home",
+    name: "BaseLayou",
     component: () => import("@/views/Layou/index.vue"),
     children: [
       {

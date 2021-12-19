@@ -3,7 +3,7 @@
 export function dataToTree(data) {
     let parents = data.filter((p) => p.ParentId === p.ID),
       children = data.filter((c) => c.ParentId !== c.ID);
-    let _children = JSON.parse(JSON.stringify(children));
+    
     function pasParAndChildren(par, chi) {
       par.map((pitem, i) => {
         chi.map((citem, ci) => {
@@ -19,11 +19,46 @@ export function dataToTree(data) {
         });
       });
     }
-    pasParAndChildren(parents, children);
+    
     return parents;
+}
+
+export function ParAndChildren (parents, children) {
+  let _parents = JSON.parse(JSON.stringify(parents));
+  let _children = JSON.parse(JSON.stringify(children));
+
+  pasParAndChildren(_parents, _children);
+
+  function pasParAndChildren(par, chi) {
+    par.map((pitem) => {
+      chi.map((citem, ci) => {
+        if (citem.ParentId === pitem.ID) {
+          _children.splice(ci, 1);
+          pasParAndChildren([citem], _children);
+          if (pitem.children) {
+            pitem.children.push(citem);
+          } else {
+            pitem.children = [citem];
+          }
+        }
+      });
+    });
+  }
+
+  return _parents
+}
+
+  export function separation (data) {
+    let parents = data.filter((p) => p.ParentId === p.ID),
+    children = data.filter((c) => c.ParentId !== c.ID);
+    return {
+      parents,
+      children
+    }
   }
   
   export function copyRouter(data) {
+    console.log('data', data);
     return data.map((item, i) => {
       if (item.children) {
         return {
@@ -31,7 +66,7 @@ export function dataToTree(data) {
           component: item.Component,
           path: item.Path,
           label: item.Label,
-          children: [...copyRouter(item.children)],
+          children: copyRouter(item.children),
         };
       } else {
         return {
@@ -39,6 +74,7 @@ export function dataToTree(data) {
           component: item.Component,
           path: item.Path,
           label: item.Label,
+          icon: item.Icon,
         };
       }
     });

@@ -2,24 +2,15 @@
 import { MenuIcon } from '@heroicons/vue/solid'
 import { onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex'
-import BaseMenus from "@/components/BaseMenus.vue"
+import Icons from '../../utils/Icons';
+import BaseMenusVue from '../../components/BaseMenus.vue';
+const { solids, outlines } = Icons;
 const store = useStore()
-
 const menuList = ref([])
 const asideState = ref(false)
-const asideWidth = ref("200px")
-const topNavs = ref([
-    {
-        Path:"/system",
-        Label:"系统管理",
-        Icon: "DesktopComputerIcon",
-        router: "/"
-    }
-])
 
 onMounted(async () => {
-    menuList.value = store.state.router.OriginlRoutData
-    console.log('menuList', menuList.value);
+    menuList.value = store.state.router.root
 })
 
 const activeIndex = ref('1')
@@ -49,7 +40,7 @@ const onSelect = (index,path,item) => {
                             <span class="header-logo-title">超级管理系统</span>
                         </div>
                         <div class="header-center-x">
-                            <BaseMenus :menu-list="topNavs" text-color="#333" mode="horizontal" @select="onSelect" :router="true" />
+                            <BaseMenusVue :menu-list="menuList" mode="horizontal" :router="true" />
                         </div>
                         <div class="header-right-x">
                             <el-dropdown>

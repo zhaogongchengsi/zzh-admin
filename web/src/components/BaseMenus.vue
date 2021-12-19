@@ -104,7 +104,7 @@ export default {
           {
             default: () => {
                 return menu.children.map((child, i) => {
-                  return menuItem(child)
+                  return menuItem(child, menu)
                 }, this)
             },
             title: () => {
@@ -119,7 +119,7 @@ export default {
         return menuItem(menu)
       }
     })
-  
+
     return h(
       ElMenu,
       {

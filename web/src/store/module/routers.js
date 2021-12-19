@@ -1,14 +1,16 @@
-import { dataToTree, copyRouter, filePathCompile } from "@/utils/asyncRoute.js";
+import { dataToTree, ParAndChildren, filePathCompile, separation, copyRouter } from "@/utils/asyncRoute.js";
 import { GetRouter } from "@/api/router.js";
+import pageRouter from "@/routers/index";
 const routerFile = import.meta.glob("../../views/**/*.{vue,js,ts,jsx,tsx}");
+let routerfiles = filePathCompile(routerFile);
 
 function replaceRouter(routerTree, fileTree) {
   return routerTree.map((router) => {
-    let _component = fileTree[router.component];
+    let _component = fileTree[router.Component];
     if (_component) {
-      router.component = _component;
+      router.Component = _component;
     } else {
-      delete router.component;
+      delete router.Component;
     }
     if (router.children && router.children.length > 0) {
       router.children = replaceRouter(router.children, fileTree);
@@ -27,6 +29,8 @@ export const router = {
   state: {
     asyncRouters: [], // 最终的路由数据
     OriginlRoutData: [], // 原始路由数据
+    root: [], // 根路由数据
+    children: [],
   },
   mutations: {
     setAsyncRouter(state, asyncRouters) {
@@ -35,28 +39,30 @@ export const router = {
     setOriginRouter(state, OriginRouter) {
       state.OriginlRoutData = OriginRouter;
     },
+    setRootData(state, RootData) {
+      state.root = RootData;
+    },
+    setchildren(state, children) {
+      state.children = children;
+    }
   },
   actions: {
     // 从后台获取动态路由
     async SetAsyncRouter({ commit }) {
-      const originData = await GetMenuData();
-      commit("setOriginRouter", originData);
-      /*
-       * 请求过来的路由数据 树形化之后 把里面所需要的路由数据拷贝出来
-       */
-      let routerTree = copyRouter(originData);
-      /*
-       * 将文件内的组件取出来
-       */
-      let routerfiles = filePathCompile(routerFile);
-      /*
-       * 将树形路由数据中的组件替换成真实组件
-       */
-      let _routerTree = replaceRouter(routerTree, routerfiles);
-      commit("setAsyncRouter", _routerTree);
-
-      //!  路由替换
-
+      const originlRouter = await GetRouter(); // 获取路由数据
+      const {parents, children} = separation(originlRouter) // 分离根组件和非根组件 
+      const asyncRouters = ParAndChildren(parents, children)
+      const routers = replaceRouter(asyncRouters, routerfiles) // 替换路由组件 
+      commit("setRootData", parents); // 提交根路由
+      commit("setchildren", children); // 提交子路由
+      commit("setAsyncRouter", routers);
+      const _r = copyRouter(routers)
+      pageRouter.addRoute({
+        path: "/",
+        name: "baselayou",
+        component: () => import("@/views/Layou/index.vue"),
+        children: _r
+      })
       return true;
     },
 
