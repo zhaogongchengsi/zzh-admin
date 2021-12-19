@@ -15,7 +15,6 @@ onMounted(() => {
   const { fullPath, href, name } = router.currentRoute.value
   const routerChildren = store.state.router.children
   const rootData = store.state.router.root
-
   const _r =  DadLookSon(
     function (data) {
         if (data.Name === name && data.Path === href) {
@@ -32,8 +31,8 @@ onMounted(() => {
     rootData,
     routerChildren
   )
+  console.log('_r', _r);
   menuData.value = _r
-
 })
 
 

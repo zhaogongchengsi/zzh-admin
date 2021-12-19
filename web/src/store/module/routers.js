@@ -67,8 +67,10 @@ export const router = {
     },
 
     async SetOriginRouterData({ commit }) {
-      const originData = await GetMenuData();
-      commit("setOriginRouter", originData);
+      const originlRouter = await GetRouter(); // 获取路由数据
+      const {parents, children} = separation(originlRouter) // 分离根组件和非根组件 
+      const asyncRouters = ParAndChildren(parents, children)
+      commit("setOriginRouter", asyncRouters);
     },
   },
   getters: {
