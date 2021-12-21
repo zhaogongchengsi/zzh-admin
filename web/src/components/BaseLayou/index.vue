@@ -19,32 +19,10 @@ onMounted(() => {
     return r.Path === href && r.Name === name
   })
 
-
   if (currentRoute) {
     menuData.value = currentRoute.children
-    console.log(currentRoute.children)
   }
 
-
-
-  // const _r =  DadLookSon(
-  //   function (data) {
-  //       if (data.Name === name && data.Path === href) {
-  //           return function(son) {
-  //             if (data.ID === son.ParentId) {
-  //               return {...son,Path:`${data.Path}/${son.Path}`}
-  //             } else {
-  //               return false
-  //             }
-  //           }
-  //       }
-  //     return false
-  //   },
-  //   rootData,
-  //   routerChildren
-  // )
-  // console.log('_r', _r);
-  // menuData.value = _r
 })
 
 

@@ -50,22 +50,28 @@ export const router = {
   actions: {
     // 从后台获取动态路由
     async SetAsyncRouter({ commit }) {
-      const originlRouter = await GetRouter(); // 获取路由数据
-      const {parents, children} = separation(originlRouter) // 分离根组件和非根组件 
-      const asyncRouters = ParAndChildren(parents, children)
-      const routers = replaceRouter(asyncRouters, routerfiles) // 替换路由组件 
-      commit("setRootData", parents); // 提交根路由
-      commit("setchildren", children); // 提交子路由
-      commit("setOriginRouter", JSON.parse(JSON.stringify(asyncRouters))); // 备份路由信息 供菜单渲染使用
-      commit("setAsyncRouter", routers); // 提交生成后的路由信息
-      const _r = copyRouter(routers)
-      pageRouter.addRoute({
-        path: "/",
-        name: "baselayou",
-        component: () => import("@/views/Layou/index.vue"),
-        children: _r
-      })
-      return true;
+      try {
+
+        const originlRouter = await GetRouter(); // 获取路由数据
+        const {parents, children} = separation(originlRouter) // 分离根组件和非根组件 
+        const asyncRouters = ParAndChildren(parents, children)
+        const routers = replaceRouter(asyncRouters, routerfiles) // 替换路由组件 
+        commit("setRootData", parents); // 提交根路由
+        commit("setchildren", children); // 提交子路由
+        commit("setOriginRouter", JSON.parse(JSON.stringify(asyncRouters))); // 备份路由信息 供菜单渲染使用
+        commit("setAsyncRouter", routers); // 提交生成后的路由信息
+        const _r = copyRouter(routers)
+        pageRouter.addRoute({
+          path: "/",
+          name: "baselayou",
+          component: () => import("@/views/Layou/index.vue"),
+          children: _r
+        })
+        return true;
+      } catch (e) {
+        return false;
+      }
+   
     },
 
     async SetOriginRouterData({ commit }) {

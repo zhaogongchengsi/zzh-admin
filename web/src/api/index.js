@@ -33,9 +33,12 @@ export function Login (user) {
                         user: res.data
                     })
                 },
-                () => {
-                    ElMessage.error('登录失败，用户名或密码错误')
-                    reject({})
+                (code, message) => {
+                    ElMessage.error(`登录失败${message}`)
+                    reject({
+                        code,
+                        message
+                    })
                 }
             )
         }).catch(reject)

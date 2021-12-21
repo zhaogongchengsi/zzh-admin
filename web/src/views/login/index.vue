@@ -13,14 +13,18 @@ const verifyCodd = ref({})
 const from = ref(null)
 const Router = useRouter()
 
-onMounted(async () => {
-    let vaCode = await GetVerifyCode()
+
+async function getVerifyCode () {
+     let vaCode = await GetVerifyCode()
     verifyCodd.value = vaCode
+}
+
+onMounted(() => {
+   getVerifyCode()
 })
 
-const refreshCode = async () => {
-    let vaCode = await GetVerifyCode()
-    verifyCodd.value = vaCode
+const refreshCode = () => {
+    getVerifyCode()
 }
 
 const onLogin = () => {
@@ -29,13 +33,13 @@ const onLogin = () => {
             try {
                 const loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
                 const routerState = await store.dispatch("router/SetAsyncRouter")
-
                 if (loginState.success && routerState) {
-
                     Router.push("/")
+                } else {
+                    console.log('登录成功但是路由初始化失败');
                 }
             } catch (e) {
-   
+                 getVerifyCode()
             }
 
         } else {

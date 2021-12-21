@@ -1,11 +1,11 @@
 export function JudgeRequestStatus(state) {
   if (state.success === true && state.code === 200) {
     return function (ok, err) {
-      ok();
+      ok(state);
     };
   } else {
     return function (ok, err) {
-      err();
+      err(state.code, state.message);
     };
   }
 }
