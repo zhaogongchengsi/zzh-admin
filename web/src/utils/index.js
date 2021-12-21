@@ -34,9 +34,7 @@ export function DadLookSon(condition, dad, son) {
       if (isSon === false) {
         return false
       }
-      debugger
       let _children = DadLookSon(condition, [isSon], son) // 找子节点的子节点
-      console.log('zi', _children);
       if (_children.length > 0) {
         isSon.children = _children
       }

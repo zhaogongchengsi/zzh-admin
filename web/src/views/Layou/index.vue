@@ -78,7 +78,10 @@ const onSelect = (index,path,item) => {
 </template>
 
 <style lang="scss" scoped>
-
+.main-container:deep(.el-main) {
+  height: calc(100vh - 60px - 30px);
+  border-left: 1px solid var(--el-border-color-base);
+}
 .main-dom {
     height: 2000px;
 }

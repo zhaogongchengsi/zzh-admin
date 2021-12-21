@@ -13,26 +13,38 @@ const menuData = ref([])
 
 onMounted(() => {
   const { fullPath, href, name } = router.currentRoute.value
-  const routerChildren = store.state.router.children
-  const rootData = store.state.router.root
-  const _r =  DadLookSon(
-    function (data) {
-        if (data.Name === name && data.Path === href) {
-            return function(son) {
-              if (data.ID === son.ParentId) {
-                return {...son,Path:`${data.Path}/${son.Path}`}
-              } else {
-                return false
-              }
-            }
-        }
-      return false
-    },
-    rootData,
-    routerChildren
-  )
-  console.log('_r', _r);
-  menuData.value = _r
+  const routerChildren = store.state.router.OriginlRoutData
+
+  const currentRoute = routerChildren.find(r => {
+    return r.Path === href && r.Name === name
+  })
+
+
+  if (currentRoute) {
+    menuData.value = currentRoute.children
+    console.log(currentRoute.children)
+  }
+
+
+
+  // const _r =  DadLookSon(
+  //   function (data) {
+  //       if (data.Name === name && data.Path === href) {
+  //           return function(son) {
+  //             if (data.ID === son.ParentId) {
+  //               return {...son,Path:`${data.Path}/${son.Path}`}
+  //             } else {
+  //               return false
+  //             }
+  //           }
+  //       }
+  //     return false
+  //   },
+  //   rootData,
+  //   routerChildren
+  // )
+  // console.log('_r', _r);
+  // menuData.value = _r
 })
 
 
@@ -59,8 +71,8 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-
 .system_container:deep(.el-menu) {
-  height: calc(100vh - 60px - 30px);
+  border-right: 0;
 }
+
 </style>

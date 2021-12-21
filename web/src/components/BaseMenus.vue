@@ -95,6 +95,7 @@ export default {
     }
 
     const sunMenus = this.menuList.map(function (menu) {
+     
       if (menu.children && menu.children.length > 0) {
         return h(
           ElSubMenu,
@@ -104,7 +105,8 @@ export default {
           {
             default: () => {
                 return menu.children.map((child, i) => {
-                  return menuItem(child, menu)
+                  
+                  return menuItem(child)
                 }, this)
             },
             title: () => {

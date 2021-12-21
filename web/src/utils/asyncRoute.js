@@ -2,7 +2,7 @@
 
 export function dataToTree(data) {
     let parents = data.filter((p) => p.ParentId === p.ID),
-      children = data.filter((c) => c.ParentId !== c.ID);
+      _children = data.filter((c) => c.ParentId !== c.ID);
     
     function pasParAndChildren(par, chi) {
       par.map((pitem, i) => {
@@ -58,7 +58,6 @@ export function ParAndChildren (parents, children) {
   }
   
   export function copyRouter(data) {
-    console.log('data', data);
     return data.map((item, i) => {
       if (item.children) {
         return {

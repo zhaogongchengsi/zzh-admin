@@ -34,6 +34,7 @@ export const router = {
   },
   mutations: {
     setAsyncRouter(state, asyncRouters) {
+      
       state.asyncRouters = asyncRouters;
     },
     setOriginRouter(state, OriginRouter) {
@@ -55,7 +56,8 @@ export const router = {
       const routers = replaceRouter(asyncRouters, routerfiles) // 替换路由组件 
       commit("setRootData", parents); // 提交根路由
       commit("setchildren", children); // 提交子路由
-      commit("setAsyncRouter", routers);
+      commit("setOriginRouter", JSON.parse(JSON.stringify(asyncRouters))); // 备份路由信息 供菜单渲染使用
+      commit("setAsyncRouter", routers); // 提交生成后的路由信息
       const _r = copyRouter(routers)
       pageRouter.addRoute({
         path: "/",
