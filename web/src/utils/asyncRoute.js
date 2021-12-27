@@ -33,7 +33,7 @@ export function ParAndChildren (parents, children) {
     par.map((pitem) => {
       chi.map((citem, ci) => {
         if (citem.ParentId === pitem.ID) {
-          _children.splice(ci, 1);
+          // _children.splice(ci, 1);
           pasParAndChildren([citem], _children);
           if (pitem.children) {
             pitem.children.push(citem);

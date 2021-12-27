@@ -1,6 +1,7 @@
 import { dataToTree, ParAndChildren, filePathCompile, separation, copyRouter } from "@/utils/asyncRoute.js";
 import { GetRouter } from "@/api/router.js";
 import pageRouter from "@/routers/index";
+import NotComponent from "@/components/NotComponent.vue"
 const routerFile = import.meta.glob("../../views/**/*.{vue,js,ts,jsx,tsx}");
 let routerfiles = filePathCompile(routerFile);
 
@@ -10,7 +11,7 @@ function replaceRouter(routerTree, fileTree) {
     if (_component) {
       router.Component = _component;
     } else {
-      delete router.Component;
+      router.Component = router.Component;
     }
     if (router.children && router.children.length > 0) {
       router.children = replaceRouter(router.children, fileTree);
@@ -34,10 +35,10 @@ export const router = {
   },
   mutations: {
     setAsyncRouter(state, asyncRouters) {
-      
       state.asyncRouters = asyncRouters;
     },
     setOriginRouter(state, OriginRouter) {
+
       state.OriginlRoutData = OriginRouter;
     },
     setRootData(state, RootData) {
@@ -53,7 +54,7 @@ export const router = {
       try {
 
         const originlRouter = await GetRouter(); // 获取路由数据
-        const {parents, children} = separation(originlRouter) // 分离根组件和非根组件 
+        const {parents, children} = separation(originlRouter) // 分离根组件和非根组件
         const asyncRouters = ParAndChildren(parents, children)
         const routers = replaceRouter(asyncRouters, routerfiles) // 替换路由组件 
         commit("setRootData", parents); // 提交根路由
@@ -65,7 +66,14 @@ export const router = {
           path: "/",
           name: "baselayou",
           component: () => import("@/views/Layou/index.vue"),
-          children: _r
+          children: [
+            {
+              path: "/home_user",
+              name: "home_user",
+              component: () => import("@/views/layou/HomeUser.vue"),
+            },
+            ..._r
+          ]
         })
         return true;
       } catch (e) {

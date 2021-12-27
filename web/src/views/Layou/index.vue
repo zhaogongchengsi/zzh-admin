@@ -10,7 +10,8 @@ const menuList = ref([])
 const asideState = ref(false)
 
 onMounted(async () => {
-    menuList.value = store.state.router.root
+    let rootMenu = store.state.router.root
+    menuList.value = rootMenu
 })
 
 const activeIndex = ref('1')
