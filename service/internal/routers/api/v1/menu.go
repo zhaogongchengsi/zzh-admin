@@ -116,3 +116,32 @@ func GetMenuByID(c *gin.Context)  {
 	}
 	deOk.Send(c)
 }
+
+// @Tags Menu
+// @Summary 根据ID更新菜单
+// @Produce  application/json
+// @Param data body request.Menus
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/menu/up_menu [post]
+func UpMenu(c *gin.Context)  {
+	var newMenu request.Menus
+	err := c.ShouldBindJSON(&newMenu)
+	if  err != nil && newMenu.Id == 0 {
+		res := response.Response{Err: err}
+		res.SendInputParameterError(c)
+		return
+	}
+
+	errMe := service.UpdateMenu(newMenu)
+
+	if errMe != nil {
+		deErr := response.Response{Err: err, State: response.State{
+			Code: errcode.UpdataError,
+			Message: "更新失败",
+		}}
+		deErr.SendError(c)
+	}
+
+	deOk := response.Response{}
+	deOk.Send(c)
+}

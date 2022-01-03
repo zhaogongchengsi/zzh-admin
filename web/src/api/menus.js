@@ -14,15 +14,17 @@ export function createMenu(data) {
           reject({});
         }
       );
+    }).catch(function (err) {
+      reject({});
     });
   });
 }
 
-export function findMenuId (id) {
+export function findMenuId (id, lading = false) {
   return new Promise(function (resolve, reject) {
     Post("/menu/find_menu", {
       id
-    }).then(function (response) {
+    },lading).then(function (response) {
       JudgeRequestStatus(response.state)(
         () => {
           resolve(response.data);
@@ -32,6 +34,29 @@ export function findMenuId (id) {
           reject({});
         }
       );
+    }).catch(function (err) {
+      reject({});
+    });
+  })
+}
+
+
+export function upMenu (menu) {
+  return new Promise(function (resolve, reject) {
+    Post("/menu/up_menu", menu, true)
+    .then(function (response) {
+      JudgeRequestStatus(response.state)(
+        () => {
+          resolve(true);
+        },
+        () => {
+          ElMessage.error(response.message);
+          reject({});
+        }
+      );
     })
+    .catch(function () {
+      reject({});
+    });
   })
 }

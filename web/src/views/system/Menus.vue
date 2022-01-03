@@ -3,7 +3,7 @@ import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
-import { createMenu, findMenuId } from '@/api/menus'
+import { createMenu, findMenuId, upMenu } from '@/api/menus'
 import { useStore } from 'vuex'
 const store = useStore()
 const { solid, outline } = icons
@@ -20,6 +20,7 @@ const { solid, outline } = icons
         sort: 0,
         remarks: ""
     })
+    const AddOrUpdate = ref(true)
     
     const iconArray = ref([])
     const MenuDataTree = ref([])
@@ -71,13 +72,14 @@ const { solid, outline } = icons
     const addMenu = () => {
         menuFrom.value.validate((fromState) => {
             if (fromState) {
-                createMenu(menuData)
+            let requestFunc = AddOrUpdate.value === true ? createMenu : upMenu
+                requestFunc(menuData)
                 .then(res => {
-                    ElMessage.success('菜单创建成功')
+                    ElMessage.success(`${AddOrUpdate.value === true ? "添加成功" : "编辑成功"}`)
                     dialogVisible.value = false
                 })
                 .catch(err => {
-                    ElMessage.error('菜单创建失败')
+                    ElMessage.error(`${AddOrUpdate.value === true ? "添加失败" : "编辑失败"}`)
                 })
             } else {
                 ElMessage.error('用户信息不完整')
@@ -97,10 +99,22 @@ const { solid, outline } = icons
 
     const handleEdit = (index, Id) => {
         findMenuId(Id).then(res => {
-            console.log(res)
+            const { ParentId, Path, Remarks, Sort, Icon, ID, Disabled,Label, Component,Name } = res;
+            menuData.parent_id = ParentId
+            menuData.menu_path = Path
+            menuData.Label = Label
+            menuData.remarks = Remarks
+            menuData.sort = Sort
+            menuData.menu_icon = Icon
+            menuData.id = ID
+            menuData.disabled = Disabled
+            menuData.component = Component
+            menuData.name = Name
+            AddOrUpdate.value = false
+            openDialog("编辑菜单")
+        }).catch(err => {
+            console.log('err', err);
         })
-
-        // openDialog("编辑菜单")
     }
 
     const handleDelete = (index, Id) => {
@@ -128,7 +142,13 @@ const { solid, outline } = icons
     const handleAddMenu = (index, Id) => {
         menuData.parent_id = Id;
         isParent.value = true;
+         AddOrUpdate.value = true
         openDialog("增加子节点")
+    }
+
+    const addRootMenu = () => {
+        AddOrUpdate.value = true
+        openDialog('新增根节点')
     }
 </script>
 
@@ -136,7 +156,7 @@ const { solid, outline } = icons
 <template>
     <div class="menus-container">
           <div class="menus-header">
-              <el-button @click="openDialog('新增跟节点')" type="primary">新增根菜单</el-button>
+              <el-button @click="addRootMenu" type="primary">新增根菜单</el-button>
           </div>
 
         <el-table
@@ -229,7 +249,7 @@ const { solid, outline } = icons
             <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="addMenu">添加</el-button>
+                <el-button type="primary" @click="addMenu">{{AddOrUpdate ? "添加" : "编辑"}}</el-button>
             </span>
             </template>
         </el-dialog>

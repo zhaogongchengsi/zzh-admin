@@ -10,5 +10,6 @@ type Menus struct {
 	Label       string `json:"Label" binding:"required"`
 	Sort        int    `json:"sort" binding:"required"`
 	Remarks     string `json:"remarks"`
+	Id float64 `json:"id"`
 }
 
