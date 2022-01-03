@@ -17,3 +17,21 @@ export function createMenu(data) {
     });
   });
 }
+
+export function findMenuId (id) {
+  return new Promise(function (resolve, reject) {
+    Post("/menu/find_menu", {
+      id
+    }).then(function (response) {
+      JudgeRequestStatus(response.state)(
+        () => {
+          resolve(response.data);
+        },
+        () => {
+          ElMessage.error(response.message);
+          reject({});
+        }
+      );
+    })
+  })
+}

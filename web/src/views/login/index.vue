@@ -34,14 +34,13 @@ const onLogin = () => {
                 const loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
                 const routerState = await store.dispatch("router/SetAsyncRouter")
                 if (loginState.success && routerState) {
-                    Router.push("/")
+                    Router.push("/home_user")
                 } else {
                     console.log('登录成功但是路由初始化失败');
                 }
             } catch (e) {
                  getVerifyCode()
             }
-
         } else {
              ElMessage.error('用户信息不完整')
         }

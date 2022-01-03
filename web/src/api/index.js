@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
 import { JudgeRequestStatus } from '@/utils'
 export function GetVerifyCode() {
     return new Promise(function(resolve, reject) {
-        Get("/verify_code").then(res => {
+        Get("/verify_code", false).then(res => {
             JudgeRequestStatus(res.state)(
                 () => {
                     resolve(res.data)

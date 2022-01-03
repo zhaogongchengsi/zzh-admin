@@ -14,9 +14,6 @@ const Axios = axios.create({
 //  添加请求拦截
 Axios.interceptors.request.use(
   function (config) {
-    if (!loadingWhiteList.has(config.url)) {
-      loading = ElLoading.service();
-    }
     if (requestWhiteList.has(config.url)) {
       return config;
     }
@@ -58,10 +55,16 @@ Axios.interceptors.response.use(
   }
 );
 
-export function Get(url) {
+export function Get(url, load = true) {
+  if (load) {
+    loading = ElLoading.service();
+  }
   return Axios.get(url);
 }
 
-export function Post(url, data) {
+export function Post(url, data, load = true) {
+  if (load) {
+    loading = ElLoading.service();
+  }
   return Axios.post(url, data);
 }

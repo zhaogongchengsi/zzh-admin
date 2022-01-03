@@ -3,7 +3,7 @@ import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
-import { createMenu } from '@/api/menus'
+import { createMenu, findMenuId } from '@/api/menus'
 import { useStore } from 'vuex'
 const store = useStore()
 const { solid, outline } = icons
@@ -96,15 +96,17 @@ const { solid, outline } = icons
     }
 
     const handleEdit = (index, Id) => {
-        openDialog("编辑菜单")
+        findMenuId(Id).then(res => {
+            console.log(res)
+        })
+
+        // openDialog("编辑菜单")
     }
 
     const handleDelete = (index, Id) => {
-        
-
         ElMessageBox.confirm(
             '删除该节点后不可恢复且连所属子节点一起删除，是否继续删除',
-            'Warning',
+            '警告',
             {
                 confirmButtonText: '继续删除',
                 cancelButtonText: '取消删除',

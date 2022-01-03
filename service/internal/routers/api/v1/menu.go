@@ -91,3 +91,28 @@ func DeleteMenu(c *gin.Context) {
 	deOk := response.Response{}
 	deOk.Send(c)
 }
+
+// @Tags Menu
+// @Summary 根据ID查找菜单
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/menu/find_menu [post]
+func GetMenuByID(c *gin.Context)  {
+	var menuId request.GetGormById
+	_ = c.ShouldBindJSON(&menuId)
+	var menu = model.Menu{
+
+	}
+	err := service.GetMenuByID(menuId.ID, &menu)
+	if err != nil {
+		deErr := response.Response{Err: err, State: response.State{
+			Code: errcode.NotFound,
+			Message: "查找失败",
+		}}
+		deErr.SendError(c)
+	}
+	deOk := response.Response{
+		Data: menu,
+	}
+	deOk.Send(c)
+}

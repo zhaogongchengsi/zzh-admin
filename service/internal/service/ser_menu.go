@@ -26,3 +26,8 @@ func DeleteMenuHandle(id float64) (err error)  {
 	err = global.DBEngine.Delete(&model.Menu{}, id).Error
 	return err
 }
+
+func GetMenuByID (id float64, menu *model.Menu) (err error) {
+	err = global.DBEngine.First(&menu, id).Error
+	return err
+}
