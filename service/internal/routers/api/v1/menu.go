@@ -75,11 +75,11 @@ func GetMenus(c *gin.Context) {
 // @Summary 删除菜单
 // @Produce  application/json
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
-// @Router /api/v1/menu/get_menu [post]
+// @Router /api/v1/menu/delete_menu [post]
 func DeleteMenu(c *gin.Context) {
 	var menuId request.GetGormById
 	_ = c.ShouldBindJSON(&menuId)
-	err := service.DeleteMenuHandle(menuId.ID)
+	err := service.DeletMenu(menuId.ID)
 	if err != nil {
 		deErr := response.Response{Err: err, State: response.State{
 			Code: errcode.DeleteError,
@@ -100,9 +100,7 @@ func DeleteMenu(c *gin.Context) {
 func GetMenuByID(c *gin.Context)  {
 	var menuId request.GetGormById
 	_ = c.ShouldBindJSON(&menuId)
-	var menu = model.Menu{
-
-	}
+	var menu = model.Menu{}
 	err := service.GetMenuByID(menuId.ID, &menu)
 	if err != nil {
 		deErr := response.Response{Err: err, State: response.State{
@@ -144,4 +142,36 @@ func UpMenu(c *gin.Context)  {
 
 	deOk := response.Response{}
 	deOk.Send(c)
+}
+
+
+
+// @Tags Menu
+// @Summary 根据ID获取子节点
+// @Produce  application/json
+// @Param data body []request.Menus
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/menu/get_submenu [post]
+func GetSubMenus (c *gin.Context) {
+		var menuId request.GetGormById
+		err := c.ShouldBindJSON(&menuId)
+		if err != nil {
+			res := response.Response{Err: err}
+			res.SendInputParameterError(c)
+			return
+		}
+
+		submenus, super := service.GetSubMenu(menuId.ID)
+		if err != nil {
+			subtrees := response.Response{Err: super, State: response.State{
+				Code: errcode.NotFound,
+				Message: "查找当前节点的子路由失败",
+			}}
+			subtrees.SendError(c)
+		}
+
+		deOk := response.Response{
+			Data: submenus,
+		}
+		deOk.Send(c)
 }

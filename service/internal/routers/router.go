@@ -24,11 +24,15 @@ func NewRouter() *gin.Engine {
 		app1.POST("/menu/find_menu", v1.GetMenuByID)
 		app1.POST("/menu/up_menu", v1.UpMenu)
 		app1.GET("/menu/get_menu", v1.GetMenus)
+		app1.POST("/menu/get_submenu", v1.GetSubMenus)
+
 		app1.GET("/verify_code", v1.CreateVerificationCode)
+
 		app1.POST("/user/login", v1.Login)
 		app1.POST("/user/register", v1.Register)
 		app1.POST("/user/change_password", v1.ChangePassword)
 		app1.POST("/user/users", v1.GetUserList)
+
 		app1.POST("/role/create_role", v1.CreateRole)
 		app1.GET("/role/get_roles", v1.GetAuthLIst)
 	}

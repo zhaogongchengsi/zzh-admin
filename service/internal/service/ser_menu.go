@@ -56,3 +56,26 @@ func UpdateMenu (menu request.Menus) (err error) {
 	})
 	return  err
 }
+
+
+
+func GetSubMenu (id float64) (menus  []model.Menu,err error) {
+	var subMenus []model.Menu
+	err = global.DBEngine.Where("parent_id = ?", id).Find(&subMenus).Error
+	return  subMenus, err
+}
+
+func DeletMenu(id float64) error {
+	var oldMenu model.Menu
+	menuLIst, suberr := GetSubMenu(id)
+	if suberr != nil {
+		return  suberr
+	}
+	if len(menuLIst) > 0 {
+		err := global.DBEngine.Where("parent_id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
+		return err
+	} else {
+		err := global.DBEngine.Where("id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
+		return err
+	}
+}

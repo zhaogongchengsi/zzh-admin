@@ -60,3 +60,42 @@ export function upMenu (menu) {
     });
   })
 }
+
+export function getSubMenus (id) {
+  return new Promise((resolve, reject) => {
+    Post("/menu/get_submenu", {id}, false)
+    .then(function (response) {
+      JudgeRequestStatus(response.state)(
+        () => {
+          resolve(response.data);
+        },
+        () => {
+          ElMessage.error(response.message);
+          reject({});
+        }
+      );
+    })
+    .catch(function (err) {
+      reject({err});
+    });
+  })
+}
+
+export function deleteMenu (id) {
+  return new Promise((resolve, reject) => {
+    Post("/menu/delete_menu", {id}, false)
+    .then(function (response) {
+      JudgeRequestStatus(response.state)(
+        () => {
+          resolve(true);
+        },
+        () => {
+          reject({});
+        }
+      );
+    })
+    .catch(function (err) {
+      reject({err});
+    });
+  })
+}

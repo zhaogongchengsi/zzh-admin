@@ -3,7 +3,7 @@ import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
-import { createMenu, findMenuId, upMenu } from '@/api/menus'
+import { createMenu, findMenuId, upMenu, getSubMenus, deleteMenu } from '@/api/menus'
 import { useStore } from 'vuex'
 const store = useStore()
 const { solid, outline } = icons
@@ -97,7 +97,7 @@ const { solid, outline } = icons
         drawer.value = false;
     }
 
-    const handleEdit = (index, Id) => {
+    const handleEdit = (_, Id) => {
         findMenuId(Id).then(res => {
             const { ParentId, Path, Remarks, Sort, Icon, ID, Disabled,Label, Component,Name } = res;
             menuData.parent_id = ParentId
@@ -117,9 +117,10 @@ const { solid, outline } = icons
         })
     }
 
-    const handleDelete = (index, Id) => {
+    const handleDelete = async (index, Id) => {
+        let subMenus =  await getSubMenus(Id)
         ElMessageBox.confirm(
-            '删除该节点后不可恢复且连所属子节点一起删除，是否继续删除',
+            `当前节点拥有${subMenus.length}个子节点，删除后不可恢复， 是否继续删除？`,
             '警告',
             {
                 confirmButtonText: '继续删除',
@@ -128,13 +129,32 @@ const { solid, outline } = icons
             }
         )
         .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '删除成功',
-          })
+            deleteMenu(Id)
+            .then((result) => {
+                if (result === true) {
+                    ElMessage({
+                        type: 'success',
+                        message: '删除成功',
+                    })
+                } else {
+                    ElMessage({
+                        type: 'error',
+                        message: '删除失败',
+                    })
+                }
+            })
+            .catch(err => {
+                ElMessage({
+                        type: 'error',
+                        message: '删除失败',
+                })
+            })
         })
         .catch(() => {
-          // 取消删除
+          ElMessage({
+            type: 'success',
+            message: '取消删除',
+          })
         })
 
     }
