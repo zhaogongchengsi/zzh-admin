@@ -145,8 +145,8 @@ const { solid, outline } = icons
             })
             .catch(err => {
                 ElMessage({
-                        type: 'error',
-                        message: '删除失败',
+                    type: 'error',
+                    message: '删除失败',
                 })
             })
         })

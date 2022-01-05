@@ -71,11 +71,12 @@ func DeletMenu(id float64) error {
 	if suberr != nil {
 		return  suberr
 	}
+	var err error = nil
 	if len(menuLIst) > 0 {
-		err := global.DBEngine.Where("parent_id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
+		err = global.DBEngine.Where("parent_id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
 		return err
 	} else {
-		err := global.DBEngine.Where("id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
+		err = global.DBEngine.Where("id = ?", id).First(&oldMenu).Delete(&oldMenu).Error
 		return err
 	}
 }
