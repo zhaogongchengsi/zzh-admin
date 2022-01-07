@@ -20,6 +20,7 @@ onMounted(() => {
   })
 
   if (currentRoute) {
+    console.log('e', router.getRoutes());
     menuData.value = currentRoute.children
   }
 

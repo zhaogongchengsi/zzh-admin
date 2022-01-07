@@ -7,11 +7,11 @@ import (
 )
 
 func User(g *gin.Engine)  {
-	app := g.Group("/api/v1").Use(middlewares.JWTAuth())
+	app := g.Group("/api/v1/user").Use(middlewares.JWTAuth())
 	{
-		app.POST("/user/login", v1.Login)
-		app.POST("/user/register", v1.Register)
-		app.POST("/user/change_password", v1.ChangePassword)
-		app.POST("/user/users", v1.GetUserList)
+		app.POST("/login", v1.Login)
+		app.POST("/register", v1.Register)
+		app.POST("/change_password", v1.ChangePassword)
+		app.POST("/users", v1.GetUserList)
 	}
 }

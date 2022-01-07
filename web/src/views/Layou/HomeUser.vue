@@ -3,7 +3,8 @@
 <template>
     <div class="home-container">
         <el-row>
-            <el-col :span="24"><div class="top-welcome">欢迎</div></el-col>
+            <el-col :span="12"><div class="top-welcome">欢迎</div></el-col>
+            <el-col :span="12"><div class="top-welcome">欢迎</div></el-col>
         </el-row>
     </div>
 </template>

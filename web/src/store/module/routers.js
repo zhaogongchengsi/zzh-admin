@@ -7,7 +7,7 @@ import {
 } from "@/utils/asyncRoute.js";
 import { GetRouter } from "@/api/router.js";
 import pageRouter from "@/routers/index";
-import NotComponent from "@/components/NotComponent.vue";
+import NotComponent from "@/views/routerHandel.vue";
 const routerFile = import.meta.glob("../../views/**/*.{vue,js,ts,jsx,tsx}");
 let routerfiles = filePathCompile(routerFile);
 
@@ -17,11 +17,16 @@ function replaceRouter(routerTree, fileTree) {
     if (_component) {
       router.Component = _component;
     } else {
-      router.Component = router.Component;
+      if (router.children && router.children.length > 0) {
+        router.Component = NotComponent;
+      } else {
+        router.Component = router.Component;
+      }
     }
     if (router.children && router.children.length > 0) {
       router.children = replaceRouter(router.children, fileTree);
     }
+
     return router;
   });
 }
@@ -66,6 +71,7 @@ export const router = {
         commit("setOriginRouter", JSON.parse(JSON.stringify(asyncRouters))); // 备份路由信息 供菜单渲染使用
         commit("setAsyncRouter", routers); // 提交生成后的路由信息
         const _r = copyRouter(routers);
+        console.log("r", _r);
         pageRouter.addRoute({
           path: "/",
           name: "baselayou",

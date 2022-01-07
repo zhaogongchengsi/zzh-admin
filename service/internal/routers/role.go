@@ -8,9 +8,9 @@ import (
 )
 
 func Role(g *gin.Engine)  {
-	app := g.Group("/api/v1").Use(middlewares.JWTAuth())
+	app := g.Group("/api/v1/role").Use(middlewares.JWTAuth())
 	{
-		app.POST("/role/create_role", v1.CreateRole)
-		app.GET("/role/get_roles", v1.GetAuthLIst)
+		app.POST("/create_role", v1.CreateRole)
+		app.GET("/get_roles", v1.GetAuthLIst)
 	}
 }

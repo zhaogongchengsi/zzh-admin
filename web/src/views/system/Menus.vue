@@ -109,7 +109,7 @@ const { solid, outline } = icons
             menuData.id = ID
             menuData.disabled = Disabled
             menuData.component = Component
-            menuData.name = Name
+            menuData.menu_name = Name
             AddOrUpdate.value = false
             openDialog("编辑菜单")
         }).catch(err => {
