@@ -71,7 +71,6 @@ export const router = {
         commit("setOriginRouter", JSON.parse(JSON.stringify(asyncRouters))); // 备份路由信息 供菜单渲染使用
         commit("setAsyncRouter", routers); // 提交生成后的路由信息
         const _r = copyRouter(routers);
-        console.log("r", _r);
         pageRouter.addRoute({
           path: "/",
           name: "baselayou",

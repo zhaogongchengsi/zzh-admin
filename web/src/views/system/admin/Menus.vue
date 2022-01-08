@@ -76,6 +76,7 @@ const { solid, outline } = icons
                 requestFunc(menuData)
                 .then(res => {
                     ElMessage.success(`${AddOrUpdate.value === true ? "添加成功" : "编辑成功"}`)
+                    store.dispatch("router/SetOriginRouterData")
                     dialogVisible.value = false
                 })
                 .catch(err => {

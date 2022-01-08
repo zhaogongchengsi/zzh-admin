@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github/gin-react-admin/internal/model"
 	"github/gin-react-admin/internal/service"
+	"github/gin-react-admin/pkg/errcode"
 	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
 )
@@ -18,7 +19,7 @@ func CreateRole(c *gin.Context) {
 	var newRole request.Role
 	if err := c.ShouldBindJSON(&newRole); err != nil {
 		res := response.Response{Err: err}
-		res.Send(c)
+		res.SendInputParameterError(c)
 		return
 	}
 	role := model.AuthRole{
@@ -29,7 +30,10 @@ func CreateRole(c *gin.Context) {
 	}
 	r, er := service.CreateRole(&role)
 	if er != nil {
-		resEr := response.Response{Err: er}
+		resEr := response.Response{State: response.State{
+			Code: errcode.CreateError,
+			Message: "角色创建失败",
+		},Err: er}
 		resEr.SendError(c)
 		return
 	}

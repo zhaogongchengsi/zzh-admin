@@ -38,7 +38,7 @@ func CreateMenu(c *gin.Context) {
 	if errMe != nil {
 		Re := response.Response{Err: errMe, State: response.State{
 			Code: errcode.CreateMenuError,
-			Message: "角色创建失败",
+			Message: "菜单创建失败",
 		}}
 		Re.SendError(c)
 		return
