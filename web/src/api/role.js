@@ -21,3 +21,23 @@ export function createRole(data) {
       });
   });
 }
+
+export function getRole(lading = false) {
+  return new Promise((resolve, reject) => {
+    Get("role/get_roles", lading)
+      .then((response) => {
+        JudgeRequestStatus(response.state)(
+          () => {
+            resolve(response.data);
+          },
+          (_, msg) => {
+            ElMessage.error(msg);
+            reject(msg);
+          }
+        );
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}

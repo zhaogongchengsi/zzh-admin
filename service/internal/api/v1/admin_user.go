@@ -65,10 +65,17 @@ func Register(c *gin.Context) {
 	var newUsr request.Register
 	if err := c.ShouldBindJSON(&newUsr); err != nil {
 		res := response.Response{Err: err}
-		res.Send(c)
+		res.SendInputParameterError(c)
 		return
 	}
-	nu := &model.AdminUser{UserAdmin: newUsr.UserAdmin, Username: newUsr.Username, Password: newUsr.Password, NickName: newUsr.NickName, AuthorityId: newUsr.AuthorityId}
+	nu := &model.AdminUser{
+		UserAdmin: newUsr.UserAdmin,
+		Username: newUsr.Username,
+		Password: newUsr.Password,
+		NickName: newUsr.NickName,
+		AuthorityId: newUsr.AuthorityId,
+		AvatarImg: newUsr.HeaderImg,
+	}
 	userReturn, errRe := service.Register(*nu)
 	if errRe != nil {
 		Re := response.Response{Err: errRe, State: response.State{

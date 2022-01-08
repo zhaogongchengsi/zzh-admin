@@ -49,8 +49,11 @@ func CreateRole(c *gin.Context) {
 func GetAuthLIst(c *gin.Context) {
 	r, er := service.GetRoles()
 	if er != nil {
-		resEr := response.Response{Data: er}
-		resEr.Send(c)
+		resEr := response.Response{Err: er, State: response.State{
+			Code: errcode.NotFound,
+			Message: "角色列表获取失败",
+		}}
+		resEr.SendError(c)
 		return
 	}
 	res := response.Response{Data: r}

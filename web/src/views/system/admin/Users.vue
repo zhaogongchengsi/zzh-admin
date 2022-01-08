@@ -1,12 +1,17 @@
 <script setup>
 import { ref, reactive } from 'vue'
-// import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
+import { createUser } from '@/api/user.js'
+import { ElMessage } from "element-plus";
 
 const dialogVisible = ref(false)
-const formLabelAlign = reactive({
-  name: '',
-  region: '',
-  type: '',
+const adminUser = reactive({
+  useradmin: '',
+  username: '',
+  password: '',
+  nickname: '',
+  authorityId: '',
+  headerImg:''
 })
 
 const handleClose = (done) => {
@@ -19,8 +24,27 @@ const handleClose = (done) => {
     })
 }
 
-const addRootMenu = () => {
+const addRootUser = () => {
   dialogVisible.value = true;
+}
+
+const Register = () => {
+  createUser(adminUser)
+  .then((result) => {
+    ElMessage({
+      message: `添加成功`,
+      type: 'success',
+    })
+    dialogVisible.value = false
+    console.log(result)
+  })
+  .catch((err) =>{
+    ElMessage({
+      message: `添加失败`,
+      type: 'error',
+    })
+    dialogVisible.value = false
+  })
 }
 
 </script>
@@ -29,7 +53,7 @@ const addRootMenu = () => {
 <template>
   <div class="user-container">
     <div class="user-header">
-      <el-button @click="addRootMenu" type="primary">新增用户</el-button>
+      <el-button @click="addRootUser" type="primary">新增用户</el-button>
     </div>
 
       <el-dialog
@@ -42,29 +66,32 @@ const addRootMenu = () => {
             <el-form
               label-position="right"
               label-width="100px"
-              :model="formLabelAlign"
+              :model="adminUser"
             >
+              <el-form-item label="账号">
+                <el-input v-model="adminUser.useradmin"></el-input>
+              </el-form-item>
               <el-form-item label="用户名">
-                <el-input v-model="formLabelAlign.name"></el-input>
+                <el-input v-model="adminUser.username"></el-input>
+              </el-form-item>
+              <el-form-item label="昵称">
+                <el-input v-model="adminUser.nickname"></el-input>
               </el-form-item>
               <el-form-item label="密码">
-                <el-input v-model="formLabelAlign.region"></el-input>
-              </el-form-item>
-              <el-form-item label="别名">
-                <el-input v-model="formLabelAlign.type"></el-input>
+                <el-input v-model="adminUser.password"></el-input>
               </el-form-item>
               <el-form-item label="用户角色">
-                <el-input v-model="formLabelAlign.type"></el-input>
+                <el-input v-model="adminUser.authorityId"></el-input>
               </el-form-item>
               <el-form-item label="头像">
-                <el-input v-model="formLabelAlign.type"></el-input>
+                <el-input v-model="adminUser.headerImg"></el-input>
               </el-form-item>
             </el-form>
         </div>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">添加</el-button>
+            <el-button type="primary" @click="Register">添加</el-button>
           </span>
         </template>
       </el-dialog>

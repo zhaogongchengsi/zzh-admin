@@ -1,7 +1,9 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { createRole } from '@/api/role.js'
+import { createRole, getRole } from '@/api/role.js'
 import { ElMessageBox, ElMessage } from 'element-plus'
+import { onMounted } from 'vue'
+import { DadLookSon } from '@/utils/index'
 
 const dialogTitle = ref('新增角色')
 const dialogVisible = ref(false)
@@ -11,6 +13,26 @@ const role = reactive({
   role_name: '',
   role_remarks: ''
 })
+const roleList = ref([])
+
+onMounted(async () => {
+    try {
+        let roles  = await getRole()
+        let newdata = datahandler(roles)
+        // console.table(newdata)
+        roleList.value = roles
+    } catch {
+    
+    }
+})
+
+
+function datahandler(data) {
+  let _data = JSON.parse(JSON.stringify(data));
+
+  
+
+}
 
 const handleClose = (done) => {
   ElMessageBox.confirm(`是否取消${dialogTitle.value}`)
@@ -40,6 +62,10 @@ const confirmHandler = () => {
     })
 }
 
+const handleEdit = () => {}
+const handleAddMenu = () => {}
+const handleDelete = () => {}
+
 </script>
 
 
@@ -47,6 +73,25 @@ const confirmHandler = () => {
   <div class="auto-container">
     <div class="user-header">
       <el-button @click="addRootRole" type="primary">新增角色</el-button>
+    </div>
+
+    <div class="role-container">
+        <el-table :data="roleList" stripe style="width: 100%" border>
+            <el-table-column prop="AuthRoleID" label="角色ID" width="300" />
+            <el-table-column prop="AuthRoleName" label="角色名称" width="300" />
+            <el-table-column prop="AuthRoleRemarks" label="角色备注" width="300" />
+            <el-table-column prop="address" label="操作" >
+                <template #default="scope">
+                    <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row.ID)">分配权限</el-button>
+                    <el-button size="mini" type="text" @click="handleAddMenu(scope.$index, scope.row.ID)">新增子角色</el-button>
+                    <el-button
+                        size="mini"
+                        type="text"
+                        @click="handleDelete(scope.$index, scope.row.ID)"
+                    >删除角色</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
     </div>
 
       <el-dialog
@@ -90,5 +135,9 @@ const confirmHandler = () => {
 .auto-container {
   box-sizing: border-box;
   padding: 10px;
+}
+
+.role-container {
+    margin: 10px 0;
 }
 </style>

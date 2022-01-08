@@ -188,7 +188,7 @@ const { solid, outline } = icons
             default-expand-all
             :stripe="true"
         >   
-            <el-table-column prop="Sort" label="排序" sortable width="80" align="center" />
+            <el-table-column prop="Sort" label="排序" sortable width="100" align="center" />
             <el-table-column prop="ParentId" label="父节点" width="80" align="center" />
             <el-table-column prop="ID" label="ID" width="80" align="center" />
             <el-table-column prop="Path" label="路由路径"  width="180" />
@@ -209,7 +209,7 @@ const { solid, outline } = icons
             </el-table-column>
             <el-table-column prop="Label" label="展示的名称"  width="100" />
             <el-table-column prop="Remarks" label="备注"  width="auto" />
-                <el-table-column align="center"  label="操作"  width="300" >
+            <el-table-column align="center"  label="操作"  width="300" >
                 <template #default="scope">
                     <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row.ID)">编辑</el-button>
                     <el-button size="mini" type="text" @click="handleAddMenu(scope.$index, scope.row.ID)">添加子节点</el-button>
