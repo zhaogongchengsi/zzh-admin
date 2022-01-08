@@ -19,7 +19,7 @@ onMounted(async () => {
     try {
         let roles  = await getRole()
         let newdata = datahandler(roles)
-        // console.table(newdata)
+        console.table(newdata)
         roleList.value = roles
     } catch {
     
@@ -30,7 +30,30 @@ onMounted(async () => {
 function datahandler(data) {
   let _data = JSON.parse(JSON.stringify(data));
 
-  
+   return _data.map(function (item) {
+        return getSon(item, _data)
+    })
+
+
+  function getSon (pra, sonArr) {
+      sonArr.forEach((sItem, si, arr) => {
+          if (pra.AuthRoleID === sItem.ParentID) {
+            let sonChild =  getSon(sItem, sonArr)
+            if (sonChild.length > 0) {
+                sItem.children = sonChild
+              
+            }
+            if (pra.children) {
+                pra.children.push(sItem)
+            } else {
+                pra.children = [sItem];
+            }
+              sonArr.splice(si, arr)
+          }
+      });
+    return pra
+  }
+
 
 }
 
