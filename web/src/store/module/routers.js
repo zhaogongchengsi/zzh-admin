@@ -7,7 +7,8 @@ import {
 } from "@/utils/asyncRoute.js";
 import { GetRouter } from "@/api/router.js";
 import pageRouter from "@/routers/index";
-import NotComponent from "@/views/routerHandel.vue";
+import routerComponent from "@/views/routerHandel.vue";
+import notComponent from "@/components/NotComponent.vue";
 const routerFile = import.meta.glob("../../views/**/*.{vue,js,ts,jsx,tsx}");
 let routerfiles = filePathCompile(routerFile);
 
@@ -18,9 +19,9 @@ function replaceRouter(routerTree, fileTree) {
       router.Component = _component;
     } else {
       if (router.children && router.children.length > 0) {
-        router.Component = NotComponent;
+        router.Component = routerComponent;
       } else {
-        router.Component = router.Component;
+        router.Component = notComponent;
       }
     }
     if (router.children && router.children.length > 0) {
