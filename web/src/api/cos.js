@@ -2,7 +2,7 @@ import { Get, Post } from "@/service/index.js";
 import { ElMessage } from "element-plus";
 import { JudgeRequestStatus } from "@/utils";
 
-function get_temporary_key(data) {
+export function get_temporary_key(data) {
   return new Promise(function (resolve, reject) {
     Post("/cos/get_temporary_key")
       .then(function (response) {
