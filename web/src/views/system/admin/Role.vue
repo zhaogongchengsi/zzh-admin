@@ -3,7 +3,6 @@ import { ref, reactive } from 'vue'
 import { createRole, getRole } from '@/api/role.js'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { onMounted } from 'vue'
-import { DadLookSon } from '@/utils/index'
 
 const dialogTitle = ref('新增角色')
 const dialogVisible = ref(false)
@@ -18,44 +17,12 @@ const roleList = ref([])
 onMounted(async () => {
     try {
         let roles  = await getRole()
-        let newdata = datahandler(roles)
-        console.table(newdata)
         roleList.value = roles
     } catch {
     
     }
 })
 
-
-function datahandler(data) {
-  let _data = JSON.parse(JSON.stringify(data));
-
-   return _data.map(function (item) {
-        return getSon(item, _data)
-    })
-
-
-  function getSon (pra, sonArr) {
-      sonArr.forEach((sItem, si, arr) => {
-          if (pra.AuthRoleID === sItem.ParentID) {
-            let sonChild =  getSon(sItem, sonArr)
-            if (sonChild.length > 0) {
-                sItem.children = sonChild
-              
-            }
-            if (pra.children) {
-                pra.children.push(sItem)
-            } else {
-                pra.children = [sItem];
-            }
-              sonArr.splice(si, arr)
-          }
-      });
-    return pra
-  }
-
-
-}
 
 const handleClose = (done) => {
   ElMessageBox.confirm(`是否取消${dialogTitle.value}`)
@@ -99,7 +66,7 @@ const handleDelete = () => {}
     </div>
 
     <div class="role-container">
-        <el-table :data="roleList" stripe style="width: 100%" border>
+        <el-table :data="roleList" stripe style="width: 100%" border row-key="ID">
             <el-table-column prop="AuthRoleID" label="角色ID" width="300" />
             <el-table-column prop="AuthRoleName" label="角色名称" width="300" />
             <el-table-column prop="AuthRoleRemarks" label="角色备注" width="300" />
