@@ -20,5 +20,6 @@ func NewRouter() *gin.Engine {
 	Menu(r)
 	Role(r)
 	User(r)
+	CosRouter(r)
 	return r
 }

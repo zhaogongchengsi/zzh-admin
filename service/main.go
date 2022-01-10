@@ -58,6 +58,7 @@ func main() {
 func setupSettings() error {
 
 	newSetting, err := setting.NewSetting()
+	cosSetting, err := setting.NewSetOsConfig()
 	if err != nil {
 		return err
 	}
@@ -80,6 +81,10 @@ func setupSettings() error {
 	}
 
 	err = newSetting.ReadSection("JWT", &global.Jwt)
+	if err != nil {
+		return err
+	}
+	err = cosSetting.ReadSection("CosConfig", &global.Cos)
 	if err != nil {
 		return err
 	}

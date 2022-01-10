@@ -1,0 +1,7 @@
+CosConfig:
+  SecretID: SECRETID
+  SecretKey: SecretKey
+  BucketURL: xxx
+  ServiceURL: xxx
+  BatchURL: xxx
+  AppId: 1301735126

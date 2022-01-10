@@ -9,8 +9,8 @@ import (
 
 // AutoMigrated 数据库迁移接口
 func AutoMigrated(c *gin.Context) {
-	var user model.Menu
-	err := global.DBEngine.AutoMigrate(&user)
+	var modelType model.Article
+	err := global.DBEngine.AutoMigrate(&modelType)
 	if err != nil {
 		return
 	}

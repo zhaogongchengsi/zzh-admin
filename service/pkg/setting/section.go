@@ -44,6 +44,15 @@ type JWT struct {
 	ExpiresAt  int
 }
 
+type Cos struct {
+	SecretID string
+	SecretKey string
+	BucketURL string
+	ServiceURL string
+	BatchURL string
+	AppId string
+}
+
 func (s *Setting) ReadSection(k string, v interface{}) error {
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {
@@ -52,3 +61,5 @@ func (s *Setting) ReadSection(k string, v interface{}) error {
 
 	return nil
 }
+
+

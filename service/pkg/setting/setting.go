@@ -20,3 +20,18 @@ func NewSetting() (*Setting, error) {
 
 	return &Setting{vp}, nil
 }
+
+func NewSetOsConfig() (*Setting, error)  {
+	vp := viper.New()
+	vp.SetConfigName("os_config")
+	vp.AddConfigPath("configs/")
+	vp.SetConfigType("yaml")
+
+	err := vp.ReadInConfig()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Setting{vp}, nil
+}

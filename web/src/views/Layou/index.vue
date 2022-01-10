@@ -11,6 +11,7 @@ const asideState = ref(false)
 
 onMounted(async () => {
     let rootMenu = store.state.router.root
+    console.log('root', rootMenu);
     menuList.value = rootMenu
 })
 
