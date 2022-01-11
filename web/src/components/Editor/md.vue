@@ -2,6 +2,17 @@
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { ref } from 'vue';
+// import sanitizeHtml from 'sanitize-html'; 防止xxs 
+
+const props = defineProps({
+  filterXxs: {
+    type: 'boolean',
+    default: false
+  }
+})
+
+const emit = defineEmits(['onSave'])
+
 
 const text = ref('')
 
@@ -61,12 +72,35 @@ const toolbars = [
   '源码地址'
 ]
 
+const save = () => {
+  console.log(text.value)
+}
 
+const upImg = () => {
+
+}
+
+const Change = (html) => {
+  text.value = html
+}
+
+const sanIt = (html) => {
+  let _html = sanitizeHtml(html)
+  return _html
+}
 
 </script>
 
 <template>
   <div>
-    <md-editor v-model="text" previewTheme="vuepress" :toolbars="toolbars" editorClass="editor-blog" />
+    <md-editor 
+      v-model="text" 
+      previewTheme="vuepress" 
+      :toolbars="toolbars" 
+      editorClass="editor-blog" 
+      :onSave="save"
+      :onUploadImg="upImg"
+      :onChange="Change"
+    />
   </div>
 </template>

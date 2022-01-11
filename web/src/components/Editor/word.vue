@@ -8,9 +8,7 @@ import cloneDeep from 'lodash.clonedeep'
 
 const editorId = `w-e-${Math.random().toString().slice(-5)}`
 
-const defaultContent = [
-    { type: "paragraph", children: [{ text: "一行文字" }] }
-]
+const defaultContent = []
 const getDefaultContent = computed(() => cloneDeep(defaultContent)) // 注意，要深拷贝 defaultContent ，否则报错
 
 const toolbarConfig = {}
