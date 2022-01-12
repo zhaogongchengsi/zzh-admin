@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 const props = defineProps({
   filterXxs: {
-    type: 'boolean',
+    type: Boolean,
     default: false
   }
 })
@@ -73,11 +73,16 @@ const toolbars = [
 ]
 
 const save = () => {
-  console.log(text.value)
+  emit("onSave", text.value, 'md')
 }
 
-const upImg = () => {
+const upImg = (files, callback) => {
 
+  console.log(files)
+
+  //  callback(res.map((item) => {
+     
+  //  }));
 }
 
 const Change = (html) => {
@@ -93,14 +98,14 @@ const sanIt = (html) => {
 
 <template>
   <div>
-    <md-editor 
-      v-model="text" 
-      previewTheme="vuepress" 
-      :toolbars="toolbars" 
-      editorClass="editor-blog" 
-      :onSave="save"
-      :onUploadImg="upImg"
-      :onChange="Change"
+    <md-editor
+      v-model="text"
+      previewTheme="vuepress"
+      :toolbars="toolbars"
+      editorClass="editor-blog"
+      @onSave="save"
+      @onUploadImg="upImg"
+      @onChange="Change"
     />
   </div>
 </template>

@@ -29,6 +29,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
+    <div class="editor-header">
+        <el-button size="small" >保存</el-button>
+        <el-button size="small" >预览</el-button>
+    </div>
     <div style="border: 1px solid var(--el-border-color-base)">
       <Toolbar
         :editorId="editorId"

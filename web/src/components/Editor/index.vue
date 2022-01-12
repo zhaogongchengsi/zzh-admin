@@ -16,8 +16,9 @@ const onSelectoEditor = (type) => {
 }
 
 
-const onSaveContent = (data) => {
+const onSaveContent = (data, type) => {
 
+  console.log(data, type)
 }
 
 const onPreview = (data) => {
@@ -29,14 +30,8 @@ const onPreview = (data) => {
 
 <template>
   <div class="editor-container">
-    <el-affix :offset="0" target=".editor-container">
-      <div class="editor-header">
-        <el-button size="small" @click="onSaveContent">保存</el-button>
-        <el-button size="small" @click="onPreview">预览</el-button>
-      </div>
-    </el-affix>
     <word v-if="props.EditorType === 'word'" @click="onSelectoEditor('word')" />
-    <md v-else-if="props.EditorType === 'md'" @click="onSelectoEditor('md')" />
+    <md v-else-if="props.EditorType === 'md'" @click="onSelectoEditor('md')" @onSave="onSaveContent" />
   </div>
 </template>
 
