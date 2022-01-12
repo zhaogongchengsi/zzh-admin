@@ -13,9 +13,23 @@ const article = reactive({
   articleUrl: "",
   articleStorageType: "",
   articleAuthor: "",
-  ArticleType: "",
-  ArticleContext: "",
+  articleType: "",
+  articleContext: "",
+  articleTags: []
 })
+const osConfig = reactive([])
+const osOptions = ref([
+  {
+    value: "bloghtml",
+    label: "blog",
+    children: [
+      {
+        value: "/shili/",
+        label: "shili"
+      }
+    ]
+  }
+])
 const activeText = ref('')
 const activeType = ref('')
 const innerVisible = ref(false)
@@ -58,9 +72,13 @@ const saveHandle = async () => {
 }
 
 const selectChange = () => {
-  if (article.ArticleType === "cos") {
+  if (article.articleStorageType === "cos") {
     innerVisible.value = true
   }
+}
+
+const handleChange = () => {
+
 }
 
 </script>
@@ -101,7 +119,21 @@ const selectChange = () => {
                 <el-input v-model="article.articleAuthor"></el-input>
               </el-form-item>
               <el-form-item label="保存类型">
-                  <el-select v-model="article.ArticleType" placeholder="选择保存类型" @change="selectChange">
+                  <el-select v-model="article.articleStorageType" placeholder="选择保存类型" @change="selectChange">
+                    <el-option label="服务器" value="services">服务器</el-option>
+                    <el-option label="数据库" value="database">数据库</el-option>
+                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                  </el-select>
+              </el-form-item>
+               <el-form-item label="标签">
+                  <el-select v-model="article.articleTags" placeholder="选择保存类型">
+                    <el-option label="服务器" value="services">服务器</el-option>
+                    <el-option label="数据库" value="database">数据库</el-option>
+                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="文章类型">
+                  <el-select v-model="article.articleType" placeholder="选择保存类型">
                     <el-option label="服务器" value="services">服务器</el-option>
                     <el-option label="数据库" value="database">数据库</el-option>
                     <el-option label="对象存储" value="cos">对象存储</el-option>
@@ -115,7 +147,17 @@ const selectChange = () => {
               append-to-body
               :before-close="handleClose"
             >
-            选择cos 操作
+            <el-form
+              label-position="right"
+              label-width="100px"
+              :model="osConfig"
+            >
+              <el-cascader
+                v-model="osConfig"
+                :options="osOptions"
+                @change="handleChange"
+              ></el-cascader>
+            </el-form>
             </el-dialog>
         </div>
         <template #footer>

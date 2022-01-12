@@ -16,6 +16,7 @@ type Article struct {
 	ArticleTags []ArticleTags `gorm:"comment:文章标签;many2many:article_tag;"`
 	ArticleAuthor string `gorm:"comment:文章作者"`
 	ArticleContext string `gorm:"type:text;comment:文章内容(作为字符串存储在数据库时)"`
+	ArticleFileName string `gorm:"comment: 文章的文件名字"`
 	ArticleType string `gorm:"comment:文章类型"`
 }
 
