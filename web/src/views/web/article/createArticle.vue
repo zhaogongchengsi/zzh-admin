@@ -1,13 +1,67 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, watchEffect } from 'vue'
 import Editor from '@/components/Editor/index.vue'
-const activeName = ref('Word')
+import { UpLoadOS } from '@/api/cos.js'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
+const activeName = ref('Word')
+const dialogVisible = ref(false)
+const article = reactive({
+  fileName: '',
+  articleName: "",
+  articleTitle: "",
+  articleUrl: "",
+  articleStorageType: "",
+  articleAuthor: "",
+  ArticleType: "",
+  ArticleContext: "",
+})
+const activeText = ref('')
+const activeType = ref('')
+const innerVisible = ref(false)
 
 const handleClick = (tab, event) => {
   // console.log(tab, event)
 }
 
+const handleClose = (done) => {
+  ElMessageBox.confirm('文章还未保存是否取消保存')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+
+const openSave = async (file, type) => {
+  activeText.value = file
+  activeType.value = type
+  dialogVisible.value = true
+}
+
+const saveHandle = async () => {
+  console.log(activeText.value, activeType.value)
+  // try {
+  //   UpLoadOS({
+  //       Bucket: "bloghtml-1301735126",
+  //       Region: "ap-nanjing",
+  //       Key: `blog.md`,
+  //       Body: file
+  //   }, function (err, data) {
+
+  //     console.log("上传后的结果",err || data)
+  //   })
+  // } catch (e) {
+  //   console.log("上传引发错误",e)
+  // }
+}
+
+const selectChange = () => {
+  if (article.ArticleType === "cos") {
+    innerVisible.value = true
+  }
+}
 
 </script>
 
@@ -19,9 +73,59 @@ const handleClick = (tab, event) => {
           <Editor EditorType="word"  />
         </el-tab-pane>
         <el-tab-pane label="Md" name="Md">
-          <Editor EditorType="md"  />
+          <Editor EditorType="md"  @onSave="openSave" />
         </el-tab-pane>
       </el-tabs>
+      <el-dialog
+        v-model="dialogVisible"
+        title="保存文章"
+        width="40%"
+        :before-close="handleClose"
+      >
+        <div class="content">
+            <el-form
+              label-position="right"
+              label-width="100px"
+              :model="article"
+            >
+              <el-form-item label="文件名字">
+                <el-input v-model="article.fileName"></el-input>
+              </el-form-item>
+              <el-form-item label="文章标题">
+                <el-input v-model="article.articleTitle"></el-input>
+              </el-form-item>
+              <el-form-item label="文章名字">
+                <el-input v-model="article.articleName"></el-input>
+              </el-form-item>
+              <el-form-item label="文章作者">
+                <el-input v-model="article.articleAuthor"></el-input>
+              </el-form-item>
+              <el-form-item label="保存类型">
+                  <el-select v-model="article.ArticleType" placeholder="选择保存类型" @change="selectChange">
+                    <el-option label="服务器" value="services">服务器</el-option>
+                    <el-option label="数据库" value="database">数据库</el-option>
+                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                  </el-select>
+              </el-form-item>
+            </el-form>
+            <el-dialog
+              v-model="innerVisible"
+              width="30%"
+              title="cos选择"
+              append-to-body
+              :before-close="handleClose"
+            >
+            选择cos 操作
+            </el-dialog>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="saveHandle">添加</el-button>
+          </span>
+        </template>
+      </el-dialog>
+
   </div>
 </template>
 

@@ -10,15 +10,14 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['onSelectoEditor'])
+const emit = defineEmits(['onSave'])
 const onSelectoEditor = (type) => {
-  emit('onSelectoEditor', type)
+  
 }
 
 
 const onSaveContent = (data, type) => {
-
-  console.log(data, type)
+  emit('onSave', data, type)
 }
 
 const onPreview = (data) => {
@@ -30,8 +29,8 @@ const onPreview = (data) => {
 
 <template>
   <div class="editor-container">
-    <word v-if="props.EditorType === 'word'" @click="onSelectoEditor('word')" />
-    <md v-else-if="props.EditorType === 'md'" @click="onSelectoEditor('md')" @onSave="onSaveContent" />
+    <word v-if="props.EditorType === 'word'" @onSave="onSaveContent" />
+    <md v-else-if="props.EditorType === 'md'" @onSave="onSaveContent" />
   </div>
 </template>
 

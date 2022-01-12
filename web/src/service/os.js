@@ -5,7 +5,6 @@ import { JudgeRequestStatus } from "@/utils";
 import cos from "cos-js-sdk-v5";
 import { Post } from "./index.js";
 import { ElMessage } from "element-plus";
-import { Post } from "@/service/index.js";
 
 export function get_temporary_key(data) {
   return new Promise(function (resolve, reject) {
@@ -27,20 +26,23 @@ export function get_temporary_key(data) {
   });
 }
 
-export function createCosInstance(data) {
-  return new cos({
-    getAuthorization: async function (options, callback) {
-      try {
-        let temp_key = await get_temporary_key(data);
+export async function createCosInstance(data) {
+  try {
+    let temp_key = await get_temporary_key(data);
+    const cosInstance = new cos({
+      getAuthorization: function (options, callback) {
         const { Credentials, ExpiredTime, StartTime } = temp_key;
         callback({
-          ...Credentials,
+          TmpSecretId: Credentials.TmpSecretId,
+          TmpSecretKey: Credentials.TmpSecretKey,
+          SecurityToken: Credentials.Token,
           StartTime: StartTime,
           ExpiredTime: ExpiredTime,
         });
-      } catch (err) {
-        ElMessage.error(`权限获取失败，联系管理员`);
-      }
-    },
-  });
+      },
+    });
+    return cosInstance;
+  } catch (err) {
+    console.error("创建实例", err);
+  }
 }

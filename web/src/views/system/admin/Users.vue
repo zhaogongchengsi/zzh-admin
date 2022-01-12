@@ -1,8 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import { createUser } from '@/api/user.js'
-import { ElMessage } from "element-plus";
 
 const dialogVisible = ref(false)
 const adminUser = reactive({

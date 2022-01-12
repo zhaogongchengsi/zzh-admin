@@ -7,6 +7,7 @@ import cloneDeep from 'lodash.clonedeep'
 
 
 const editorId = `w-e-${Math.random().toString().slice(-5)}`
+const emit = defineEmits(['onSave'])
 
 const defaultContent = []
 const getDefaultContent = computed(() => cloneDeep(defaultContent)) // 注意，要深拷贝 defaultContent ，否则报错
@@ -23,6 +24,10 @@ onBeforeUnmount(() => {
     removeEditor(editorId)
 })
 
+const getSaveText = () => {
+  emit('onSave',getDefaultContent.value, "word")
+}
+
 
 
 </script>
@@ -30,7 +35,7 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <div class="editor-header">
-        <el-button size="small" >保存</el-button>
+        <el-button size="small" @click="getSaveText">保存</el-button>
         <el-button size="small" >预览</el-button>
     </div>
     <div style="border: 1px solid var(--el-border-color-base)">
