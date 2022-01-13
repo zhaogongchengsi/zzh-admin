@@ -17,14 +17,16 @@ const article = reactive({
   articleContext: "",
   articleTags: []
 })
-const osConfig = reactive([])
+const osConfig = reactive({
+  osPath: []
+})
 const osOptions = ref([
   {
     value: "bloghtml",
     label: "blog",
     children: [
       {
-        value: "/shili/",
+        value: "shili",
         label: "shili"
       }
     ]
@@ -77,8 +79,12 @@ const selectChange = () => {
   }
 }
 
-const handleChange = () => {
+const handleChange = (value) => {
+  osConfig.value = value.join("/")
+}
 
+const saveOsHandle = () => {
+  innerVisible.value = false
 }
 
 </script>
@@ -126,17 +132,19 @@ const handleChange = () => {
                   </el-select>
               </el-form-item>
                <el-form-item label="标签">
-                  <el-select v-model="article.articleTags" placeholder="选择保存类型">
-                    <el-option label="服务器" value="services">服务器</el-option>
-                    <el-option label="数据库" value="database">数据库</el-option>
-                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                  <el-select v-model="article.articleTags" placeholder="选择保存类型" multiple>
+                    <el-option label="Html" value="Html">Html</el-option>
+                    <el-option label="Css" value="Css">Css</el-option>
+                    <el-option label="Javascript" value="Javascript">Javascript</el-option>
                   </el-select>
               </el-form-item>
               <el-form-item label="文章类型">
                   <el-select v-model="article.articleType" placeholder="选择保存类型">
-                    <el-option label="服务器" value="services">服务器</el-option>
-                    <el-option label="数据库" value="database">数据库</el-option>
-                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                    <el-option label="Html" value="Html">Html</el-option>
+                    <el-option label="Css" value="Css">Css</el-option>
+                    <el-option label="Javascript" value="Javascript">Javascript</el-option>
+                    <el-option label="Golang" value="Golang">Golang</el-option>
+                    <el-option label="Node.js" value="Node.js">Node.js</el-option>
                   </el-select>
               </el-form-item>
             </el-form>
@@ -149,21 +157,29 @@ const handleChange = () => {
             >
             <el-form
               label-position="right"
-              label-width="100px"
+              label-width="200px"
               :model="osConfig"
             >
-              <el-cascader
-                v-model="osConfig"
-                :options="osOptions"
-                @change="handleChange"
-              ></el-cascader>
+            <el-form-item label="对象存储文件路径">
+                <el-cascader
+                  v-model="osConfig.osPath"
+                  :options="osOptions"
+                  @change="handleChange"
+                ></el-cascader>
+              </el-form-item>
             </el-form>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="innerVisible = false">取消</el-button>
+                <el-button type="primary" @click="saveOsHandle">确认</el-button>
+              </span>
+            </template>
             </el-dialog>
         </div>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="saveHandle">添加</el-button>
+            <el-button type="primary" @click="saveHandle">上传</el-button>
           </span>
         </template>
       </el-dialog>

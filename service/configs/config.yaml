@@ -30,3 +30,6 @@ JWT:
   Issuer: gin_react_admin
   SigningKey: "zhaozunhong..3132"
   ExpiresAt: 3
+FileService:
+  UploadPath: "assets/upload"
+  StaticPath: "./assets"

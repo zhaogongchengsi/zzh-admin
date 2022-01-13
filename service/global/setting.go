@@ -14,4 +14,5 @@ var (
 	Captcha         *setting.Captcha
 	Jwt             *setting.JWT
 	Cos 			*setting.Cos
+	FileService 	*setting.FileService
 )

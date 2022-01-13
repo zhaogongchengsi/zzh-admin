@@ -3,6 +3,8 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github/gin-react-admin/internal/model"
+	"github/gin-react-admin/internal/service"
+	"github/gin-react-admin/pkg/errcode"
 	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
 )
@@ -30,5 +32,17 @@ func CreateArticle(c *gin.Context)  {
 			ArticleTags: newArticle.ArticleTags,
 	}
 
+	art, er := service.CreateArticle(&ar)
 
+	if er != nil {
+		res := response.Response{
+			Err: er,
+			State: response.State{Message: "文章创建失败", Code: errcode.CreateError},
+		}
+		res.SendError(c)
+		return
+	}
+
+	resOk := response.Response{Data: art}
+	resOk.Send(c)
 }

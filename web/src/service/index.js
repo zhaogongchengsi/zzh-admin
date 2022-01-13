@@ -69,11 +69,13 @@ export function Post(url, data, load = true) {
   return Axios.post(url, data);
 }
 // 上传文件到本地服务器
-export function UpLoad(url, data, load = true) {
+export function UpLoad(url, file, load = true) {
   if (load) {
     loading = ElLoading.service();
   }
-  return Axios.upload(url, data, {
+  let fromData = new FromData();
+  fromData.append("file", file);
+  return Axios.post(url, fromData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

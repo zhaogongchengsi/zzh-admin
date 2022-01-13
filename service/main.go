@@ -74,12 +74,14 @@ func setupSettings() error {
 	if err != nil {
 		return err
 	}
-
 	err = newSetting.ReadSection("Captcha", &global.Captcha)
 	if err != nil {
 		return err
 	}
-
+	err = newSetting.ReadSection("FileService", &global.FileService)
+	if err != nil {
+		return err
+	}
 	err = newSetting.ReadSection("JWT", &global.Jwt)
 	if err != nil {
 		return err
@@ -109,6 +111,7 @@ func RunInputMsg() {
 	当前版本:V0.0.1
 	默认自动化文档地址:http://127.0.0.1:%s/swagger/index.html
 	默认前端文件运行地址:http://127.0.0.1:3000
+	默认静态文件服务运行在:http://127.0.0.1:%s/%v
 	运行 swag init 生成最新文档
-`, global.ServerSetting.HttpPort)
+`, global.ServerSetting.HttpPort,global.ServerSetting.HttpPort, "assets")
 }
