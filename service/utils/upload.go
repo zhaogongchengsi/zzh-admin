@@ -1,11 +1,14 @@
 package utils
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
 	"github/gin-react-admin/global"
 	"io"
 	"mime/multipart"
 	"os"
+	"path"
 	"time"
 )
 
@@ -19,11 +22,20 @@ func MkDir (fileName string) string {
 	return fmt.Sprintf("%s/%v/%v",upPath, year,month)
 }
 
-func SaveUploadedFile(file *multipart.FileHeader, mk string ,dst string) (string, error) {
+func SaveUploadedFile(file *multipart.FileHeader, mk string, Ashish bool) (string, error) {
 	src, err := file.Open()
 	if err != nil {
 		return "" , err
 	}
+	dst := file.Filename // 文件名
+	ext := path.Ext(dst) // 文件后缀
+	var filename string
+	if Ashish == true {
+		filename  =  HashFileName(dst) + ext
+	} else {
+		filename  =  dst
+	}
+
 	defer src.Close()
 	eisdir, direr := PathExists(mk)      // 判断文件夹是否存在
 	if direr != nil && eisdir == false { // 若不存在
@@ -32,7 +44,8 @@ func SaveUploadedFile(file *multipart.FileHeader, mk string ,dst string) (string
 			return "", maker
 		}
 	}
-	var filePath string = mk + "/" + dst
+
+	var filePath string = mk + "/" + filename
 	out, errors := os.Create(filePath)
 	if errors != nil {
 		return "", errors
@@ -51,4 +64,11 @@ func PathExists (path string) (bool, error) {
 		return false, err
 	}
 	return  false, err
+}
+
+// 将文件名Hash化 防止文件上传攻击
+func HashFileName(filename string) string {
+	sha1h := sha1.New()
+	shame := sha1h.Sum([]byte(filename))
+	return hex.EncodeToString(shame)
 }

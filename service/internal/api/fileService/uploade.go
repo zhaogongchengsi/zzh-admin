@@ -22,7 +22,8 @@ func UpLoad(c *gin.Context)  {
 	}
 	filePath := utils.MkDir(file.Filename)
 	// 上传文件到指定的 dst 。
-	_filePath, upper := utils.SaveUploadedFile(file, filePath,file.Filename)
+	_filePath, upper := utils.SaveUploadedFile(file, filePath, true)
+
 	//upper := c.SaveUploadedFile(file, upPath + "/" + file.Filename)
 	if upper != nil {
 		reuse := response.Response{
