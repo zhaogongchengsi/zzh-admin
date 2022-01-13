@@ -56,6 +56,7 @@ type Cos struct {
 type FileService struct {
 	UploadPath string
 	StaticPath string
+	HashKey string
 }
 
 func (s *Setting) ReadSection(k string, v interface{}) error {

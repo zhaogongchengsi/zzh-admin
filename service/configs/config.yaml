@@ -33,3 +33,4 @@ JWT:
 FileService:
   UploadPath: "assets/upload"
   StaticPath: "./assets"
+  HashKey: "abcd"
