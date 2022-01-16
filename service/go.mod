@@ -60,10 +60,13 @@ require (
 )
 
 require (
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.33
+	github.com/tencentyun/qcloud-cos-sts-sdk v0.0.0-20220106031843-2efeb10ca2f6
+)
+
+require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/mozillazg/go-httpheader v0.3.0 // indirect
-	github.com/tencentyun/cos-go-sdk-v5 v0.7.33 // indirect
-	github.com/tencentyun/qcloud-cos-sts-sdk v0.0.0-20220106031843-2efeb10ca2f6 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 )

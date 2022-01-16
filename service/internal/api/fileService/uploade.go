@@ -2,8 +2,8 @@ package fileService
 
 import (
 	"github.com/gin-gonic/gin"
+	"github/gin-react-admin/internal/service"
 	"github/gin-react-admin/pkg/response"
-	"github/gin-react-admin/utils"
 )
 
 func UpLoad(c *gin.Context)  {
@@ -20,14 +20,11 @@ func UpLoad(c *gin.Context)  {
 		reset.SendError(c)
 		return
 	}
-	filePath := utils.MkDir(file.Filename)
-	// 上传文件到指定的 dst 。
-	_filePath, upper := utils.SaveUploadedFile(file, filePath, true)
 
-	//upper := c.SaveUploadedFile(file, upPath + "/" + file.Filename)
-	if upper != nil {
+	fileMo, e := service.FileSave(file, false)
+	if e != nil {
 		reuse := response.Response{
-			Err: upper,
+			Err: e,
 			State: response.State{
 				Message: "文件保存失败",
 			},
@@ -35,6 +32,6 @@ func UpLoad(c *gin.Context)  {
 		reuse.SendError(c)
 		return
 	}
-	resok := response.Response{ Data:_filePath }
+	resok := response.Response{ Data:fileMo }
 	resok.Send(c)
 }
