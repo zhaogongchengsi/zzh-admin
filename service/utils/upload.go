@@ -26,23 +26,11 @@ func MkDir (fileName string) string {
 	return fmt.Sprintf("%s/%v/%v",upPath, year,month)
 }
 
-func SaveUploadedFile(file *multipart.FileHeader, mk string, Ashish bool) (model.File, error) {
+func SaveUploadedFile(file *multipart.FileHeader, mk string, fe *model.File) (model.File, error) {
 	src, err := file.Open()
 	if err != nil {
 		return model.File{} , err
 	}
-	CompileFileName(file.Filename)
-	dst := file.Filename // 文件名
-	ext := path.Ext(dst) // 文件后缀
-	fileType := strings.Split(file.Header.Get("Content-Type"), "/") // 文件类型
-	var filename string
-	if Ashish == true {
-		filename  =  HashFileName(dst) + ext
-	} else {
-		filename  =  dst
-	}
-
-
 	defer src.Close()
 	eisdir, direr := PathExists(mk)      // 判断文件夹是否存在
 	if direr != nil && eisdir == false { // 若不存在
@@ -51,27 +39,15 @@ func SaveUploadedFile(file *multipart.FileHeader, mk string, Ashish bool) (model
 			return model.File{}, maker
 		}
 	}
-
-
-
-	var filePath string = mk + "/" + filename
+	var filePath string = mk + "/" + fe.FileName
 	out, errors := os.Create(filePath)
 	if errors != nil {
 		return model.File{}, errors
 	}
 	defer out.Close()
 	_, err = io.Copy(out, src)
-
-	fileObj := model.File{
-		FileName: filename,
-		FileBroadType:fileType[0],
-		FileSpecificType: fileType[1],
-		FileExt: ext,
-		SavaPath: filePath,
-		IsHash: Ashish,
-	}
-
-	return fileObj, err
+	fe.SavaPath = filePath
+	return *fe, err
 }
 
 func PathExists (path string) (bool, error) {
@@ -98,22 +74,16 @@ func CompileFileName (fileName string) (string, string) {
 	fn := strings.TrimSuffix(fileName,fnfix)  //获取文件名
 	ere := regexp.MustCompile("\\((\\d?)\\)") // 匹配括号
 	_fName := regexp.MustCompile("(.*)\\(")
-	//nReg := regexp.MustCompile("-?[1-9]\\d*") // 匹配数字
-	//zfretg := regexp.MustCompile("（(.*?)）") // 匹配中文括号
 	machArre := ere.FindStringSubmatch(fn)
 	newName := _fName.FindStringSubmatch(fn)
-	//num := nReg.FindStringSubmatch(machArre[1])
-	//machArrz := zfretg.FindStringSubmatch(fn)
-	if len(machArre) < 0 {
-		return fn + "(1)", fnfix
+	if machArre == nil {
+		return fn + "(1)"+ fnfix , fnfix
 	}
-
 	fineNum, e2 := strconv.Atoi(machArre[1])
 	if e2 != nil {
-		return fn + "(1)", fnfix
+		return fn + "(1)"+ fnfix , fnfix
 	}
 	fineNum++
 	newFileName := fmt.Sprintf("%v(%v)",newName[1], fineNum)
-
 	return newFileName ,fnfix
 }
