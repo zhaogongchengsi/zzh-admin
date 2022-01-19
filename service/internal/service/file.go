@@ -16,8 +16,6 @@ func FileSave (file *multipart.FileHeader, isHash bool) (model.File ,error) {
 	_file, er := FirstFile(file.Filename)
 	if er == nil {
 		fileName, _ = utils.CompileFileName(_file.FileName)
-	} else {
-
 	}
 	if isHash == true {
 		fileName  =  utils.HashFileName(fileName)
