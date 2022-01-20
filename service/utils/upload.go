@@ -66,7 +66,7 @@ func PathExists (path string) (bool, error) {
 	return  false, err
 }
 
-// 将文件名Hash化 防止文件上传攻击
+// HashFileName 将文件名Hash化 防止文件上传攻击
 func HashFileName(filename string) string {
 	key := global.FileService.HashKey + filename
 	sha1h := sha1.New()
