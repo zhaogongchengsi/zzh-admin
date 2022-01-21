@@ -41,7 +41,23 @@ const handleClick = (tab, event) => {
 }
 
 const handleClose = (done) => {
-  ElMessageBox.confirm('文章还未保存是否取消保存')
+  ElMessageBox.confirm('文章还未保存是否取消保存', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+    })
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+
+const ooshandleClose = (done) => {
+  ElMessageBox.confirm('对象存储还未选择配置是否取消选择？', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+    })
     .then(() => {
       done()
     })
@@ -61,7 +77,9 @@ const saveHandle = async () => {
   const res = await uploadArticle(article,{
     oos: osConfig.osPath
   })
-  console.log('上传结果',res)
+  if (res) {
+    dialogVisible.value = false
+  }
 }
 
 const selectChange = () => {
@@ -144,7 +162,7 @@ const saveOsHandle = () => {
               width="30%"
               title="cos选择"
               append-to-body
-              :before-close="handleClose"
+              :before-close="ooshandleClose"
             >
             <el-form
               label-position="right"

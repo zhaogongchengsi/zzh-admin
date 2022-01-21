@@ -5,9 +5,10 @@ import { UpLoadOS } from "@/api/cos.js";
 export async function uploadArticle(article, config) {
   try {
     const { articleStorageType } = article;
-    const upfunc = articleStorageType === "oos" ? uploadOos : uploadService;
-    const upResult = await upfunc(article, config);
-    return upResult;
+    if (articleStorageType === "oos") {
+      return await uploadOos(article, config);
+    }
+    return await createArticle(article);
   } catch (e) {
     console.error("上传文章错误", e);
   }
@@ -26,16 +27,16 @@ export function uploadOos(article, { oos }) {
       function (err, data) {
         if (data) {
           if (data.statusCode === 200) {
+            article.articleContext = "";
             createArticle({
               ...article,
               articleUrl: data.Location,
             })
               .then(function (article) {
-                console.log(1, article);
-                resolve(true);
+                resolve(article);
               })
               .catch((error) => {
-                reject(false);
+                reject(error);
               });
           }
         } else {
@@ -43,12 +44,6 @@ export function uploadOos(article, { oos }) {
         }
       }
     );
-  });
-}
-
-async function uploadService(article) {
-  return new Promise((resolve, reject) => {
-    resolve("文件上传");
   });
 }
 

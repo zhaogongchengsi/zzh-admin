@@ -44,7 +44,6 @@ func CreateArticle(c *gin.Context)  {
 		res.SendError(c)
 		return
 	}
-
-	resOk := response.Response{Data: art}
+	resOk := response.Response{Data: *art}
 	resOk.Send(c)
 }

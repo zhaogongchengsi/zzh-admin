@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
@@ -85,8 +86,8 @@ func CompileFileName (fileName string, cove int) (string, string) {
 	return newFileName ,fnfix
 }
 
-func SaveStrFile (str string, mk string) (string ,error) {
-	dis, er := os.Create(mk)
+func SaveStrFile (str string, mk string, name string) (string ,error) {
+	dis, er := os.Create(mk + name)
 	if er != nil {
 		return "" ,er
 	}
@@ -100,4 +101,22 @@ func SaveStrFile (str string, mk string) (string ,error) {
 	}
 	_, err := dis.WriteString(str)
 	return mk ,err
+}
+
+func bufferWrite(param string, filename string) (err error) {
+	fileHandle, err := os.OpenFile(filename, os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+	defer fileHandle.Close()
+	// NewWriter 默认缓冲区大小是 4096
+	// 需要使用自定义缓冲区的writer 使用 NewWriterSize()方法
+	buf := bufio.NewWriter(fileHandle)
+	// 字节写入
+	_ ,err = buf.Write([]byte("buffer Write : " + param))
+	// 字符串写入
+	_ ,err = buf.WriteString("buffer WriteString : " + param)
+	// 将缓冲中的数据写入
+	err = buf.Flush()
+	return err
 }
