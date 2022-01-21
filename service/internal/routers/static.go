@@ -21,5 +21,6 @@ func NewFileService (g *gin.Engine) {
 	app := g.Group("/api/v1/upload_download").Use(middlewares.JWTAuth())
 	{
 		app.POST("/upload", fileService.UpLoad)
+		app.POST("/upload_string", fileService.UpStringWritFile)
 	}
 }

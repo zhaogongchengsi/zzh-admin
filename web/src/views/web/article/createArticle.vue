@@ -1,10 +1,10 @@
 <script setup>
 import { ref, reactive, watchEffect } from 'vue'
 import Editor from '@/components/Editor/index.vue'
-import { UpLoadOS } from '@/api/cos.js'
 import { ElMessageBox, ElMessage } from 'element-plus'
+import { uploadArticle } from '@/api/article.js'
 
-const activeName = ref('Word')
+const activeName = ref('Md')
 const dialogVisible = ref(false)
 const article = reactive({
   fileName: '',
@@ -22,7 +22,7 @@ const osConfig = reactive({
 })
 const osOptions = ref([
   {
-    value: "bloghtml",
+    value: "bloghtml-1301735126",
     label: "blog",
     children: [
       {
@@ -30,7 +30,7 @@ const osOptions = ref([
         label: "shili"
       }
     ]
-  }
+  },
 ])
 const activeText = ref('')
 const activeType = ref('')
@@ -53,28 +53,19 @@ const handleClose = (done) => {
 const openSave = async (file, type) => {
   activeText.value = file
   activeType.value = type
+  article.articleContext = file
   dialogVisible.value = true
 }
 
 const saveHandle = async () => {
-  console.log(activeText.value, activeType.value)
-  // try {
-  //   UpLoadOS({
-  //       Bucket: "bloghtml-1301735126",
-  //       Region: "ap-nanjing",
-  //       Key: `blog.md`,
-  //       Body: file
-  //   }, function (err, data) {
-
-  //     console.log("上传后的结果",err || data)
-  //   })
-  // } catch (e) {
-  //   console.log("上传引发错误",e)
-  // }
+  const res = await uploadArticle(article,{
+    oos: osConfig.osPath
+  })
+  console.log('上传结果',res)
 }
 
 const selectChange = () => {
-  if (article.articleStorageType === "cos") {
+  if (article.articleStorageType === "oos") {
     innerVisible.value = true
   }
 }
@@ -128,7 +119,7 @@ const saveOsHandle = () => {
                   <el-select v-model="article.articleStorageType" placeholder="选择保存类型" @change="selectChange">
                     <el-option label="服务器" value="services">服务器</el-option>
                     <el-option label="数据库" value="database">数据库</el-option>
-                    <el-option label="对象存储" value="cos">对象存储</el-option>
+                    <el-option label="对象存储" value="oos">对象存储</el-option>
                   </el-select>
               </el-form-item>
                <el-form-item label="标签">

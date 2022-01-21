@@ -9,6 +9,9 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
+	"regexp"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,37 +25,26 @@ func MkDir (fileName string) string {
 	return fmt.Sprintf("%s/%v/%v",upPath, year,month)
 }
 
-func SaveUploadedFile(file *multipart.FileHeader, mk string, Ashish bool) (string, error) {
+func SaveUploadedFile(file *multipart.FileHeader, mk string, filename string) error {
 	src, err := file.Open()
 	if err != nil {
-		return "" , err
+		return err
 	}
-	dst := file.Filename // 文件名
-	ext := path.Ext(dst) // 文件后缀
-	var filename string
-	if Ashish == true {
-		filename  =  HashFileName(dst) + ext
-	} else {
-		filename  =  dst
-	}
-
 	defer src.Close()
 	eisdir, direr := PathExists(mk)      // 判断文件夹是否存在
 	if direr != nil && eisdir == false { // 若不存在
 		maker := os.MkdirAll(mk, os.ModePerm)
 		if maker != nil {
-			return "", maker
+			return  maker
 		}
 	}
-
-	var filePath string = mk + "/" + filename
-	out, errors := os.Create(filePath)
+	out, errors := os.Create(mk + "/" + filename)
 	if errors != nil {
-		return "", errors
+		return  errors
 	}
 	defer out.Close()
 	_, err = io.Copy(out, src)
-	return filePath, err
+	return err
 }
 
 func PathExists (path string) (bool, error) {
@@ -72,4 +64,40 @@ func HashFileName(filename string) string {
 	sha1h := sha1.New()
 	shame := sha1h.Sum([]byte(key))
 	return hex.EncodeToString(shame)
+}
+
+func CompileFileName (fileName string, cove int) (string, string) {
+	fnfix := path.Ext(fileName)               // 获取文件名后缀
+	fn := strings.TrimSuffix(fileName,fnfix)  //获取文件名
+	ere := regexp.MustCompile("\\((\\d?)\\)") // 匹配括号
+	_fName := regexp.MustCompile("(.*)\\(")
+	machArre := ere.FindStringSubmatch(fn)
+	newName := _fName.FindStringSubmatch(fn)
+	if machArre == nil {
+		return fn + "(1)" + fnfix , fnfix
+	}
+	fineNum, e2 := strconv.Atoi(machArre[1])
+	if e2 != nil {
+		return fn + "(1)"+ fnfix , fnfix
+	}
+	fineNum = cove
+	newFileName := fmt.Sprintf("%v(%v)",newName[1], fineNum)
+	return newFileName ,fnfix
+}
+
+func SaveStrFile (str string, mk string) (string ,error) {
+	dis, er := os.Create(mk)
+	if er != nil {
+		return "" ,er
+	}
+	defer dis.Close()
+	eisdir, direr := PathExists(mk)      // 判断文件夹是否存在
+	if direr != nil && eisdir == false { // 若不存在
+		maker := os.MkdirAll(mk, os.ModePerm)
+		if maker != nil {
+			return "",maker
+		}
+	}
+	_, err := dis.WriteString(str)
+	return mk ,err
 }

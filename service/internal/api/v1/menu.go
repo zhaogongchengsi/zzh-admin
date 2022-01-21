@@ -12,9 +12,9 @@ import (
 // @Tags Menu
 // @Summary 创建菜单
 // @Produce  application/json
-// @Param data body request.Menus true "是否开启， 菜单名， 菜单文件路径， 菜单路径， icon图标， 排序标记，展示名， 父级ID"
+// @Param data body request.Menus "是否开启， 菜单名， 菜单文件路径， 菜单路径， icon图标， 排序标记，展示名， 父级ID"
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
-// @Router /api/v1/role/create_role [post]
+// @Router /api/v1/role/create_menu [post]
 func CreateMenu(c *gin.Context) {
 	var newMenu request.Menus
 	err := c.ShouldBindJSON(&newMenu)

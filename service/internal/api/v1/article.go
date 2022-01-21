@@ -29,7 +29,9 @@ func CreateArticle(c *gin.Context)  {
 			ArticleName: newArticle.ArticleName,
 			ArticleStorageType: newArticle.ArticleStorageType,
 			ArticleType: newArticle.ArticleType,
-			ArticleTags: newArticle.ArticleTags,
+			ArticleTitle: newArticle.ArticleTitle,
+			//ArticleTags: newArticle.ArticleTags,
+			ArticleUrl: newArticle.ArticleUrl,
 	}
 
 	art, er := service.CreateArticle(&ar)
