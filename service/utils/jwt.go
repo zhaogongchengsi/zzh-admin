@@ -63,7 +63,7 @@ func ParseToken(token string) (*Claims, int) {
 
 	if tokenClaims != nil {
 		if claims, token := tokenClaims.Claims.(*Claims); token && tokenClaims.Valid {
-			return claims, errcode.UnauthorizedTokenError
+			return claims, 200
 		}
 		return nil, errcode.UnauthorizedTokenError
 	} else {

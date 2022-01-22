@@ -21,3 +21,23 @@ export function createUser(data) {
       });
   });
 }
+
+export function getuserinfo() {
+  return new Promise((resolve, reject) => {
+    Get("/user/userinfo")
+      .then((response) => {
+        JudgeRequestStatus(response.state)(
+          () => {
+            resolve(response.data);
+          },
+          (_, msg) => {
+            ElMessage.error(msg);
+            reject(msg);
+          }
+        );
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}

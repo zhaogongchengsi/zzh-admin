@@ -132,3 +132,28 @@ func GetUserList(c *gin.Context) {
 	restock := response.Response{Data: map[string]interface{}{"users": userReturn}}
 	restock.Send(c)
 }
+
+
+func GetUserInfo (c *gin.Context) {
+	authHeader := c.Request.Header.Get("z_token")
+	 value, exi := utils.ParseToken(authHeader)
+	 if exi != 200 {
+		 Re := response.Response{Err: exi, State: response.State{
+			 Code:    errcode.DataDoesNotExist,
+			 Message: "用户数据查找失败",
+		 }}
+		 Re.SendError(c)
+		 return
+	 }
+	userReturn, errRe := service.GetUserInfo(value.UUID)
+	if errRe != nil {
+		Re := response.Response{Err: exi, State: response.State{
+			Code:    errcode.DataDoesNotExist,
+			Message: "用户数据查找失败",
+		}}
+		Re.SendError(c)
+		return
+	}
+	restock := response.Response{Data: userReturn}
+	restock.Send(c)
+}

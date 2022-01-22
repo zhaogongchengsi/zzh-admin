@@ -50,3 +50,10 @@ func GetUsers(u model.AdminUser) (users []AdminUserApi, er error) {
 	err := global.DBEngine.Model(&model.AdminUser{}).Where("parent_node_id = ?", u.AuthorityId).Find(&user).Error
 	return user, err
 }
+
+
+func GetUserInfo (uuid uuid.UUID) (model.AdminUser, error) {
+	var user model.AdminUser
+	err := global.DBEngine.Model(&model.AdminUser{}).Where("uuid = ?", uuid).Find(&user).Error
+	return user, err
+}

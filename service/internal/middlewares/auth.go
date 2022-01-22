@@ -11,17 +11,10 @@ import (
 // JWTAuth  token 解析中间件
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		path := c.FullPath() // 此处打算提出来一个保安函数 减查是否要进行token 解析防守
-		if path == "/api/v1/user/register" || path == "/api/v1/user/login" || path == "/api/v1/verify_code" {
-			c.Next()
-			return
-		}
-		if global.ServerSetting.RenMode == "debug" {
-			c.Next()
-			return
-		}
+		path := c.FullPath()
 		authHeader := c.Request.Header.Get("z_token")
-		if authHeader == "" {
+		isw := door(path)
+		if authHeader == "" && isw == false {
 			terr := response.Response{
 				State: response.State{
 					Code:    errcode.UnauthorizedAuthExist,
@@ -33,7 +26,7 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 		Claims, err := utils.ParseToken(authHeader)
-		if err > 300 {
+		if err != 200 && isw == false {
 			terr := response.Response{
 				State: response.State{
 					Code:    err,
@@ -47,4 +40,22 @@ func JWTAuth() gin.HandlerFunc {
 		c.Set("claims", Claims)
 		c.Next()
 	}
+}
+
+var whiteList = [3]string{"/api/v1/user/register","/api/v1/user/login","/api/v1/verify_code"}
+func door(path string) bool {
+	var tag bool
+	if global.ServerSetting.RenMode == "debug" {
+		tag = true
+	} else {
+		for _, item := range whiteList {
+			if item == path {
+				tag = true
+				break;
+			} else {
+				tag = false
+			}
+		}
+	}
+	return tag
 }

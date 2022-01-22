@@ -13,5 +13,6 @@ func User(g *gin.Engine)  {
 		app.POST("/register", v1.Register)
 		app.POST("/change_password", v1.ChangePassword)
 		app.POST("/users", v1.GetUserList)
+		app.GET("/userinfo", v1.GetUserInfo)
 	}
 }

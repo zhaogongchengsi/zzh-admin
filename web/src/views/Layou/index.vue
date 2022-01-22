@@ -41,8 +41,6 @@ const openAside = () => {
 const onSelect = (index,path,item) => {
     console.log(index,path,item)
 }
-console.log(user.baseColor)
-
 </script>
 
 
