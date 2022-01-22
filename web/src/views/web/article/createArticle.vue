@@ -79,6 +79,10 @@ const saveHandle = async () => {
   })
   if (res) {
     dialogVisible.value = false
+    ElMessage({
+      message: '文章上传成功',
+      type: 'success',
+    })
   }
 }
 

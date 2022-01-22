@@ -4,6 +4,21 @@ import { useRouter } from 'vue-router'
 import BaseMenus from "@/components/BaseMenus.vue"
 import { useStore } from 'vuex'
 import { DadLookSon} from '@/utils/index'
+import { storeToRefs } from 'pinia'
+import { userStore } from '@/store/user.js'
+const userinfo = userStore()
+// activeColor: "#1890ff"
+// authorityId: "one"
+// avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+// baseColor: "#333"
+// nickName: "系统用户"
+// parentnodeid: "1"
+// sideMode: "dark"
+// userName: "admin"
+// useradmin: "12345"
+// baseTextColor
+const { user } = storeToRefs(userinfo)
+
 const store = useStore()
 const router = useRouter()
 const menuData = ref([])
@@ -38,8 +53,14 @@ const props = defineProps({
 <template>
     <el-container>
       <el-aside :width="props.asideWidth">
-        <div class="system_container">
-          <BaseMenus :menu-list="menuData" :router="true" />
+        <div class="system_container" :style="{backgroundColor:user.baseColor}">
+          <BaseMenus 
+            :menu-list="menuData" 
+            :router="true" 
+            :background-color="user.baseColor" 
+            :active-text-color="user.activeColor" 
+            :text-color="user.baseTextColor"
+          />
         </div>
       </el-aside>
           <el-main>
@@ -49,6 +70,9 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
+.system_container {
+  height: 100%;
+}
 .system_container:deep(.el-menu) {
   border-right: 0;
 }

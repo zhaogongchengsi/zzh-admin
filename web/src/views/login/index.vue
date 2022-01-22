@@ -5,8 +5,10 @@ import { useRouter } from "vue-router"
 import rules from "./validator.js"
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
+import { userStore } from '@/store/user.js'
 
-const store = useStore()
+const store = useStore() // vuex
+const user = userStore() // pinia
 
 const formLabelAlign = reactive({ useradmin: '12345',  password: 'grcadmin', captcha: ''})
 const verifyCodd = ref({})
@@ -32,6 +34,10 @@ const onLogin = () => {
         if (fromState) {
             try {
                 const loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
+                user.$patch({
+                    user: loginState.user.user,
+                    token: loginState.token
+                })
                 const routerState = await store.dispatch("router/SetAsyncRouter")
                 if (loginState.success && routerState) {
                     Router.push("/home_user")

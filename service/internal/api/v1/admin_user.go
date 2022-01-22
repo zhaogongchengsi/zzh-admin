@@ -100,7 +100,8 @@ func IssueToken(c *gin.Context, user *model.AdminUser) error {
 	if err != nil {
 		return err
 	}
-	Re := response.Response{Data: map[string]string{"user": user.UserAdmin, "token": tokenString}}
+	user.Password = ""
+	Re := response.Response{Data: map[string]interface{}{"user": user, "token": tokenString}}
 	Re.Send(c)
 	return nil
 }

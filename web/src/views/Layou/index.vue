@@ -4,10 +4,25 @@ import { onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex'
 import Icons from '../../utils/Icons';
 import BaseMenusVue from '../../components/BaseMenus.vue';
+import { userStore } from '@/store/user.js'
+import { storeToRefs } from 'pinia'
+const userinfo = userStore()
+// activeColor: "#1890ff"
+// authorityId: "one"
+// avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+// baseColor: "#333"
+// nickName: "系统用户"
+// parentnodeid: "1"
+// sideMode: "dark"
+// userName: "admin"
+// useradmin: "12345"
+// baseTextColor
+const { user } = storeToRefs(userinfo)
 const { solids, outlines } = Icons;
 const store = useStore()
 const menuList = ref([])
 const asideState = ref(false)
+
 
 onMounted(async () => {
     let rootMenu = store.state.router.root
@@ -26,6 +41,7 @@ const openAside = () => {
 const onSelect = (index,path,item) => {
     console.log(index,path,item)
 }
+console.log(user.baseColor)
 
 </script>
 
@@ -35,29 +51,36 @@ const onSelect = (index,path,item) => {
     <div class="home-container">
             <el-container direction="vertical">
                 <el-header>
-                    <div class="header-container">
+                    <div class="header-container" :style="{backgroundColor:user.baseColor}">
                         <div class="header-left-logo">
                             <div class="header-logo-img"><img src="/images/logo.png" alt=""></div>
-                            <span class="header-logo-title">超级管理系统</span>
+                            <span class="header-logo-title" :style="{color:user.baseTextColor}" >超级管理系统</span>
                         </div>
-                        <div class="header-center-x">
-                            <BaseMenusVue :menu-list="menuList" mode="horizontal" :router="true" />
+                        <div class="header-center-x" :style="{backgroundColor:user.baseColor}">
+                            <BaseMenusVue 
+                                :menu-list="menuList" 
+                                mode="horizontal" 
+                                :router="true" 
+                                :background-color="user.baseColor" 
+                                :active-text-color="user.activeColor" 
+                                :text-color="user.baseTextColor"
+                            />
                         </div>
                         <div class="header-right-x">
                             <el-dropdown>
                                 <div class="header-avatar">
                                     <el-avatar
-                                        src="/images/logo.png"
-                                        fit="scale-down"
+                                        :src="user.avatarImg"
+                                        fit="contain"
                                     ></el-avatar>
-                                    <span class="user-name"> 超级管理员 </span>
+                                    <span class="user-name"  :style="{color:user.baseTextColor}"> {{user.nickName}} </span>
                                 </div>
                                 <template #dropdown>
                                     <el-dropdown-menu>
-                                        <el-dropdown-item>Action 1</el-dropdown-item>
-                                        <el-dropdown-item>Action 2</el-dropdown-item>
-                                        <el-dropdown-item>Action 3</el-dropdown-item>
-                                        <el-dropdown-item>Action 4</el-dropdown-item>
+                                        <el-dropdown-item>个人中心</el-dropdown-item>
+                                        <el-dropdown-item>设置</el-dropdown-item>
+                                        <el-dropdown-item>修改密码</el-dropdown-item>
+                                        <el-dropdown-item :divided="true">注销登录</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
                             </el-dropdown>
@@ -79,9 +102,14 @@ const onSelect = (index,path,item) => {
 </template>
 
 <style lang="scss" scoped>
+.main-container {
+      --el-header-padding: 0 0px;
+    --el-header-height: 60px;
+}
 .main-container:deep(.el-main) {
   height: calc(100vh - 60px - 30px);
   border-left: 1px solid var(--el-border-color-base);
+
 }
 .main-dom {
     height: 2000px;
@@ -125,6 +153,7 @@ const onSelect = (index,path,item) => {
 
 .home-container:deep(.el-header) {
     border-bottom: 1px solid var(--el-border-color-base);
+      padding: 0 !important;
 }
 
 .home-container:deep(.el-footer) {
@@ -164,7 +193,9 @@ const onSelect = (index,path,item) => {
         
     }
 }
-
+ .header-center-x:deep(.el-menu--horizontal) {
+        border-bottom: none !important;
+}
 .header-container {
     width: 100%;
     height: 60px;

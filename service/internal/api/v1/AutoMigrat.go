@@ -9,7 +9,7 @@ import (
 
 // AutoMigrated 数据库迁移接口
 func AutoMigrated(c *gin.Context) {
-	var modelType model.File
+	var modelType model.AdminUser
 	err := global.DBEngine.AutoMigrate(&modelType)
 	if err != nil {
 		return
