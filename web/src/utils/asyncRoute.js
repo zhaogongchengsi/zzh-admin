@@ -1,3 +1,6 @@
+import routerComponent from "@/views/routerHandel.vue";
+import notComponent from "@/components/NotComponent.vue";
+
 export function dataToTree(data) {
   let parents = data.filter((p) => p.ParentId === p.ID),
     _children = data.filter((c) => c.ParentId !== c.ID);
@@ -109,4 +112,23 @@ export function filePathCompileArr(files) {
     });
   }
   return newPaths;
+}
+
+export function replaceRouter(routerTree, fileTree) {
+  return routerTree.map((router) => {
+    let _component = fileTree[router.Component];
+    if (_component) {
+      router.Component = _component;
+    } else {
+      if (router.children && router.children.length > 0) {
+        router.Component = routerComponent;
+      } else {
+        router.Component = notComponent;
+      }
+    }
+    if (router.children && router.children.length > 0) {
+      router.children = replaceRouter(router.children, fileTree);
+    }
+    return router;
+  });
 }

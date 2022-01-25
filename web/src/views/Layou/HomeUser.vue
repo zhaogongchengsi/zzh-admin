@@ -1,9 +1,9 @@
 <script setup>
-import { getuserinfo } from "@/api/user.js"
 import { onMounted } from 'vue';
-
+import { useRouterStore } from '@/store/router.js'
+// const useRouter = useRouterStore()
 onMounted(async () => {
-    // const a = await getuserinfo()
+    // await useRouter.initRouter("首页内");
     // console.log(1, a)
 })
 

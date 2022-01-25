@@ -23,20 +23,15 @@ const { user } = storeToRefs(userinfo)
 const store = useStore()
 const router = useRouter()
 const menuData = ref([])
-console.log("beasrouter")
 onMounted(() => {
-  console.log(router.getRoutes())
-  const { fullPath, href, name } = router.currentRoute.value
+  const { href, name } = router.currentRoute.value
   const routerChildren = routerInfo.originlRoutData
-  console.log(routerChildren)
   const currentRoute = routerChildren.find(r => {
     return r.Path === href && r.Name === name
   })
-
   if (currentRoute) {
     menuData.value = currentRoute.children
   }
-
 })
 
 

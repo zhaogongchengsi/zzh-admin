@@ -7,6 +7,8 @@ import BaseMenusVue from '../../components/BaseMenus.vue';
 import { userStore } from '@/store/user.js'
 import { useRouterStore } from '@/store/router.js'
 import { storeToRefs } from 'pinia'
+import { useRouter } from "vue-router"
+const Router = useRouter()
 const userinfo = userStore()
 const routerInfo = useRouterStore()
 // activeColor: "#1890ff"
@@ -43,6 +45,13 @@ const openAside = () => {
 const onSelect = (index,path,item) => {
     console.log(index,path,item)
 }
+const logout = () => {
+    localStorage.removeItem("z_router")
+    localStorage.removeItem("z_user")
+    localStorage.removeItem("token")
+    Router.push("/login")
+} 
+
 </script>
 
 
@@ -80,7 +89,7 @@ const onSelect = (index,path,item) => {
                                         <el-dropdown-item>个人中心</el-dropdown-item>
                                         <el-dropdown-item>设置</el-dropdown-item>
                                         <el-dropdown-item>修改密码</el-dropdown-item>
-                                        <el-dropdown-item :divided="true">注销登录</el-dropdown-item>
+                                        <el-dropdown-item :divided="true" @click="logout">注销登录</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
                             </el-dropdown>
