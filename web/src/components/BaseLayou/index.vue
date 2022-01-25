@@ -3,10 +3,11 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseMenus from "@/components/BaseMenus.vue"
 import { useStore } from 'vuex'
-import { DadLookSon} from '@/utils/index'
 import { storeToRefs } from 'pinia'
 import { userStore } from '@/store/user.js'
+import { useRouterStore } from '@/store/router.js'
 const userinfo = userStore()
+const routerInfo = useRouterStore()
 // activeColor: "#1890ff"
 // authorityId: "one"
 // avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -22,14 +23,12 @@ const { user } = storeToRefs(userinfo)
 const store = useStore()
 const router = useRouter()
 const menuData = ref([])
-
-
-
-
+console.log("beasrouter")
 onMounted(() => {
+  console.log(router.getRoutes())
   const { fullPath, href, name } = router.currentRoute.value
-  const routerChildren = store.state.router.OriginlRoutData
-
+  const routerChildren = routerInfo.originlRoutData
+  console.log(routerChildren)
   const currentRoute = routerChildren.find(r => {
     return r.Path === href && r.Name === name
   })

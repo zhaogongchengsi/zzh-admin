@@ -3,8 +3,8 @@ import { getuserinfo } from "@/api/user.js"
 import { onMounted } from 'vue';
 
 onMounted(async () => {
-    const a = await getuserinfo()
-    console.log(1, a)
+    // const a = await getuserinfo()
+    // console.log(1, a)
 })
 
 

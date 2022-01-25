@@ -1,20 +1,15 @@
 import { useRouterStore } from "@/store/router.js";
-import { userStore } from "@/store/user.js";
-
 const whiteList = ["login"];
 let asyncRouterFlag = 0;
-
 export function doorgod(router) {
   router.beforeEach(function (to, from, next) {
-    const useRouter = useRouterStore();
-    const useUser = userStore();
     const _token = localStorage.getItem("token");
     if (whiteList.includes(to.name)) {
       // 当在白名单内
       if (_token) {
         if (!asyncRouterFlag) {
           asyncRouterFlag++;
-          await useRouter.initRouter();
+          useRouterStore();
         }
         next();
       } else {
@@ -24,7 +19,7 @@ export function doorgod(router) {
       if (_token) {
         if (!asyncRouterFlag) {
           asyncRouterFlag++;
-          await useRouter.initRouter();
+          useRouterStore();
           next({ path: "/home_user" });
         } else {
           if (to.matched.length) {

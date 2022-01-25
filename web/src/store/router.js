@@ -10,7 +10,7 @@ import { GetRouter } from "@/api/router.js";
 import pageRouter from "@/routers/index";
 import routerComponent from "@/views/routerHandel.vue";
 import notComponent from "@/components/NotComponent.vue";
-const routerFile = import.meta.glob("../../views/**/*.{vue,js,ts,jsx,tsx}");
+const routerFile = import.meta.glob("../views/**/*.{vue,js,ts,jsx,tsx}");
 let routerfiles = filePathCompile(routerFile);
 
 function replaceRouter(routerTree, fileTree) {
@@ -34,6 +34,32 @@ function replaceRouter(routerTree, fileTree) {
 
 export const useRouterStore = defineStore("router", {
   state: () => {
+    const _router = JSON.parse(localStorage.getItem("z_router"));
+    if (_router) {
+      const asyncRouters = replaceRouter(_router.originlRoutData, routerfiles);
+      const _r = copyRouter(asyncRouters);
+      pageRouter.addRoute({
+        path: "/",
+        name: "baselayou",
+        component: () => import("@/views/Layou/index.vue"),
+        children: [
+          {
+            path: "/home_user",
+            name: "home_user",
+            component: () => import("@/views/layou/HomeUser.vue"),
+          },
+          ..._r,
+        ],
+        redirect: "/home_user", // 重定向到用户首页
+      });
+
+      console.log(pageRouter.getRoutes());
+      return {
+        ..._router,
+        asyncRouters,
+      };
+    }
+
     return {
       asyncRouters: [], // 最终的路由数据
       OriginlRoutData: [], // 原始路由数据
@@ -47,26 +73,35 @@ export const useRouterStore = defineStore("router", {
         const originlRouter = await GetRouter(); // 获取路由数据
         const { parents, children } = separation(originlRouter); // 分离根组件和非根组件
         const asyncRouters = ParAndChildren(parents, children);
-        const routers = replaceRouter(asyncRouters, routerfiles); // 替换路由组件
-        this.root = parents;
-        this.children = children;
-        this.OriginlRoutData = JSON.parse(JSON.stringify(asyncRouters));
-        this.asyncRouters = routers;
-        const _r = copyRouter(routers);
-        pageRouter.addRoute({
-          path: "/",
-          name: "baselayou",
-          component: () => import("@/views/Layou/index.vue"),
-          children: [
-            {
-              path: "/home_user",
-              name: "home_user",
-              component: () => import("@/views/layou/HomeUser.vue"),
-            },
-            ..._r,
-          ],
-          redirect: "/home_user", // 重定向到用户首页
-        });
+        localStorage.setItem(
+          "z_router",
+          JSON.stringify({
+            root: parents,
+            children: children,
+            originlRoutData: asyncRouters,
+          })
+        );
+
+        // const routers = replaceRouter(asyncRouters, routerfiles); // 替换路由组件
+        // this.root = parents;
+        // this.children = children;
+        // this.OriginlRoutData = JSON.parse(JSON.stringify(asyncRouters));
+        // this.asyncRouters = routers;
+        // const _r = copyRouter(routers);
+        // pageRouter.addRoute({
+        //   path: "/",
+        //   name: "baselayou",
+        //   component: () => import("@/views/Layou/index.vue"),
+        //   children: [
+        //     {
+        //       path: "/home_user",
+        //       name: "home_user",
+        //       component: () => import("@/views/layou/HomeUser.vue"),
+        //     },
+        //     ..._r,
+        //   ],
+        //   redirect: "/home_user", // 重定向到用户首页
+        // });
         return true;
       } catch (e) {
         return false;

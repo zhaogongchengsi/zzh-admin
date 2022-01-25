@@ -3,8 +3,9 @@ import { defineStore } from "pinia";
 
 export const userStore = defineStore("main", {
   state: () => {
+    const user = JSON.parse(localStorage.getItem("z_user"));
     return {
-      user: {},
+      user: user || {},
       token: "",
     };
   },

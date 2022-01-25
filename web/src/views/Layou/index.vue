@@ -5,8 +5,10 @@ import { useStore } from 'vuex'
 import Icons from '../../utils/Icons';
 import BaseMenusVue from '../../components/BaseMenus.vue';
 import { userStore } from '@/store/user.js'
+import { useRouterStore } from '@/store/router.js'
 import { storeToRefs } from 'pinia'
 const userinfo = userStore()
+const routerInfo = useRouterStore()
 // activeColor: "#1890ff"
 // authorityId: "one"
 // avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -25,7 +27,7 @@ const asideState = ref(false)
 
 
 onMounted(async () => {
-    let rootMenu = store.state.router.root
+    let rootMenu = routerInfo.root
     menuList.value = rootMenu
 })
 

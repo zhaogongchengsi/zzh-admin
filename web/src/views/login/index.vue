@@ -6,10 +6,11 @@ import rules from "./validator.js"
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
 import { userStore } from '@/store/user.js'
+import { useRouterStore } from '@/store/router.js'
 
 const store = useStore() // vuex
 const user = userStore() // pinia
-
+const useR = useRouterStore()
 const formLabelAlign = reactive({ useradmin: '12345',  password: 'grcadmin', captcha: ''})
 const verifyCodd = ref({})
 const from = ref(null)
@@ -30,14 +31,16 @@ const refreshCode = () => {
 }
 
 const onLogin = () => {
-    from.value.validate(async (fromState) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    from.value.validate(async (fromState) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
         if (fromState) {
             try {
                 const loginState = await Login({...formLabelAlign, captchaId: verifyCodd.value.id })
+                localStorage.setItem("z_user", JSON.stringify(loginState.user.user))
                 user.$patch({
                     user: loginState.user.user,
                     token: loginState.token
                 })
+                await useR.initRouter()
                 const routerState = await store.dispatch("router/SetAsyncRouter")
                 if (loginState.success && routerState) {
                     Router.push("/home_user")
