@@ -1,6 +1,7 @@
 package init
 
 import (
+	"github/gin-react-admin/global"
 	"github/gin-react-admin/internal/model"
 	"gorm.io/gorm"
 	"time"
@@ -16,7 +17,7 @@ import (
 //ParentId  int    `gorm:"comment:父节点路径"`
 //Remarks   string `gorm:"comment:备注"`
 
-var InitMenu = []model.Menu{
+var Menu = []model.Menu{
 	{
 		Model:gorm.Model{
 			ID: 1,
@@ -109,6 +110,7 @@ var InitMenu = []model.Menu{
 	},
 }
 
-func InItMenu () {
-
+func Menus() {
+	var menu model.Menu
+	global.DBEngine.Model(&menu).Create(&Menu)
 }
