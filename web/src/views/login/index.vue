@@ -11,7 +11,7 @@ import { useRouterStore } from '@/store/router.js'
 const store = useStore() // vuex
 const user = userStore() // pinia
 const useR = useRouterStore()
-const formLabelAlign = reactive({ useradmin: '12345',  password: 'grcadmin', captcha: ''})
+const formLabelAlign = reactive({ useradmin: 'root',  password: '12345', captcha: ''})
 const verifyCodd = ref({})
 const from = ref(null)
 const Router = useRouter()

@@ -21,8 +21,9 @@ type InitService struct {
 func AutoMigrated(c *gin.Context) {
 	err := i.AutoMigrate()
 	i.Menus()
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化失败", "err": err})
+	user, er := i.UserAdmin()
+	if err != nil || er != nil {
+		c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化失败", "err": err, "user": user})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化成功"})

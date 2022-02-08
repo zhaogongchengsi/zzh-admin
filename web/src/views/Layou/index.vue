@@ -30,6 +30,7 @@ const asideState = ref(false)
 
 onMounted(async () => {
     let rootMenu = routerInfo.root
+    console.log("11",routerInfo)
     menuList.value = rootMenu
 })
 

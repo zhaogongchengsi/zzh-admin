@@ -69,6 +69,7 @@ export const useRouterStore = defineStore("router", {
     async initRouter(user) {
       try {
         const originlRouter = await GetRouter(); // 获取路由数据
+        console.log(121, originlRouter);
         const { parents, children } = separation(originlRouter); // 分离根组件和非根组件
         const asyncRouters = ParAndChildren(parents, children);
         localStorage.setItem(

@@ -17,7 +17,7 @@ import (
 //ParentId  int    `gorm:"comment:父节点路径"`
 //Remarks   string `gorm:"comment:备注"`
 
-var Menu = []model.Menu{
+var MenuList = []model.Menu{
 	{
 		Model:gorm.Model{
 			ID: 1,
@@ -71,7 +71,7 @@ var Menu = []model.Menu{
 		},
 		Label: "角色管理",
 		Name: "admin_role",
-		Path: "/system/user",
+		Path: "/system/role",
 		Component: "views/system/admin/Role",
 		Icon: "ChartSquareBarIcon",
 		Sort: 6,
@@ -108,9 +108,99 @@ var Menu = []model.Menu{
 		ParentId: 0,
 		Disabled: false,
 	},
+	{
+		Model:gorm.Model{
+			ID: 7,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "文章管理",
+		Name: "web_article_admin",
+		Path: "/web/article",
+		Component: "views/web/article/index",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 6,
+		Disabled: false,
+	},
+	{
+		Model:gorm.Model{
+			ID: 8,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "创建文章",
+		Name: "web_article_create",
+		Path: "/web/create_article",
+		Component: "views/web/article/createArticle",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 7,
+		Disabled: false,
+	},
+	{
+		Model:gorm.Model{
+			ID: 9,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "文章管理",
+		Name: "web_article",
+		Path: "/web/preview_article",
+		Component: "views/web/article/previewArticle",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 7,
+		Disabled: false,
+	},
+	{
+		Model:gorm.Model{
+			ID: 10,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "媒体管理",
+		Name: "web_article",
+		Path: "/web/media",
+		Component: "views/web/media/index",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 6,
+		Disabled: false,
+	},
+	{
+		Model:gorm.Model{
+			ID: 11,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "文件管理",
+		Name: "web_file",
+		Path: "/web/file",
+		Component: "views/web/media/file",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 6,
+		Disabled: false,
+	},
+	{
+		Model:gorm.Model{
+			ID: 12,
+			CreatedAt: time.Now(),
+			UpdatedAt:time.Now(),
+		},
+		Label: "图片管理",
+		Name: "web_image",
+		Path: "/web/image",
+		Component: "views/web/media/image",
+		Icon: "ChartBarIcon",
+		Sort: 1,
+		ParentId: 10,
+		Disabled: false,
+	},
 }
 
 func Menus() {
 	var menu model.Menu
-	global.DBEngine.Model(&menu).Create(&Menu)
+	global.DBEngine.Model(&menu).Create(&MenuList)
 }
