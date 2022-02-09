@@ -1,9 +1,7 @@
 import {
-  dataToTree,
   ParAndChildren,
   filePathCompile,
   separation,
-  copyRouter,
 } from "@/utils/asyncRoute.js";
 import { GetRouter } from "@/api/router.js";
 import pageRouter from "@/routers/index";

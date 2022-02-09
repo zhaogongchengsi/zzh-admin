@@ -6,6 +6,5 @@
 
 <script setup>
 
-console.log("11111")
 
 </script>

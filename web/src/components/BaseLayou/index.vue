@@ -1,39 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted} from 'vue'
 import BaseMenus from "@/components/BaseMenus.vue"
-import { useStore } from 'vuex'
 import { storeToRefs } from 'pinia'
 import { userStore } from '@/store/user.js'
 import { useRouterStore } from '@/store/router.js'
 const userinfo = userStore()
 const routerInfo = useRouterStore()
-// activeColor: "#1890ff"
-// authorityId: "one"
-// avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-// baseColor: "#333"
-// nickName: "系统用户"
-// parentnodeid: "1"
-// sideMode: "dark"
-// userName: "admin"
-// useradmin: "12345"
-// baseTextColor
 const { user } = storeToRefs(userinfo)
-
-const store = useStore()
-const router = useRouter()
 const menuData = ref([])
 onMounted(() => {
-  const { href, name } = router.currentRoute.value
-  const routerChildren = routerInfo.originlRoutData
-  const currentRoute = routerChildren.find(r => {
-    return r.Path === href && r.Name === name
-  })
-  if (currentRoute) {
-    menuData.value = currentRoute.children
-  }
+  menuData.value = routerInfo.children
 })
-
 
 const props = defineProps({
   asideWidth: {

@@ -3,40 +3,32 @@ import { ref, reactive, onMounted, watch } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import icons from "@/utils/Icons"
 import { menuRules } from '@/utils/validate'
+import { useRouterStore } from '@/store/router.js'
 import { createMenu, findMenuId, upMenu, getSubMenus, deleteMenu } from '@/api/menus'
-import { useStore } from 'vuex'
-const store = useStore()
+const useRouter = useRouterStore()
 const { solid, outline } = icons
     const menuFrom = ref(null)
     const dialogVisible = ref(false)
-    const menuData = reactive({
+    const menuData = ref({
         parent_id: 0,
         component: "",
-        menu_path: "",
-        menu_name: "",
-        menu_icon: "",
-        menu_disable: true,
+        path: "",
+        name: "",
+        icon: "",
+        disabled: true,
         Label: "",
         sort: 0,
         remarks: ""
     })
     const AddOrUpdate = ref(true)
-    
     const iconArray = ref([])
     const MenuDataTree = ref([])
     const isParent = ref(false)
     const drawer = ref(false)
     const dialogTitle = ref("新增节点")
     onMounted(() => {
-        store.dispatch("router/SetOriginRouterData")
+        MenuDataTree.value = useRouter.originlRouter
     })
-
-    watch(
-        () => store.state.router.OriginlRoutData, 
-        (newValue, oldValue) => {
-             MenuDataTree.value = newValue
-        }
-    )
 
     const handleClose = (done) => {
       ElMessageBox.confirm('是否取消添加菜单',{
@@ -73,10 +65,10 @@ const { solid, outline } = icons
         menuFrom.value.validate((fromState) => {
             if (fromState) {
             let requestFunc = AddOrUpdate.value === true ? createMenu : upMenu
-                requestFunc(menuData)
+                requestFunc(menuData.value)
                 .then(res => {
                     ElMessage.success(`${AddOrUpdate.value === true ? "添加成功" : "编辑成功"}`)
-                    store.dispatch("router/SetOriginRouterData")
+                    console.log(res)
                     dialogVisible.value = false
                 })
                 .catch(err => {
@@ -100,17 +92,7 @@ const { solid, outline } = icons
 
     const handleEdit = (_, Id) => {
         findMenuId(Id).then(res => {
-            const { ParentId, Path, Remarks, Sort, Icon, ID, Disabled,Label, Component,Name } = res;
-            menuData.parent_id = ParentId
-            menuData.menu_path = Path
-            menuData.Label = Label
-            menuData.remarks = Remarks
-            menuData.sort = Sort
-            menuData.menu_icon = Icon
-            menuData.id = ID
-            menuData.disabled = Disabled
-            menuData.component = Component
-            menuData.menu_name = Name
+            menuData.value = res
             AddOrUpdate.value = false
             openDialog("编辑菜单")
         }).catch(err => {
@@ -188,27 +170,27 @@ const { solid, outline } = icons
             default-expand-all
             :stripe="true"
         >   
-            <el-table-column prop="Sort" label="排序" sortable width="100" align="center" />
-            <el-table-column prop="ParentId" label="父节点" width="80" align="center" />
+            <el-table-column prop="sort" label="排序" sortable width="100" align="center" />
+            <el-table-column prop="parent_id" label="父节点" width="80" align="center" />
             <el-table-column prop="ID" label="ID" width="80" align="center" />
-            <el-table-column prop="Path" label="路由路径"  width="180" />
-            <el-table-column prop="Name" label="路由名称"  width="180" />
-            <el-table-column prop="Component" label="文件路径"  width="250" />
-            <el-table-column prop="Icon" label="菜单图标"  width="80" >
+            <el-table-column prop="path" label="路由路径"  width="180" />
+            <el-table-column prop="name" label="路由名称"  width="180" />
+            <el-table-column prop="component" label="文件路径"  width="250" />
+            <el-table-column prop="icon" label="菜单图标"  width="80" >
                 <template #default="scope">
                    <div class="table-icon-cont">
-                        <div class="table-icon"><el-icon> <component :is="solid[scope.row.Icon]"></component> </el-icon></div>
-                        <div class="table-icon"><el-icon> <component :is="outline[scope.row.Icon]"></component> </el-icon></div>
+                        <div class="table-icon"><el-icon> <component :is="solid[scope.row.icon]"></component> </el-icon></div>
+                        <div class="table-icon"><el-icon> <component :is="outline[scope.row.icon]"></component> </el-icon></div>
                    </div>
                 </template>
             </el-table-column>
             <el-table-column prop="Disabled" label="是否开启"  width="80" >
                 <template #default="scope">
-                     <el-switch v-model="scope.row.Disabled" />
+                     <el-switch v-model="scope.row.disabled" />
                 </template>
             </el-table-column>
-            <el-table-column prop="Label" label="展示的名称"  width="100" />
-            <el-table-column prop="Remarks" label="备注"  width="auto" />
+            <el-table-column prop="label" label="展示的名称"  width="100" />
+            <el-table-column prop="remarks" label="备注"  width="auto" />
             <el-table-column align="center"  label="操作"  width="300" >
                 <template #default="scope">
                     <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row.ID)">编辑</el-button>
@@ -241,24 +223,24 @@ const { solid, outline } = icons
                 <el-form-item label="文件路径" prop="component">
                     <el-input v-model="menuData.component" placeholder="请输入组件的文件路径(输入英文字母)"></el-input>
                 </el-form-item>
-                <el-form-item label="路由路径" prop="menu_path">
-                    <el-input v-model="menuData.menu_path" placeholder="请输入组件的路由路径(输入英文字母)"></el-input>
+                <el-form-item label="路由路径" prop="path">
+                    <el-input v-model="menuData.path" placeholder="请输入组件的路由路径(输入英文字母)"></el-input>
                 </el-form-item>
-                <el-form-item label="路由名称" prop="menu_path">
-                    <el-input v-model="menuData.menu_name" placeholder="请输入组件的路由名字"></el-input>
+                <el-form-item label="路由名称" prop="name">
+                    <el-input v-model="menuData.name" placeholder="请输入组件的路由名字"></el-input>
                 </el-form-item>
                 <el-form-item label="图标">
                     <el-row :gutter="24">
-                            <el-col :span="14"><el-input v-model="menuData.menu_icon" disabled  placeholder="请输入组件展示的名称"></el-input></el-col>
+                            <el-col :span="14"><el-input v-model="menuData.icon" disabled  placeholder="请输入组件展示的名称"></el-input></el-col>
                             <el-col :span="5"><el-button type="primary" @click="openDrawer('solids')" >实体图标</el-button></el-col>
                             <el-col :span="5"><el-button type="primary" @click="openDrawer('outlines')" >线体图标</el-button></el-col>
                       </el-row>
                 </el-form-item>
-                <el-form-item label="展示名" prop="Label">
-                      <el-input v-model="menuData.Label" placeholder="请输入组件的展示名称"></el-input>
+                <el-form-item label="展示名" prop="label">
+                      <el-input v-model="menuData.label" placeholder="请输入组件的展示名称"></el-input>
                 </el-form-item>
-                <el-form-item label="是否禁用" prop="menu_disable">
-                     <el-switch v-model="menuData.menu_disable" />
+                <el-form-item label="是否禁用" prop="disabled">
+                     <el-switch v-model="menuData.disabled" />
                 </el-form-item>
                 <el-form-item label="排序标记" prop="sort">
                      <el-input v-model.number="menuData.sort" placeholder="请输入排序标记"></el-input>

@@ -5,7 +5,7 @@ import (
 )
 
 type Menu struct {
-	gorm.Model `json:"-"`
+	gorm.Model
 	Disabled  bool   `gorm:"default:false;comment:是否禁用" json:"disabled"`
 	Label     string `gorm:"comment:标签" json:"label"`
 	Name      string `gorm:"comment:菜单名字" json:"name"`

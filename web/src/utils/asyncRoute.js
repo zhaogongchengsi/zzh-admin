@@ -1,28 +1,8 @@
 import routerComponent from "@/views/routerHandel.vue";
 import notComponent from "@/components/NotComponent.vue";
-
-export function dataToTree(data) {
-  let parents = data.filter((p) => p.ParentId === p.ID),
-    _children = data.filter((c) => c.ParentId !== c.ID);
-
-  function pasParAndChildren(par, chi) {
-    par.map((pitem, i) => {
-      chi.map((citem, ci) => {
-        if (citem.ParentId === pitem.ID) {
-          _children.splice(ci, 1);
-          pasParAndChildren([citem], _children);
-          if (pitem.children) {
-            pitem.children.push(citem);
-          } else {
-            pitem.children = [citem];
-          }
-        }
-      });
-    });
-  }
-
-  return parents;
-}
+import pageRouter from "@/routers/index";
+const routerFile = import.meta.glob("../views/**/*.{vue,js,ts,jsx,tsx}");
+let routerfiles = filePathCompile(routerFile);
 
 export function ParAndChildren(parents, children) {
   let _parents = JSON.parse(JSON.stringify(parents));
@@ -33,7 +13,7 @@ export function ParAndChildren(parents, children) {
   function pasParAndChildren(par, chi) {
     par.map((pitem) => {
       chi.map((citem, ci) => {
-        if (citem.ParentId === pitem.ID) {
+        if (citem.parent_id === pitem.ID) {
           // _children.splice(ci, 1);
           pasParAndChildren([citem], _children);
           if (pitem.children) {
@@ -50,34 +30,12 @@ export function ParAndChildren(parents, children) {
 }
 
 export function separation(data) {
-  let parents = data.filter((p) => p.ParentId === p.ID || p.ParentId === 0),
-    children = data.filter((c) => c.ParentId !== c.ID);
+  let parents = data.filter((p) => p.parent_id === p.ID || p.parent_id === 0),
+    children = data.filter((c) => c.parent_id !== c.ID);
   return {
     parents,
     children,
   };
-}
-
-export function copyRouter(data) {
-  return data.map((item, i) => {
-    if (item.children) {
-      return {
-        name: item.Name,
-        component: item.Component,
-        path: item.Path,
-        label: item.Label,
-        children: copyRouter(item.children),
-      };
-    } else {
-      return {
-        name: item.Name,
-        component: item.Component,
-        path: item.Path,
-        label: item.Label,
-        icon: item.Icon,
-      };
-    }
-  });
 }
 
 //  替换文件路径
@@ -91,44 +49,51 @@ export function filePathCompile(files) {
   return newPaths;
 }
 
-export function filePathCompileMap(files) {
-  let newPaths = new Map();
-  for (const file in files) {
-    const pathreg = /\.\/([^.]+).*/i;
-    const path = file.match(pathreg);
-    newPaths.set(path[1], files[file]);
-  }
-  return newPaths;
-}
-
-export function filePathCompileArr(files) {
-  let newPaths = [];
-  for (const file in files) {
-    const pathreg = /\.\/([^.]+).*/i;
-    const path = file.match(pathreg);
-    newPaths.push({
-      pathName: path[1],
-      component: files[file],
-    });
-  }
-  return newPaths;
-}
-
-export function replaceRouter(routerTree, fileTree) {
+export function replaceComponent(routerTree) {
   return routerTree.map((router) => {
-    let _component = fileTree[router.Component];
+    let _component = routerfiles[router.component];
     if (_component) {
-      router.Component = _component;
+      router.component = _component;
     } else {
       if (router.children && router.children.length > 0) {
-        router.Component = routerComponent;
+        let rootCom = routerfiles[router.component + "/index"];
+        if (rootCom) {
+          router.component = rootCom;
+        } else {
+          router.component = routerComponent;
+        }
       } else {
-        router.Component = notComponent;
+        router.component = notComponent;
       }
     }
     if (router.children && router.children.length > 0) {
-      router.children = replaceRouter(router.children, fileTree);
+      router.children = replaceComponent(router.children);
     }
     return router;
   });
+}
+
+export function RouterDataToTree(data) {
+  const { parents, children } = separation(data); // 分离根组件和非根组件
+  return ParAndChildren(parents, children);
+}
+
+export function replaceRouter(originlRouter) {
+  const asyncRouters = RouterDataToTree(originlRouter);
+  const routers = replaceComponent(asyncRouters); // 替换路由组件
+  pageRouter.addRoute({
+    path: "/",
+    name: "baselayou",
+    component: () => import("@/views/Layou/index.vue"),
+    children: [
+      {
+        path: "/home_user",
+        name: "home_user",
+        component: () => import("@/views/layou/HomeUser.vue"),
+      },
+      ...routers,
+    ],
+    redirect: "/home_user", // 重定向到用户首页
+  });
+  return routers;
 }

@@ -60,11 +60,15 @@ export default {
     iconTheme:{
       type: String,
       default: "solid"
+    },
+    recursion: {
+      tyep: Boolean,
+      default: true
     }
   },
   render () {
     const iconTheme = this.iconTheme
-
+    const self = this
     function renderIcon (iconStr) {
      const iocnComponent = Icons[iconTheme]
       return h(ElIcon,null, {
@@ -80,14 +84,15 @@ export default {
       return h(
           ElMenuItem,
           {
-            index:menu.Path
+            index:menu.path,
+            onClick: () => self.$emit("clickItem", menu)
           },
           {
             default: () => {
-              const _icon = renderIcon(menu.Icon) || ""
+              const _icon = renderIcon(menu.icon) || ""
               return h("div", null, [
                 _icon,
-                h("span", null, menu.Label)
+                h("span", null, menu.label)
               ])
             }
           }
@@ -95,12 +100,12 @@ export default {
     }
 
     const sunMenus = this.menuList.map(function (menu) {
-     
-      if (menu.children && menu.children.length > 0) {
+    
+      if (this.recursion && menu.children && menu.children.length > 0) {
         return h(
           ElSubMenu,
           { 
-            index:menu.Path
+            index:menu.path
           }, 
           {
             default: () => {
@@ -111,8 +116,8 @@ export default {
             },
             title: () => {
               return h("div", null, [
-                renderIcon(menu.Icon) || "",
-                h("span", null, menu.Label)
+                renderIcon(menu.icon) || "",
+                h("span", null, menu.label)
               ])
             }
           }
@@ -120,7 +125,7 @@ export default {
       } else {
         return menuItem(menu)
       }
-    })
+    }, this)
 
     return h(
       ElMenu,

@@ -4,11 +4,8 @@ import { GetVerifyCode, Login } from "@/api/index.js"
 import { useRouter } from "vue-router"
 import rules from "./validator.js"
 import { ElMessage } from 'element-plus'
-import { useStore } from 'vuex'
 import { userStore } from '@/store/user.js'
 import { useRouterStore } from '@/store/router.js'
-
-const store = useStore() // vuex
 const user = userStore() // pinia
 const useR = useRouterStore()
 const formLabelAlign = reactive({ useradmin: 'root',  password: '12345', captcha: ''})

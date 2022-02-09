@@ -1,7 +1,6 @@
 <script setup>
 import { MenuIcon } from '@heroicons/vue/solid'
 import { onMounted, reactive, ref } from 'vue';
-import { useStore } from 'vuex'
 import Icons from '../../utils/Icons';
 import BaseMenusVue from '../../components/BaseMenus.vue';
 import { userStore } from '@/store/user.js'
@@ -11,26 +10,14 @@ import { useRouter } from "vue-router"
 const Router = useRouter()
 const userinfo = userStore()
 const routerInfo = useRouterStore()
-// activeColor: "#1890ff"
-// authorityId: "one"
-// avatarImg: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-// baseColor: "#333"
-// nickName: "系统用户"
-// parentnodeid: "1"
-// sideMode: "dark"
-// userName: "admin"
-// useradmin: "12345"
-// baseTextColor
 const { user } = storeToRefs(userinfo)
 const { solids, outlines } = Icons;
-const store = useStore()
 const menuList = ref([])
 const asideState = ref(false)
 
 
 onMounted(async () => {
-    let rootMenu = routerInfo.root
-    console.log("11",routerInfo)
+    let rootMenu = routerInfo.routers
     menuList.value = rootMenu
 })
 
@@ -53,9 +40,14 @@ const logout = () => {
     Router.push("/login")
 } 
 
+const onItemClick = (menu) => {
+    // console.log("onItemClick", menu)
+    routerInfo.$patch({
+        children: menu.children
+    })
+}
+
 </script>
-
-
 
 <template>
     <div class="home-container">
@@ -67,13 +59,15 @@ const logout = () => {
                             <span class="header-logo-title" :style="{color:user.baseTextColor}" >超级管理系统</span>
                         </div>
                         <div class="header-center-x" :style="{backgroundColor:user.baseColor}">
-                            <BaseMenusVue 
+                            <BaseMenusVue
                                 :menu-list="menuList" 
                                 mode="horizontal" 
                                 :router="true" 
                                 :background-color="user.baseColor" 
                                 :active-text-color="user.activeColor" 
                                 :text-color="user.baseTextColor"
+                                :recursion="false"
+                                @clickItem="onItemClick"
                             />
                         </div>
                         <div class="header-right-x">
