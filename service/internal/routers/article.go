@@ -10,7 +10,7 @@ func NewArticle (g *gin.Engine) {
 	app := g.Group("/api/v1/article").Use(middlewares.JWTAuth())
 	{
 		app.POST("/create_article", v1.CreateArticle)
-		//app.POST("/delete_menu", v1.DeleteMenu)
+		app.GET("/get_article_list", v1.GetArticleList)
 		//app.POST("/find_menu", v1.GetMenuByID)
 		//app.POST("/up_menu", v1.UpMenu)
 		//app.GET("/get_menu", v1.GetMenus)

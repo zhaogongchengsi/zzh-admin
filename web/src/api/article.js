@@ -1,4 +1,4 @@
-import { Post } from "@/service/index.js";
+import { Post, Get } from "@/service/index.js";
 import { ElMessage } from "element-plus";
 import { JudgeRequestStatus } from "@/utils";
 import { UpLoadOS } from "@/api/cos.js";
@@ -26,6 +26,7 @@ export function uploadOos(article, { oos }) {
       },
       function (err, data) {
         if (data) {
+          console.log(data);
           if (data.statusCode === 200) {
             article.articleContext = "";
             createArticle({
@@ -50,6 +51,26 @@ export function uploadOos(article, { oos }) {
 function createArticle(article) {
   return new Promise((resolve, reject) => {
     Post("/article/create_article", article)
+      .then((response) => {
+        JudgeRequestStatus(response.state)(
+          () => {
+            resolve(response.data);
+          },
+          (code, msg) => {
+            ElMessage.error(msg);
+            reject({});
+          }
+        );
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+export function getArticles(limit, offset) {
+  return new Promise((resolve, reject) => {
+    Get(`article/get_article_list?limit=${limit}&offset=${offset}`)
       .then((response) => {
         JudgeRequestStatus(response.state)(
           () => {

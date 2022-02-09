@@ -45,10 +45,11 @@ func SaveString (str string, fame string, Ashish bool) (*model.File, error) {
 	if cert != nil {
 		return &model.File{}, cert
 	}
-	_, serer := utils.SaveStrFile(str, _fileMode.SavaPath , _fileMode.FileName + _fileMode.FileExt)
+	newPath , serer := utils.SaveStrFile(str, _fileMode.SavaPath , _fileMode.FileName + _fileMode.FileExt)
 	if serer != nil {
 		return &_fileMode, serer
 	}
+	_fileMode.SavaPath = newPath
 	err := global.DBEngine.Create(&_fileMode).Error
 	return &_fileMode, err
 }

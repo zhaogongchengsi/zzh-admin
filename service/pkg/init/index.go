@@ -6,11 +6,11 @@ import (
 )
 
 var modelList = []interface{}{
-	model.Menu{},
+	//model.Menu{},
 	model.Article{},
-	model.AuthRole{},
-	model.File{},
-	model.AdminUser{},
+	//model.AuthRole{},
+	//model.File{},
+	//model.AdminUser{},
 }
 
 func AutoMigrate () error {

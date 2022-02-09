@@ -21,4 +21,5 @@ const (
 	CreateError = 600 // 创建操作失败
 	DeleteError = 601 // 删除操作失败
 	UpdataError = 602 // 删除操作失败
+	FindError = 603 // 查询操作失败
 )

@@ -160,7 +160,6 @@ func GetSubMenus (c *gin.Context) {
 			res.SendInputParameterError(c)
 			return
 		}
-
 		submenus, super := service.GetSubMenu(menuId.ID)
 		if err != nil {
 			subtrees := response.Response{Err: super, State: response.State{

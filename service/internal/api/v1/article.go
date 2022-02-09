@@ -7,6 +7,8 @@ import (
 	"github/gin-react-admin/pkg/errcode"
 	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
+	"github/gin-react-admin/utils"
+	"strconv"
 )
 
 
@@ -22,20 +24,20 @@ func CreateArticle(c *gin.Context)  {
 		res.SendInputParameterError(c)
 		return
 	}
+	value, _ := utils.GetHeaderUser(c)
 	ar := model.Article {
 			ArticleFileName: newArticle.FileName,
 			ArticleContext: newArticle.ArticleContext,
-			ArticleAuthor: newArticle.ArticleAuthor,
+			ArticleAuthor: value.NickName,
 			ArticleName: newArticle.ArticleName,
 			ArticleStorageType: newArticle.ArticleStorageType,
 			ArticleType: newArticle.ArticleType,
 			ArticleTitle: newArticle.ArticleTitle,
 			//ArticleTags: newArticle.ArticleTags,
 			ArticleUrl: newArticle.ArticleUrl,
+			UUID: value.UUID,
 	}
-
 	art, er := service.CreateArticle(&ar)
-
 	if er != nil {
 		res := response.Response{
 			Err: er,
@@ -45,5 +47,34 @@ func CreateArticle(c *gin.Context)  {
 		return
 	}
 	resOk := response.Response{Data: *art}
+	resOk.Send(c)
+}
+
+
+// @Tags Article
+// @Summary 获取文章列表
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/get_article_list [get]
+func GetArticleList(c *gin.Context) {
+	limits := c.DefaultQuery("limit", "10")
+	offsets := c.DefaultQuery("offset", "1")
+	limit, _ := strconv.Atoi(limits)
+	offset, _ := strconv.Atoi(offsets)
+	lo := request.NewLimit(limit, offset)
+	artist, con,  err := service.GetArticleList(*lo)
+	if err != nil {
+		res := response.Response{
+			Err: err,
+			State: response.State{Message: "文章获取失败", Code: errcode.FindError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data:map[string]interface{}{
+		"article_list":artist,
+		"limit_offset": lo,
+		"count":con,
+	}}
 	resOk.Send(c)
 }

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github/gin-react-admin/global"
 	"github/gin-react-admin/pkg/errcode"
@@ -69,4 +70,9 @@ func ParseToken(token string) (*Claims, int) {
 	} else {
 		return nil, errcode.UnauthorizedTokenError
 	}
+}
+
+func GetHeaderUser(c *gin.Context) (*Claims, int) {
+	authHeader := c.Request.Header.Get("z_token")
+	return ParseToken(authHeader)
 }

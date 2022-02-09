@@ -23,10 +23,10 @@ type Response struct {
 
 // Send 成功时 发送数据
 func (r Response) Send(c *gin.Context) {
-	r.State.Code = 200
+	r.State.Code = errcode.Success
 	r.State.Message = "成功"
 	r.State.Success = true
-	c.JSON(http.StatusOK, gin.H{"state": r.State, "code": r.Code, "msg": r.Msg, "data": r.Data})
+	c.JSON(http.StatusOK, gin.H{"state": r.State, "data": r.Data})
 }
 
 // SendError 失败时 发送错误码以及发送错误消息

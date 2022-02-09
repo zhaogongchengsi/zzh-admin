@@ -87,20 +87,21 @@ func CompileFileName (fileName string, cove int) (string, string) {
 }
 
 func SaveStrFile (str string, mk string, name string) (string ,error) {
-	dis, er := os.Create(mk + name)
-	if er != nil {
-		return "" ,er
-	}
-	defer dis.Close()
-	eisdir, direr := PathExists(mk)      // 判断文件夹是否存在
+	var savant string = mk + name
+	eisdir, direr := PathExists(savant)  // 判断文件夹是否存在
 	if direr != nil && eisdir == false { // 若不存在
 		maker := os.MkdirAll(mk, os.ModePerm)
 		if maker != nil {
 			return "",maker
 		}
 	}
+	dis, er := os.Create(savant)
+	if er != nil {
+		return "" ,er
+	}
+	defer dis.Close()
 	_, err := dis.WriteString(str)
-	return mk ,err
+	return savant ,err
 }
 
 func bufferWrite(param string, filename string) (err error) {
