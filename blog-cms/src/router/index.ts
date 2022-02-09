@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
-  { path: "/", component: () => import("@/views/layou/index.vue") },
+  { path: "/", component: () => import("@/views/layout/index.vue") },
 ];
 
 const router = createRouter({
