@@ -59,9 +59,9 @@ const handleSubmit = async (data:user):Promise<void> => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ffffff;
+    // background-color: #ffffff;
     flex-direction: column;
-
+    background: url(/bg1.jpg) no-repeat center;
   }
 
   .login-container-dark {
