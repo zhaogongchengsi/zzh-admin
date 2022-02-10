@@ -4,10 +4,16 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AButton: typeof import('@arco-design/web-vue')['Button']
+    ACard: typeof import('@arco-design/web-vue')['Card']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
+    AForm: typeof import('@arco-design/web-vue')['Form']
+    AFormItem: typeof import('@arco-design/web-vue')['FormItem']
+    AInput: typeof import('@arco-design/web-vue')['Input']
     ASwitch: typeof import('@arco-design/web-vue')['Switch']
     ATypographyText: typeof import('@arco-design/web-vue')['TypographyText']
+    TopTool: typeof import('./src/components/TopTool.vue')['default']
   }
 }
 

@@ -10,17 +10,28 @@ import {
   IconSunFill,
   IconMoonFill
 } from '@arco-design/web-vue/es/icon';
-import { ref } from 'vue'
+import { defineProps, ref } from 'vue'
 import { useMenuStore } from '@/pinia'
 import sendMessage from '@/sysetm';
+import { useRouter } from 'vue-router'
+import { useInfoStore } from "@/pinia/user.ts"
+const userStore = useInfoStore()
+const router = useRouter()
 const menuStore = useMenuStore()
-// const { sendMessage } = window.blogApp;
 enum sysetm {
     mini = "onMinimize",
     full = "onFullScreen",
     fuit = "onFullScreenExit",
     cose = "onClose",
 }
+
+const props = defineProps({
+  menu: {
+    tyep: Boolean,
+    default: true,
+  }
+})
+
 const isFullscreen = ref(true)
 const onSettings = (type:sysetm) => {
   if (type === 'onFullScreen') {
@@ -30,15 +41,22 @@ const onSettings = (type:sysetm) => {
   }
   sendMessage(type)
 }
+const handle = () =>{}
 
-const handle = () =>{
+const logout = () => {
+  localStorage.removeItem("z_token")
+  localStorage.removeItem("z_user")
+  router.push({
+    path: "/login",
+    name:"login"
+  })
 }
-
 </script>
 <template>
   <div :class="['toptool-container', {'toptool-container-dark': menuStore.theme}]">
     <div class="toptool-left"
       @click="menuStore.toggleCollapse"
+      v-if="props.menu"
     >
       <icon-menu-unfold v-if="menuStore.collapsed" />
       <icon-menu-fold v-else />
@@ -46,7 +64,7 @@ const handle = () =>{
     <div class="toptool-right">
       <blog-space size="large">
       <a-dropdown @select="handle">
-        <icon-command />
+        <blog-avatar :size="30" :style="{ backgroundColor: '#00d0b6' }">Design</blog-avatar>
         <template #content>
           <a-doption>
               <a-switch 
@@ -76,8 +94,7 @@ const handle = () =>{
                 </template>
               </a-switch>
           </a-doption>
-          <a-doption disabled>Option 2</a-doption>
-          <a-doption :value="{ value: 'Option3' }">Option 3</a-doption>
+          <a-doption @click="logout">注销登录</a-doption>
         </template>
       </a-dropdown>
       <icon-minus @click="onSettings(sysetm.mini)" />

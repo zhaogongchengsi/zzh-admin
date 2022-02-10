@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import TopTool from "./TopTool.vue"
+import TopTool from "../../components/TopTool.vue"
 import Menus from "./Menus.vue"
 import { useMenuStore } from '@/pinia'
 const menuStore = useMenuStore()

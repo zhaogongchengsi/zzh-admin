@@ -1,7 +1,16 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
-  { path: "/", component: () => import("@/views/layout/index.vue") },
+  { 
+    path: "/", 
+    name: "home",
+    component: () => import("@/views/layout/index.vue") 
+  },
+  { 
+    path: "/login", 
+    name: "login",
+    component: () => import("@/views/login/index.vue")
+  },
 ];
 
 const router = createRouter({
@@ -9,5 +18,15 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes, // `routes: routes` 的缩写
 });
+
+router.beforeEach((to,from) => {
+  if (to.name !== 'login') {
+    const token = localStorage.getItem('z_token');
+    if (!token) {
+      return { path: '/login',}
+    }
+  }
+  return true;
+})
 
 export default router;

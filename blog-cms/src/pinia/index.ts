@@ -4,7 +4,7 @@ export const useMenuStore = defineStore("menu", {
   state: () => {
     return {
       collapsed: false,
-      theme: "light"
+      theme: "light",
     };
   },
   actions: {
