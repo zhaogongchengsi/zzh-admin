@@ -8,7 +8,7 @@ export const useInfoStore = defineStore("user", {
     };
   },
   actions: {
-   async login (user) {
+   async login (user):Promise<boolean> {
     localStorage.setItem("z_token", "123123908osdifoifhas09gfu23fi")
     return true;
    }

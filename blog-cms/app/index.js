@@ -11,6 +11,7 @@ function createWindow() {
   const options = {
     width: 1500,
     height: 800,
+    center: true,
     // transparent: true, // 窗口透明
     icon: path.join(__dirname, "../public/favicon.ico"),
     // frame: false, // 创建无边框窗口
