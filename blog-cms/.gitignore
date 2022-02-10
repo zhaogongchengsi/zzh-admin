@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+app/dist/*
+blogApp-win32-x64
 
 # Editor directories and files
 .vscode/*

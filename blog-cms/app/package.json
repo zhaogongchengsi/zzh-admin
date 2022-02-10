@@ -1,0 +1,13 @@
+{
+  "name": "blog-app",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "start": "electron .",
+    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./app/dist/favicon.ico"
+  }
+}

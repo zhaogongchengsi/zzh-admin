@@ -7,7 +7,7 @@ const menuStore = useMenuStore()
 
 <template>
   <div class="app-container">
-    <blog-layout style="height: 100vh;">
+    <blog-layout style="height: 100vh; border-radius: 5px;">
       <blog-layout-sider 
         :theme="menuStore.theme" 
         collapsible
@@ -46,6 +46,8 @@ const menuStore = useMenuStore()
   height: 100vh;
   box-sizing: border-box;
   background-color: var(--color-menu-dark-bg);
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .app-router {

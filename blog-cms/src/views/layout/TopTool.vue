@@ -6,12 +6,15 @@ import {
   IconFullscreenExit,  
   IconMenuFold,
   IconMenuUnfold,
-  IconCommand
+  IconCommand,
+  IconSunFill,
+  IconMoonFill
 } from '@arco-design/web-vue/es/icon';
 import { ref } from 'vue'
 import { useMenuStore } from '@/pinia'
+import sendMessage from '@/sysetm';
 const menuStore = useMenuStore()
-const { sendMessage } = window.blogApp;
+// const { sendMessage } = window.blogApp;
 enum sysetm {
     mini = "onMinimize",
     full = "onFullScreen",
@@ -48,18 +51,28 @@ const handle = () =>{
           <a-doption>
               <a-switch 
                 type="large"
-                checked-color="#F53F3F" 
-                unchecked-color="#14C9C9"
+                checked-color="#333" 
+                unchecked-color="#ccc"
                 checked-value="dark" 
                 unchecked-value="light"
                 v-model="menuStore.theme"
                 @change="menuStore.setTheme"
               >
-                <template #checked>
-                  dark
+                <template #checked>  
+                  <a-typography-text>
+                    dark
+                  </a-typography-text>
                 </template>
                 <template #unchecked>
-                  light
+                  <a-typography-text>
+                    light
+                  </a-typography-text>
+                </template>
+                <template #checked-icon>
+                  <icon-moon-fill />
+                </template>
+                <template #unchecked-icon>
+                  <icon-sun-fill />
                 </template>
               </a-switch>
           </a-doption>

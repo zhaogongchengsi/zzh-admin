@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "start": "electron ."
+    "start": "electron .",
+    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./app/dist/favicon.ico"
   },
   "dependencies": {
     "pinia": "^2.0.11",
@@ -20,6 +21,7 @@
     "@arco-design/web-vue": "^2.16.2",
     "@vitejs/plugin-vue": "^2.2.0",
     "electron": "^17.0.0",
+    "electron-packager": "^15.4.0",
     "sass": "^1.49.7",
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
