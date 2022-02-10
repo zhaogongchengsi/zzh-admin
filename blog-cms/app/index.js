@@ -12,9 +12,9 @@ function createWindow() {
     width: 1500,
     height: 800,
     center: true,
-    // transparent: true, // 窗口透明
+    transparent: true, // 窗口透明
     icon: path.join(__dirname, "../public/favicon.ico"),
-    // frame: false, // 创建无边框窗口
+    frame: false, // 创建无边框窗口
     webPreferences,
   };
   win = new BrowserWindow(options);

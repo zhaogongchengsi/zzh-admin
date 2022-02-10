@@ -61,8 +61,7 @@ const handleSubmit = async (data:user):Promise<void> => {
     justify-content: space-between;
     background-color: #ffffff;
     flex-direction: column;
-    box-sizing: border-box;
-    padding-top: 15px;
+
   }
 
   .login-container-dark {
@@ -91,5 +90,7 @@ const handleSubmit = async (data:user):Promise<void> => {
     width: 100%;
     justify-content: flex-end;
     border-bottom: 0;
+    box-sizing: border-box;
+    padding-top: 15px;
   }
 </style>

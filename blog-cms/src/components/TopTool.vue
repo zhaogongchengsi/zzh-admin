@@ -130,6 +130,9 @@ const logout = () => {
   -webkit-app-region: no-drag;
 }
 
+.toptool-right:deep(.arco-avatar) {
+  -webkit-app-region: no-drag;
+}
 .toptool-container:deep(.arco-icon) {
   -webkit-app-region: no-drag;
   cursor: pointer;
