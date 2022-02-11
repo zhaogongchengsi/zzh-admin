@@ -20,6 +20,8 @@ function createWindow() {
   win = new BrowserWindow(options);
   // win.loadURL(path.join(__dirname, "dist/index.html")); // 构件时 使用成路径
   win.loadURL("http://localhost:3000/"); // 开发环境用这个
+  //  打开开发者工具
+  win.webContents.openDevTools();
   return win;
 }
 
