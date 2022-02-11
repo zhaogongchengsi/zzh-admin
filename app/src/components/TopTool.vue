@@ -6,7 +6,7 @@ import {
   IconFullscreenExit,  
   IconMenuFold,
   IconMenuUnfold,
-  IconCommand,
+  IconMenu,
   IconSunFill,
   IconMoonFill
 } from '@arco-design/web-vue/es/icon';
@@ -63,45 +63,55 @@ const logout = () => {
     </div>
     <div class="toptool-right">
       <blog-space size="large">
-      <a-dropdown @select="handle">
-        <blog-avatar :size="30" :style="{ backgroundColor: '#00d0b6' }">Design</blog-avatar>
-        <template #content>
-          <a-doption>
-              <a-switch 
-                type="large"
-                checked-color="#333" 
-                unchecked-color="#ccc"
-                checked-value="dark" 
-                unchecked-value="light"
-                v-model="menuStore.theme"
-                @change="menuStore.setTheme"
-              >
-                <template #checked>  
-                  <a-typography-text>
-                    dark
-                  </a-typography-text>
-                </template>
-                <template #unchecked>
-                  <a-typography-text>
-                    light
-                  </a-typography-text>
-                </template>
-                <template #checked-icon>
-                  <icon-moon-fill />
-                </template>
-                <template #unchecked-icon>
-                  <icon-sun-fill />
-                </template>
-              </a-switch>
-          </a-doption>
-          <a-doption @click="logout">注销登录</a-doption>
-        </template>
-      </a-dropdown>
-      <icon-minus @click="onSettings(sysetm.mini)" />
-      <icon-fullscreen v-if="isFullscreen" @click="onSettings(sysetm.full)" />
-      <icon-fullscreen-exit v-else @click="onSettings(sysetm.fuit)" />
-      <icon-close @click="onSettings(sysetm.cose)" />
-    </blog-space>
+        <a-popover position="bottom">
+          <blog-avatar :size="30" :style="{ border: '1px solid' }">
+            <img class="blog-avatar-img" v-if="userStore.userinfo.avatarImg" :src="userStore.userinfo.avatarImg" alt="头像">
+            <a-typography-text v-else>{{userStore.userinfo.nickName}}</a-typography-text>
+          </blog-avatar>
+          <template #content>
+            <p>Here is the text content</p>
+            <p>Here is the text content</p>
+          </template>
+        </a-popover>
+        <a-dropdown @select="handle">
+          <icon-menu />
+          <template #content>
+            <a-doption>
+                <a-switch 
+                  type="large"
+                  checked-color="#333" 
+                  unchecked-color="#ccc"
+                  checked-value="dark" 
+                  unchecked-value="light"
+                  v-model="menuStore.theme"
+                  @change="menuStore.setTheme"
+                >
+                  <template #checked>  
+                    <a-typography-text>
+                      dark
+                    </a-typography-text>
+                  </template>
+                  <template #unchecked>
+                    <a-typography-text>
+                      light
+                    </a-typography-text>
+                  </template>
+                  <template #checked-icon>
+                    <icon-moon-fill />
+                  </template>
+                  <template #unchecked-icon>
+                    <icon-sun-fill />
+                  </template>
+                </a-switch>
+            </a-doption>
+            <a-doption @click="logout">注销登录</a-doption>
+          </template>
+        </a-dropdown>
+        <icon-minus @click="onSettings(sysetm.mini)" />
+        <icon-fullscreen v-if="isFullscreen" @click="onSettings(sysetm.full)" />
+        <icon-fullscreen-exit v-else @click="onSettings(sysetm.fuit)" />
+        <icon-close @click="onSettings(sysetm.cose)" />
+      </blog-space>
     </div>
   </div>
 </template>
@@ -128,6 +138,11 @@ const logout = () => {
   justify-content: center;
   margin-left: var(--tools-padding);
   -webkit-app-region: no-drag;
+}
+
+.blog-avatar-img {
+  width: 100%;
+  height: 100%;
 }
 
 .toptool-right:deep(.arco-avatar) {

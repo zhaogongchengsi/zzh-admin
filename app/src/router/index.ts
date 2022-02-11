@@ -4,7 +4,19 @@ const routes = [
   { 
     path: "/", 
     name: "home",
-    component: () => import("@/views/layout/index.vue") 
+    component: () => import("@/views/layout/index.vue"),
+    children: [
+      {
+        path: "/article_list",
+        name: "articleList",
+        component: () => import("@/views/article/ArticleList.vue"),
+      },
+      {
+        path: "/article_create",
+        name: "articleCreate",
+        component: () => import("@/views/article/ArticleCreate.vue"),
+      }
+    ]
   },
   { 
     path: "/login", 

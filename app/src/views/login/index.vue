@@ -67,8 +67,6 @@ onMounted(() => {
   getcode()
 })
 
-
-
 const handleSubmit = async (data:user):Promise<void> => {
  const userStatus = await userStore.loginState({...userinfo.value})
  if (userStatus === true) {
@@ -76,6 +74,8 @@ const handleSubmit = async (data:user):Promise<void> => {
       path: "/", 
       name: "home",
    })
+ } else {
+   getcode()
  }
 }
 </script>

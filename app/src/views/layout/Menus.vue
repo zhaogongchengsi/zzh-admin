@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import {
-  IconBulb,
-} from '@arco-design/web-vue/es/icon';
+import { Icon } from '@arco-design/web-vue';
 import { useMenuStore } from '@/pinia'
+import { useRouter } from "vue-router";
+const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_yfivjc748ek.js' });
 const menuStore = useMenuStore()
 const collapsed = ref(false)
-
+const router = useRouter()
+const onRoute = (href: string) => {
+  router.push(href)
+}
 
 </script>
 
@@ -27,30 +30,26 @@ const collapsed = ref(false)
       :style="{ width: '200px', borderRadius: '4px' }"
       :theme="menuStore.theme" 
       :collapsed="menuStore.collapsed"
-      :default-open-keys="['0']"
-      :default-selected-keys="['0_2']"
+      :default-open-keys="[1]"
+      :default-selected-keys="['1-0']"
     >
       <blog-sub-menu key="1">
-        <template #icon><icon-bulb></icon-bulb></template>
-        <template #title>Navigation 1</template>
-        <blog-menu-item key="2_0">Menu 1</blog-menu-item>
-        <blog-menu-item key="2_1">Menu 2</blog-menu-item>
-      </blog-sub-menu>
-      <blog-sub-menu key="2">
-        <template #icon><icon-bulb></icon-bulb></template>
-        <template #title>Navigation 2</template>
-        <blog-menu-item key="2_0">Menu 1</blog-menu-item>
-        <blog-menu-item key="2_1">Menu 2</blog-menu-item>
-      </blog-sub-menu>
-      <blog-sub-menu key="3">
-        <template #icon><icon-bulb></icon-bulb></template>
-        <template #title>Navigation 3</template>
-        <blog-menu-item key="2_0">Menu 1</blog-menu-item>
-        <blog-menu-item key="2_1">Menu 2</blog-menu-item>
-        <blog-sub-menu key="2_2" title="Navigation 4">
-          <blog-menu-item key="2_2_0">Menu 1</blog-menu-item>
-          <blog-menu-item key="2_2_1">Menu 2</blog-menu-item>
-        </blog-sub-menu>
+        <template #icon>
+          <icon-font type="icon-wenzhang" />
+        </template>
+        <template #title>文章管理</template>
+        <blog-menu-item key="1-0" @click="onRoute('/article_list')" >
+          <template #icon>
+            <icon-font type="icon-yuwen" />
+          </template>
+          文章列表
+        </blog-menu-item>
+        <blog-menu-item key="1-1" @click="onRoute('/article_create')" >
+          <template #icon>
+            <icon-font type="icon-bianji" />
+          </template>
+          创建文章
+        </blog-menu-item>
       </blog-sub-menu>
     </blog-menu>
   </div>
