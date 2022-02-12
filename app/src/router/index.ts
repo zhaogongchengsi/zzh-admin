@@ -5,6 +5,7 @@ const routes = [
     path: "/", 
     name: "home",
     component: () => import("@/views/layout/index.vue"),
+    redirect:'/home',
     children: [
       {
         path: "/article_list",
@@ -15,6 +16,11 @@ const routes = [
         path: "/article_create",
         name: "articleCreate",
         component: () => import("@/views/article/ArticleCreate.vue"),
+      },
+      {
+        path: "/home",
+        name: "home",
+        component: () => import("@/views/home/index.vue"),
       }
     ]
   },

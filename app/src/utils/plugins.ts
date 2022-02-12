@@ -1,5 +1,6 @@
 import { h } from 'vue'
 import { Icon } from '@arco-design/web-vue';
+import IconFont from "@/components/IconFont.vue"
 
 export default {
   install: (app, options) => {
@@ -11,6 +12,7 @@ export default {
         dark(el,value,arg)
       }
     })
+    app.component("icon-font", IconFont)
   }
 }
 function dark (el:Element, value:boolean | "light" | "dark", suffix:string) {

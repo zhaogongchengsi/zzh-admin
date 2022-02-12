@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { Icon } from '@arco-design/web-vue';
 import { useMenuStore } from '@/pinia'
 import { useRouter } from "vue-router";
-const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_yfivjc748ek.js' });
 const menuStore = useMenuStore()
 const collapsed = ref(false)
 const router = useRouter()
@@ -30,9 +28,15 @@ const onRoute = (href: string) => {
       :style="{ width: '200px', borderRadius: '4px' }"
       :theme="menuStore.theme" 
       :collapsed="menuStore.collapsed"
-      :default-open-keys="[1]"
+      :default-open-keys="[0]"
       :default-selected-keys="['1-0']"
     >
+      <blog-menu-item key="0" @click="onRoute('/home')" >
+          <template #icon>
+            <icon-font type="icon-a-fangzishouye" />
+          </template>
+          控制台
+      </blog-menu-item>
       <blog-sub-menu key="1">
         <template #icon>
           <icon-font type="icon-wenzhang" />

@@ -12,7 +12,7 @@ App:
 Database:
   DBtype: mysql
   UserName: root
-  Password:
+  Password: 12345
   Host: localhost:3306
   DBName: gin_react_admin
   TablePrefix: blog_

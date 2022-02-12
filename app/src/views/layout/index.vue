@@ -22,11 +22,6 @@ const menuStore = useMenuStore();
             <TopTool />
           </blog-layout-header>
           <blog-layout-content>
-            <blog-breadcrumb>
-              <blog-breadcrumb-item>
-                <a-typography-text>Home</a-typography-text>
-              </blog-breadcrumb-item>
-            </blog-breadcrumb>
             <div :class="['app-router', {'app-router-dark': menuStore.theme}]">
               <router-view />
             </div>
@@ -52,7 +47,7 @@ const menuStore = useMenuStore();
 
 .app-router {
   border-top: 1px solid var(--color-neutral-3);
-  height: calc(100vh - 24px - 52px);
+  height: calc(100vh - 52px);
   overflow: auto;
   &::-webkit-scrollbar {
     /*滚动条整体样式*/

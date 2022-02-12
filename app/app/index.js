@@ -13,7 +13,7 @@ function createWindow() {
     height: 800,
     // center: true,
     // transparent: true, // 窗口透明
-    icon: path.join(__dirname, "../public/favicon.ico"),
+    icon: path.join(__dirname, "../public/favicon1.ico"),
     // frame: false, // 创建无边框窗口
     webPreferences,
   };
