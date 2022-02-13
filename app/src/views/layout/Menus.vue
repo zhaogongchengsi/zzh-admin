@@ -55,6 +55,24 @@ const onRoute = (href: string) => {
           创建文章
         </blog-menu-item>
       </blog-sub-menu>
+      <blog-sub-menu key="2">
+        <template #icon>
+          <icon-font type="icon-kujialeqiyezhan_sucaishoucang" />
+        </template>
+        <template #title>素材管理</template>
+        <blog-menu-item key="2-0" @click="onRoute('/media_admin')" >
+          <template #icon>
+            <icon-font type="icon-sucai" />
+          </template>
+          素材库
+        </blog-menu-item>
+        <blog-menu-item key="2-1" @click="onRoute('/media_upload')" >
+          <template #icon>
+            <icon-font type="icon-shangchuan" />
+          </template>
+          上传素材
+        </blog-menu-item>
+      </blog-sub-menu>
     </blog-menu>
   </div>
 </template>

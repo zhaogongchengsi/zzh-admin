@@ -21,6 +21,16 @@ const routes = [
         path: "/home",
         name: "home",
         component: () => import("@/views/home/index.vue"),
+      },
+      {
+        path: "/media_admin",
+        name: "media_admin",
+        component: () => import("@/views/MediaLib/MedAdm.vue"),
+      },
+      {
+        path: "/media_upload",
+        name: "media_upload",
+        component: () => import("@/views/MediaLib/UpMed.vue"),
       }
     ]
   },

@@ -6,11 +6,11 @@ import { Icon } from '@arco-design/web-vue';
 import { defineProps } from 'vue';
 const props = defineProps({
     type: String,
-    size: String,
+    size: Number,
     spin:{
         type: Boolean,
         default: false
     }
 })
-const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_nhwgkmrfpqi.js' });
+const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_3yp9vnllt1n.js' });
 </script>

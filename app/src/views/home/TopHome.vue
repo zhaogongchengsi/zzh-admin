@@ -14,7 +14,7 @@
                   
                   <a-statistic title="留言数" :value="125670" show-group-separator>
                     <template #suffix>
-                      <icon-arrow-rise />
+                     <icon-font type="icon-liuyan" />
                     </template>
                   </a-statistic>
                 </h4>
@@ -26,7 +26,7 @@
                   
                   <a-statistic title="点赞数" :value="125670" show-group-separator>
                     <template #suffix>
-                      <icon-arrow-rise />
+                      <icon-font type="icon-mianxingdianzan" />
                     </template>
                   </a-statistic>
                 </h4>
@@ -35,10 +35,10 @@
             <a-col :span="8">
               <div class="home-card color-change-3x">
                 <h4 class="card-title">
-                  
+              
                   <a-statistic title="访问量" :value="125670" show-group-separator>
                     <template #suffix>
-                      <icon-arrow-rise />
+                      <icon-font type="icon-jiankongchakanshenqing" />
                     </template>
                   </a-statistic>
                 </h4>

@@ -4,13 +4,13 @@
     <top-home />
     <a-divider orientation="left">快捷入口</a-divider>
     <quick-entrance />
-    <a-divider orientation="left">数据统计</a-divider>
-    <a-row :gutter="24">
-        <a-col :span="19">
-            <statistic />
+    <!-- <a-divider orientation="left">发布计划</a-divider> -->
+    <a-row :gutter="0">
+        <a-col :span="12">
+            <todo-list title="最新发布" :data="todolist" />
         </a-col>
-        <a-col :span="5">
-            <pian />
+        <a-col :span="12">
+            <todo-list title="预备发布"  :data="todolist"/>
         </a-col>
     </a-row>
   </div>
@@ -20,13 +20,48 @@
 import TopHome from './TopHome.vue'
 import QuickEntrance from './QuickEntrance.vue'
 import pian from './plan.vue'
-import statistic from './Statistics.vue'
+import TodoList from './TodoList.vue'
 import { useMenuStore } from "@/pinia";
+import { plan } from "./index"
 const menuStore = useMenuStore();
-const ellipsis = {
-  rows: 2,
-  showTooltip: true,
-};
+
+const todolist:Array<plan> = [
+  {
+    planName: "第一篇文章",
+    planDescription: "第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章第一篇文章",
+    isDone: true,
+    planDate: new Date().toString(),
+    id:1
+  },
+  {
+    planName: "第二篇文章",
+    planDescription: "第二篇文章",
+    isDone: true,
+    planDate: new Date().toString(),
+    id:2
+  },
+  {
+    planName: "第二篇文章",
+    planDescription: "第二篇文章",
+    isDone: true,
+    planDate: new Date().toString(),
+    id:3
+  },
+  {
+    planName: "第二篇文章",
+    planDescription: "第二篇文章",
+    isDone: true,
+    planDate: new Date().toString(),
+    id:4
+  },
+  {
+    planName: "第二篇文章",
+    planDescription: "第二篇文章",
+    isDone: true,
+    planDate: new Date().toString(),
+    id:5
+  }
+]
 </script>
 
 <style lang="scss" scoped>
