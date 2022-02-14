@@ -9,5 +9,6 @@ type Article struct {
 	ArticleAuthor string `json:"articleAuthor"` // 文章作者
 	ArticleType string `json:"articleType"` // 文章的类型
 	ArticleContext string `json:"articleContext"` // 文章的内容主题 若文章不是存储在数据库 则本字段为空
-	//ArticleTags []model.ArticleTags `json:"articleTags"`
+	ArticleTags []string `json:"articleTags"`
+	ArticleDesc string `json:"article_desc"`
 }

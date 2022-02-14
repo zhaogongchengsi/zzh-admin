@@ -1,32 +1,18 @@
 <template>
   <div class="article-list" v-dark:dark="menuStore.theme">
   <ul class="article-ul">
-    <li class="article-item">
-      <a-card title="Arco Card" hoverable>
-        <a-typography-text>
-            ByteDance's core product, Toutiao ("Headlines"), is a content platform in
-            China and around the world. Toutiao started out as a news recommendation
-            engine and gradually evolved into a platform delivering content in various
-            formats.
-        </a-typography-text>
-        <template #actions>
-          <span class="icon-hover"> <IconThumbUp /> </span>
-          <span class="icon-hover"> <IconShareInternal /> </span>
-          <span class="icon-hover"> <IconMore /> </span>
-        </template>
-        <a-card-meta>
-          <template #avatar>
-            <div
-              :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }"
-            >
-              <a-avatar :size="24" :style="{ marginRight: '8px' }">
-                A
-              </a-avatar>
-              <a-typography-text>Username</a-typography-text>
-            </div>
-          </template>
-        </a-card-meta>
-      </a-card>
+    <li 
+      class="article-item"
+      v-for="item in articles"
+      :key="item.ID"
+    >
+      <div class="article-card">
+        <span class="art-title">{{item.article_title}}</span>
+        <p class="art-con">{{item.article_context}}</p>
+        <div class="article-foot">
+          <span>{{item.article_author}}</span>
+        </div>
+      </div>
     </li>
   </ul>
   </div>
@@ -38,6 +24,23 @@ import {
   IconShareInternal,
   IconMore,
 } from '@arco-design/web-vue/es/icon';
+import { getArticleList } from '@/api/article'
+import { onMounted, ref } from "vue";
+import type { article } from '@/types/response'
+
+const articles = ref<article[]>([])
+
+onMounted(async () => {
+  try {
+      const res = await getArticleList()
+      articles.value = res.article_list
+      console.log(res)
+  } catch (e) {
+
+  }
+
+})
+
 const menuStore = useMenuStore();
 </script>
 <style lang="scss">
@@ -58,5 +61,25 @@ const menuStore = useMenuStore();
   grid-template-columns: repeat(4,1fr);
   grid-row-gap: var(--space);
   grid-column-gap: var(--space);
+}
+
+.article-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid var(--color-border-3);
+}
+
+.article-card {
+  display: flex;
+  flex-direction: column;
+
+  .art-title {
+    font-size: 18px;
+  }
+
+  .art-con {
+    line-height: 30px ;
+    height: 60px;
+  }
 }
 </style>

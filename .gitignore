@@ -7,3 +7,4 @@ dist-ssr
 .docs
 service/docs/*
 service/assets/*
+web/stats.html

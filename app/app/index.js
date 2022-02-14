@@ -7,6 +7,7 @@ function createWindow() {
     nodeIntegrationInSubFrames: true,
     nodeIntegrationInWorker: true, // 启用node
     preload: path.join(__dirname, "preload.js"),
+    webSecurity: false, // 禁用跨域
   };
   const options = {
     width: 1500,

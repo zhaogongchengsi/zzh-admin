@@ -17,12 +17,57 @@ export interface userInfo {
 }
 
 export interface state {
-  code: number
-  message: string
-  success: boolean
+  code: number;
+  message: string;
+  success: boolean;
 }
 
 export interface VerificationCode {
-  id: string
-  b64s: string
-} 
+  id: string;
+  b64s: string;
+}
+
+export interface article {
+  article_name: string;
+  article_title: string;
+  article_url: string;
+  article_storage_type: string;
+  article_tags: string[];
+  article_author: string;
+  article_context: string;
+  article_file_name: string;
+  article_type: string;
+  likes: number;
+  number_views: number;
+  uuid: string;
+  ID: number | string;
+}
+
+export interface limit_offset {
+  limit: number;
+  offset: number;
+}
+
+export interface articleList {
+  article_list: Array<article>;
+  count: number;
+  limit_offset: limit_offset;
+}
+
+export interface cosTemKey {
+  Expiration: string;
+  ExpiredTime: number;
+  RequestId: string;
+  StartTime: number;
+  Credentials: Credentials;
+}
+export interface Credentials {
+  TmpSecretId: string;
+  TmpSecretKey: string;
+  Token: string;
+}
+export interface cosPutObj {
+  ETag: string;
+  Location: string;
+  RequestId: string;
+}

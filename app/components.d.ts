@@ -4,17 +4,21 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AAvatar: typeof import('@arco-design/web-vue')['Avatar']
     ACard: typeof import('@arco-design/web-vue')['Card']
-    ACardMeta: typeof import('@arco-design/web-vue')['CardMeta']
+    ACascader: typeof import('@arco-design/web-vue')['Cascader']
     ACol: typeof import('@arco-design/web-vue')['Col']
     ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
+    AForm: typeof import('@arco-design/web-vue')['Form']
+    AFormItem: typeof import('@arco-design/web-vue')['FormItem']
     AInput: typeof import('@arco-design/web-vue')['Input']
+    AModal: typeof import('@arco-design/web-vue')['Modal']
+    AOption: typeof import('@arco-design/web-vue')['Option']
     APopover: typeof import('@arco-design/web-vue')['Popover']
     AProgress: typeof import('@arco-design/web-vue')['Progress']
     ARow: typeof import('@arco-design/web-vue')['Row']
+    ASelect: typeof import('@arco-design/web-vue')['Select']
     ASpace: typeof import('@arco-design/web-vue')['Space']
     AStatistic: typeof import('@arco-design/web-vue')['Statistic']
     ASwitch: typeof import('@arco-design/web-vue')['Switch']

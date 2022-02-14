@@ -25,17 +25,22 @@ func CreateArticle(c *gin.Context)  {
 		return
 	}
 	value, _ := utils.GetHeaderUser(c)
-	ar := model.Article {
+ 	ar := model.Article {
 			ArticleFileName: newArticle.FileName,
 			ArticleContext: newArticle.ArticleContext,
 			ArticleAuthor: value.NickName,
-			ArticleName: newArticle.ArticleName,
+			ArticleName: newArticle.FileName,
 			ArticleStorageType: newArticle.ArticleStorageType,
 			ArticleType: newArticle.ArticleType,
 			ArticleTitle: newArticle.ArticleTitle,
-			//ArticleTags: newArticle.ArticleTags,
 			ArticleUrl: newArticle.ArticleUrl,
 			UUID: value.UUID,
+			ArticleDesc: newArticle.ArticleDesc,
+	}
+	for _,tag := range newArticle.ArticleTags {
+		ar.ArticleTags = append(ar.ArticleTags, model.ArticleTags{
+			Tag:tag,
+		})
 	}
 	art, er := service.CreateArticle(&ar)
 	if er != nil {
