@@ -1,6 +1,7 @@
 import { Post, confirmStatus, Get } from "@/utils/service"
 import type { user } from "@/types/request"
 import type { userInfo, state, VerificationCode } from "@/types/response"
+import { Message } from '@arco-design/web-vue';
 export async function login (user:user) :Promise<userInfo> {
   return new Promise<userInfo>((resolve, reject) =>{
     Post("user/login", user)
@@ -8,8 +9,14 @@ export async function login (user:user) :Promise<userInfo> {
         const state = confirmStatus(<state>response.data.state)
         if (state) {
           resolve(response.data.data)
+          Message.success({
+            content: '登录成功'
+          })
         } else {
           reject(response.data.state)
+          Message.error({
+            content: response.data.state.message
+          })
         }
       })
       .catch(() => reject)

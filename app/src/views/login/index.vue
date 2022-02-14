@@ -2,7 +2,7 @@
   <div :class="['login-container', {'login-container-dark': menuStore.theme}]">
     <toptool :menu="false" />
     <div class="login-from">
-      <blog-spin :loading="false" dot >
+      <blog-spin :loading="islodin" dot >
         <a-card hoverable :style="{ width: '1000px'}">
           <div class="from-box">
               <div class="from-img">1</div>
@@ -57,6 +57,7 @@ const code: Ref<VerificationCode>=ref({
   id: "",
   b64s: "",
 })
+const islodin = ref(false)
 const getcode = async () => {
   const res = await getVerifCode()
   code.value = res
@@ -68,15 +69,18 @@ onMounted(() => {
 })
 
 const handleSubmit = async (data:user):Promise<void> => {
+  islodin.value = true
  const userStatus = await userStore.loginState({...userinfo.value})
  if (userStatus === true) {
    router.push({
       path: "/", 
       name: "home",
    })
+
  } else {
    getcode()
  }
+ islodin.value = false
 }
 </script>
 

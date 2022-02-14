@@ -1,13 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import type { AxiosInstance } from 'axios'
 import { state } from "@/types/response"
+import { Message } from '@arco-design/web-vue';
 
 const baseURL = "http://localhost:8000/api/v1/"
 const http:AxiosInstance = axios.create({
   baseURL,
   timeout: 3000
 })
-
 
 // 添加请求拦截器
 http.interceptors.request.use(function (config:AxiosRequestConfig) {
@@ -25,7 +25,6 @@ http.interceptors.request.use(function (config:AxiosRequestConfig) {
 
 // 添加响应拦截器
 http.interceptors.response.use(function (response) {
-    // 对响应数据做点什么
     return response;
 }, function (error) {
     // 对响应错误做点什么
@@ -33,7 +32,7 @@ http.interceptors.response.use(function (response) {
 });
 
 
-export function Get (url: string) {
+export function Get (url: string) {  
   return http.get(url)
 }
 
