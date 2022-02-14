@@ -11,7 +11,7 @@ export async function getArticleList(
   offset?: number
 ): Promise<articleList> {
   return new Promise<articleList>((resolve, reject) => {
-    Get(`article/get_article_list?limit${limit}&offset${offset}`)
+    Get(`article/get_article_list?limit=${limit}&offset=${offset}`)
       .then((article) => {
         const state = confirmStatus(<state>article.data.state);
         if (state) {

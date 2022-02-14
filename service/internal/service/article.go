@@ -24,6 +24,6 @@ func CreateArticle(article *model.Article) (ar *model.Article, err error)  {
 func GetArticleList(lo request.LimitOffset) (arts []model.Article, num int64, err error) {
 	var art []model.Article
 	var number int64
-	err = global.DBEngine.Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
+	err = global.DBEngine.Preload("ArticleTags").Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
 	return art,number, err
 }
