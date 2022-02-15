@@ -19,14 +19,15 @@ function createWindow() {
     preload: path.join(__dirname, "preload.js"),
     devTools: env(),
   };
+  const icon_path = env() ? "../public/favicon1.ico" : "./dist/favicon1.ico";
   const options = {
     width: 1500,
     height: 800,
     minWidth: 1200,
     minHeight: 800,
     transparent: !env(), // 窗口透明
-    icon: path.join(__dirname, "../public/favicon1.ico"),
-    frame: !env(), // 创建无边框窗口
+    icon: path.join(__dirname, icon_path),
+    frame: env(), // 创建无边框窗口
     webPreferences,
   };
   win = new BrowserWindow(options);

@@ -1,7 +1,7 @@
 {
   "name": "blog-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "app/index.js",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "start": "cross-env NODE_ENV=development electron .",
     "view": "cross-env NODE_ENV=production electron .",
-    "build:app":"electron-packager ./app blogApp --platform=win32 --icon=./pubilc/favicon1.ico",
-    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./pubilc/favicon1.ico",
+    "build:app":"electron-packager ./app blogApp --platform=win32 --icon=public/favicon1.ico --asar",
+    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./public/favicon1.ico --asar",
     "app": "vue-tsc --noEmit && vite build && cross-env NODE_ENV=production electron-builder build"
   },
   "dependencies": {

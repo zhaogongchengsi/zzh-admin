@@ -41,6 +41,7 @@ export interface article {
   number_views: number;
   uuid: string;
   ID: number | string;
+  article_desc: string;
 }
 
 export interface limit_offset {
