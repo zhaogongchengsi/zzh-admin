@@ -39,7 +39,7 @@ import type { Ref } from 'vue'
 import { ref, reactive, onMounted,toRef } from "vue"
 import toptool from "@/components/TopTool.vue"
 import { useMenuStore } from '@/pinia'
-import { useInfoStore } from "@/pinia/user.ts"
+import { useInfoStore } from "@/pinia/user"
 import { useRouter } from 'vue-router'
 import { user } from '@/types/request'
 import { VerificationCode } from "@/types/response"
