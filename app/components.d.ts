@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AAlert: typeof import('@arco-design/web-vue')['Alert']
     AButton: typeof import('@arco-design/web-vue')['Button']
     ACascader: typeof import('@arco-design/web-vue')['Cascader']
     ACol: typeof import('@arco-design/web-vue')['Col']

@@ -50,6 +50,7 @@
         </a-form>
       </div>
     </a-modal>
+
     <a-modal :visible="subVisible" @ok="okSubVisible" @cancel="clearSubVisible">
       <template #title>选择对象存储路径</template>
       <div>
@@ -69,6 +70,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
+import { onBeforeRouteLeave } from 'vue-router'
 import { useMenuStore } from "@/pinia";
 import {
   article_req,
@@ -96,9 +98,24 @@ const articleFrom: article_req = reactive<article_req>({
 const strType = ref([]);
 const taglist = ref<tags[]>([]);
 const fileDisabled = ref<Boolean>(false)
-onMounted(async () => {
+const menuStore = useMenuStore();
+const getdata = async () => {
   const res = await getTagList(10, 0)
   taglist.value = res.tag_list
+  const s = localStorage.getItem("z_word_draft")
+  if (s != null) {
+    mdString.value = s
+  }
+}
+onMounted(async () => getdata())
+
+let isSave = false
+onBeforeRouteLeave((to, from) => {
+  if (isSave === false && mdString.value !== "") {
+    localStorage.setItem("z_word_draft", mdString.value)
+    Message.warning("文章以保存为草稿")
+  }
+  return true
 })
 
 const cosOpt: CosTempKeyRequest = {
@@ -120,7 +137,7 @@ const options = [
   },
 ];
 
-const menuStore = useMenuStore();
+
 const save = (text: string, html: string) => {
   articleFrom.articleContext = text;
   visible.value = true;
@@ -133,7 +150,6 @@ const handleSubmit = () => {
 const onRadChange = (value: string) => {
   if (value === articleStorageType.oos) {
     subVisible.value = true;
-    
   } else {
     fileDisabled.value = true
   }
@@ -145,11 +161,15 @@ const handleOk = async () => {
     let key = await createArticle(articleFrom, strType.value)
     if (key) {
       Message.success("创建成功")
+      getdata()
+      isSave = true
+      visible.value = false;
     }
-    visible.value = false;
+    return
   } catch (e) {
-
+    console.log(e)
   }
+  Message.error("创建失败")
 };
 
 const handleCancel = () => {
