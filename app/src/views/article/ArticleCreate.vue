@@ -77,6 +77,7 @@ import {
   tags,
 } from "@/types/request";
 import { createArticle, getTagList, postArticle } from "@/api/article";
+import { Message } from '@arco-design/web-vue';
 const mdString = ref("");
 const visible = ref(false);
 const subVisible = ref(false);
@@ -140,9 +141,15 @@ const onRadChange = (value: string) => {
 
 // 创建
 const handleOk = async () => {
-  let key = await postArticle(articleFrom)
-  console.log(key);
-  // visible.value = false;
+  try {
+    let key = await createArticle(articleFrom, strType.value)
+    if (key) {
+      Message.success("创建成功")
+    }
+    visible.value = false;
+  } catch (e) {
+
+  }
 };
 
 const handleCancel = () => {

@@ -27,23 +27,23 @@ export async function getArticleList(
 
 export async function createArticle(
   art: article_req,
-  opt: string,
   key: Array<string>
 ): Promise<boolean> {
-  const cosOpt: CosTempKeyRequest = {
-    Region: "ap-nanjing",
-    Bucket: "bloghtml-1301735126",
-    action: "",
-  };
-  const path = key.concat(art.articleName).join("/");
   return new Promise<boolean>((resolve, reject) => {
-    if (opt === articleStorageType.oos) {
+    if (art.articleStorageType === articleStorageType.oos) {
+      const cosOpt: CosTempKeyRequest = {
+        Region: "ap-nanjing",
+        Bucket: "bloghtml-1301735126",
+        action: "",
+      };
+      const path = key.concat(art.articleName).join("/");
       putObject(cosOpt, art.articleContext, path, (err, data) => {
         if (err) {
           reject(err);
         } else {
           if (data.statusCode === 200) {
             art.articleUrl = data.Location;
+            art.articleContext = "";
             postArticle(art).then(resolve).catch(reject);
           } else {
             reject(data);

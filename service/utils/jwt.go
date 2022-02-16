@@ -50,11 +50,11 @@ func ParseToken(token string) (*Claims, int) {
 
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
-			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+			if ve.Errors & jwt.ValidationErrorMalformed != 0 {
 				return nil, errcode.UnauthorizedTokenNotEffective
-			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
+			} else if ve.Errors & jwt.ValidationErrorExpired != 0 {
 				return nil, errcode.UnauthorizedTokenTimeout
-			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
+			} else if ve.Errors & jwt.ValidationErrorNotValidYet != 0 {
 				return nil, errcode.UnauthorizedTokenError
 			} else {
 				return nil, errcode.UnauthorizedTokenError
