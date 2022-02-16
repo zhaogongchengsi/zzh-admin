@@ -29,7 +29,7 @@
               <template #content>
                 <div class="tags">
                   <a-space direction="vertical" align="center">
-                    <a-tag v-for="(item,index) in record.article_tags" :key="index" :color="randomHexColor()">{{item.tag}}</a-tag>
+                    <a-tag v-for="(item,index) in record.article_tags" :key="index" :color="item.tag_color" >{{item.tag}}</a-tag>
                   </a-space>
                 </div>
               </template>
@@ -52,11 +52,11 @@ const articles = ref<article[]>([]);
 const pagConf = reactive({
   total: 0,
   current: 1,
-  pageSize: 5,
+  pageSize: 20,
 })
 onMounted(async () => {
   try {
-    const res = await getArticleList(0, 0);
+    const res = await getArticleList(20, 0);
     articles.value = res.article_list;
     pagConf.total = res.count
   } catch (e) {

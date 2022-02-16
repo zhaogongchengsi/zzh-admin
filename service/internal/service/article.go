@@ -7,7 +7,7 @@ import (
 )
 
 // CreateArticle 创建文章
-func CreateArticle(article *model.Article) (ar *model.Article, err error)  {
+func CreateArticle(article *model.Article, tags []int) (ar *model.Article, err error)  {
 	if article.ArticleStorageType == "services" {
 		file, fer := SaveString(article.ArticleContext, article.ArticleFileName, false)
 		if fer != nil {
@@ -17,9 +17,15 @@ func CreateArticle(article *model.Article) (ar *model.Article, err error)  {
 		article.ArticleUrl = file.SavaPath
 		article.ArticleFileName = file.FileName
 	}
-	//var art []model.ArticleTags
-	//err = global.DBEngine.Find(&art).Error
-	//article.ArticleTags = art
+	var tagslist []model.ArticleTags
+	for _, i := range tags {
+		ta, err := GetTag(i)
+		if err != nil {
+			return article, err
+		}
+		tagslist = append(tagslist, ta)
+	}
+	article.ArticleTags = tagslist
 	err = global.DBEngine.Create(&article).Error
 	return article, err
 }
@@ -42,4 +48,12 @@ func GetTagLis(lo request.LimitOffset) (arts []model.ArticleTags, num int64, err
 	var number int64
 	err = global.DBEngine.Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
 	return art,number, err
+}
+
+// GetTag 根据id 查询标签
+func GetTag(id int) (model.ArticleTags, error) {
+	var tag model.ArticleTags
+	 err := global.DBEngine.Where("id = ?", id).First(&tag).Error
+	return tag, err
+
 }

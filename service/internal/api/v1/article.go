@@ -36,14 +36,7 @@ func CreateArticle(c *gin.Context)  {
 			UUID: value.UUID,
 			ArticleDesc: newArticle.ArticleDesc,
 	}
-	for _,tag := range newArticle.ArticleTags {
-		ar.ArticleTags = append(ar.ArticleTags, model.ArticleTags{
-			Tag:tag.Tag,
-			TagDesc: tag.TagDesc,
-			TagColor: tag.TagColor,
-		})
-	}
-	art, er := service.CreateArticle(&ar)
+	art, er := service.CreateArticle(&ar, newArticle.ArticleTags)
 	if er != nil {
 		res := response.Response{
 			Err: er,

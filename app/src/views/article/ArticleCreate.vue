@@ -17,9 +17,6 @@
           <a-form-item field="articleType" label="文章类型">
             <a-input v-model="articleFrom.articleType" placeholder="请输入文章类型" />
           </a-form-item>
-          <a-form-item field="fileName" label="文件名">
-            <a-input v-model="articleFrom.fileName" placeholder="请输入文件名" />
-          </a-form-item>
           <a-form-item field="articleStorageType" label="存储类型">
             <a-select
               v-model="articleFrom.articleStorageType"
@@ -29,6 +26,9 @@
               <a-option :value="articleStorageType.oos">对象存储</a-option>
               <a-option :value="articleStorageType.databases">数据库</a-option>
             </a-select>
+          </a-form-item>
+          <a-form-item field="fileName" label="文件名">
+            <a-input v-model="articleFrom.fileName" placeholder="请输入文件名" :disabled="fileDisabled" />
           </a-form-item>
           <a-form-item field="articleTags" label="文章标签">
             <a-select
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted,readonly } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useMenuStore } from "@/pinia";
 import {
   article_req,
@@ -76,7 +76,7 @@ import {
   CosTempKeyRequest,
   tags,
 } from "@/types/request";
-import { createArticle, getTagList } from "@/api/article";
+import { createArticle, getTagList, postArticle } from "@/api/article";
 const mdString = ref("");
 const visible = ref(false);
 const subVisible = ref(false);
@@ -94,12 +94,11 @@ const articleFrom: article_req = reactive<article_req>({
 });
 const strType = ref([]);
 const taglist = ref<tags[]>([]);
-
+const fileDisabled = ref<Boolean>(false)
 onMounted(async () => {
   const res = await getTagList(10, 0)
   taglist.value = res.tag_list
 })
-
 
 const cosOpt: CosTempKeyRequest = {
   Region: "ap-nanjing",
@@ -133,19 +132,15 @@ const handleSubmit = () => {
 const onRadChange = (value: string) => {
   if (value === articleStorageType.oos) {
     subVisible.value = true;
+    
+  } else {
+    fileDisabled.value = true
   }
 };
 
 // 创建
 const handleOk = async () => {
-   articleFrom.articleTags = articleFrom.articleTags.map((artga) => {
-    const t = taglist.value.find(t => (t.ID === artga))
-    if (t) {
-      return readonly(t)
-    }
-  })
-  console.log(articleFrom)
-  let key = await createArticle(articleFrom,articleStorageType.oos, strType.value)
+  let key = await postArticle(articleFrom)
   console.log(key);
   // visible.value = false;
 };
