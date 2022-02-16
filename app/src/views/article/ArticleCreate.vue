@@ -40,8 +40,8 @@
               <a-option
                 v-for="(item, index) in taglist"
                 :key="index"
-                :value="item"
-              >{{item}}</a-option>
+                :value="item.ID"
+              >{{item.tag}}</a-option>
             </a-select>
           </a-form-item>
           <a-form-item field="article_desc" label="文章描述">
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted,readonly } from "vue";
 import { useMenuStore } from "@/pinia";
 import {
   article_req,
@@ -76,7 +76,7 @@ import {
   CosTempKeyRequest,
   tags,
 } from "@/types/request";
-import { createArticle } from "@/api/article";
+import { createArticle, getTagList } from "@/api/article";
 const mdString = ref("");
 const visible = ref(false);
 const subVisible = ref(false);
@@ -93,7 +93,13 @@ const articleFrom: article_req = reactive<article_req>({
   article_desc: "",
 });
 const strType = ref([]);
-const taglist = ref<string[]>(['javascript', 'golang']);
+const taglist = ref<tags[]>([]);
+
+onMounted(async () => {
+  const res = await getTagList(10, 0)
+  taglist.value = res.tag_list
+})
+
 
 const cosOpt: CosTempKeyRequest = {
   Region: "ap-nanjing",
@@ -129,13 +135,21 @@ const onRadChange = (value: string) => {
     subVisible.value = true;
   }
 };
+
 // 创建
 const handleOk = async () => {
-  // console.log(articleFrom);
+   articleFrom.articleTags = articleFrom.articleTags.map((artga) => {
+    const t = taglist.value.find(t => (t.ID === artga))
+    if (t) {
+      return readonly(t)
+    }
+  })
+  console.log(articleFrom)
   let key = await createArticle(articleFrom,articleStorageType.oos, strType.value)
   console.log(key);
   // visible.value = false;
 };
+
 const handleCancel = () => {
   visible.value = false;
 };

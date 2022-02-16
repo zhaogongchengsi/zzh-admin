@@ -17,6 +17,9 @@ func CreateArticle(article *model.Article) (ar *model.Article, err error)  {
 		article.ArticleUrl = file.SavaPath
 		article.ArticleFileName = file.FileName
 	}
+	//var art []model.ArticleTags
+	//err = global.DBEngine.Find(&art).Error
+	//article.ArticleTags = art
 	err = global.DBEngine.Create(&article).Error
 	return article, err
 }

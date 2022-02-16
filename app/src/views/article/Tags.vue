@@ -55,6 +55,7 @@ const tagFrom = reactive({
   tag: "",
   tag_color: "#37D4CF",
   tag_desc: "",
+  ID: 0
 });
 const taglist = ref<tags[]>([]);
 onMounted(async () => {

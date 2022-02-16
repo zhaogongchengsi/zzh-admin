@@ -28,6 +28,7 @@ type ArticleTags struct {
 	Tag string `gorm:"tag_name; comment: 标签名字" json:"tag"`
 	TagColor string `gorm:"tag_color; comment:标签颜色; default:#008C8C" json:"tag_color"`
 	TagDesc string `gorm:"tag_desc; comment:标签描述; default:暂无描述，请添加描述" json:"tag_desc"`
+	TagArticles []Article `gorm:"comment:标签下的文章;many2many:article_tag;" json:"tag_articles"`
 }
 //
 //type ArticleStorageType struct {

@@ -38,7 +38,9 @@ func CreateArticle(c *gin.Context)  {
 	}
 	for _,tag := range newArticle.ArticleTags {
 		ar.ArticleTags = append(ar.ArticleTags, model.ArticleTags{
-			Tag:tag,
+			Tag:tag.Tag,
+			TagDesc: tag.TagDesc,
+			TagColor: tag.TagColor,
 		})
 	}
 	art, er := service.CreateArticle(&ar)

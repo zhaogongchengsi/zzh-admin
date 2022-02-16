@@ -32,7 +32,7 @@ export interface article_req {
   articleAuthor: string
   articleType: string
   articleContext: string
-  articleTags: Array<article_tags>
+  articleTags: Array<number | tags | undefined>
   article_desc: string
 }
 
