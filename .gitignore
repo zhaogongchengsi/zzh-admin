@@ -8,3 +8,4 @@ dist-ssr
 service/docs/*
 service/assets/*
 web/stats.html
+service/service.exe

@@ -5,7 +5,6 @@ import '@arco-design/web-vue/dist/arco.css';
 import { createPinia } from 'pinia'
 import router from './router';
 import "./assets/reset.css"
-import './assets/mixin.scss'
 // 编辑器插件
 import VueMarkdownEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';

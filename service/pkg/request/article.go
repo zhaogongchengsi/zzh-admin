@@ -12,3 +12,9 @@ type Article struct {
 	ArticleTags []string `json:"articleTags"`
 	ArticleDesc string `json:"article_desc"`
 }
+
+type Tag struct {
+	Tag string `json:"tag"`
+	TagColor string `json:"tag_color"`
+	TagDesc string `json:"tag_desc"`
+}

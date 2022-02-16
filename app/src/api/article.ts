@@ -4,6 +4,7 @@ import {
   articleStorageType,
   CosTempKeyRequest,
   article_req,
+  tags
 } from "@/types/request";
 import { putObject } from "./cos";
 export async function getArticleList(
@@ -58,6 +59,36 @@ export async function createArticle(
 export async function postArticle(art: article_req): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     Post("article/create_article", art)
+      .then((res) => {
+        const state = confirmStatus(<state>res.data.state);
+        if (state) {
+          resolve(res.data.data);
+        } else {
+          reject(res.data.state);
+        }
+      })
+      .catch(reject);
+  });
+}
+
+export async function getTagList(limit:number, offset: number) :Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    Get(`article/tags/get_tags?limit=${limit}&offset=${offset}`)
+    .then(res => {
+       const state = confirmStatus(<state>res.data.state);
+        if (state) {
+          resolve(res.data.data);
+        } else {
+          reject(res.data.state);
+        }
+    })
+    .catch(reject);
+  })
+}
+
+export async function createTag(tag: tags): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    Post("article/tags/create_tag", tag)
       .then((res) => {
         const state = confirmStatus(<state>res.data.state);
         if (state) {

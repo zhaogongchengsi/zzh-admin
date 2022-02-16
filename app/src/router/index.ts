@@ -31,6 +31,11 @@ const routes = [
         path: "/media_upload",
         name: "media_upload",
         component: () => import("@/views/MediaLib/UpMed.vue"),
+      },
+      {
+        path: "/tags",
+        name: "tags",
+        component: () => import("@/views/article/Tags.vue"),
       }
     ]
   },

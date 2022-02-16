@@ -1,6 +1,6 @@
 Server:
 #  debug release
-  RenMode: release
+  RenMode: debug
   HttpPort: 8000
   ReadTimeout: 60
   WriteTimeout: 60

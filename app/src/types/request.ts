@@ -44,5 +44,7 @@ export interface CosTempKeyRequest {
 
 export interface tags {
   tag:string
-	details: string
+	tag_desc:string
+  tag_color:string
+  ID:number
 }

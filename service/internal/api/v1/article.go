@@ -8,7 +8,6 @@ import (
 	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
 	"github/gin-react-admin/utils"
-	"strconv"
 )
 
 
@@ -62,11 +61,7 @@ func CreateArticle(c *gin.Context)  {
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/article/get_article_list [get]
 func GetArticleList(c *gin.Context) {
-	limits := c.DefaultQuery("limit", "10")
-	offsets := c.DefaultQuery("offset", "1")
-	limit, _ := strconv.Atoi(limits)
-	offset, _ := strconv.Atoi(offsets)
-	lo := request.NewLimit(limit, offset)
+	lo := request.GetLimitOffset(c)
 	artist, con,  err := service.GetArticleList(*lo)
 	if err != nil {
 		res := response.Response{
@@ -78,6 +73,60 @@ func GetArticleList(c *gin.Context) {
 	}
 	resOk := response.Response{Data:map[string]interface{}{
 		"article_list":artist,
+		"limit_offset": lo,
+		"count":con,
+	}}
+	resOk.Send(c)
+}
+
+
+// @Tags Article
+// @Summary 创建标签
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/tags/create_tag [post]
+func CreateTag (c *gin.Context)  {
+	var newtag request.Tag
+	if err := c.ShouldBindJSON(&newtag); err != nil {
+		res := response.Response{Err: err}
+		res.SendInputParameterError(c)
+		return
+	}
+
+	ar := model.ArticleTags {
+		Tag: newtag.Tag,
+		TagColor: newtag.TagColor,
+		TagDesc: newtag.TagDesc,
+	}
+
+	tag, er := service.CreateTag(&ar)
+	if er != nil {
+		res := response.Response{
+			Err: er,
+			State: response.State{Message: "标签创建失败", Code: errcode.CreateError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: *tag}
+	resOk.Send(c)
+}
+
+
+
+func GetTagList (c *gin.Context) {
+	lo := request.GetLimitOffset(c)
+	tags, con , err := service.GetTagLis(*lo)
+	if err != nil {
+		res := response.Response{
+			Err: err,
+			State: response.State{Message: "标签获取失败", Code: errcode.FindError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data:map[string]interface{}{
+		"tag_list":tags,
 		"limit_offset": lo,
 		"count":con,
 	}}

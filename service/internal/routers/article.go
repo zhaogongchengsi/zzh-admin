@@ -11,9 +11,7 @@ func NewArticle (g *gin.Engine) {
 	{
 		app.POST("/create_article", v1.CreateArticle)
 		app.GET("/get_article_list", v1.GetArticleList)
-		//app.POST("/find_menu", v1.GetMenuByID)
-		//app.POST("/up_menu", v1.UpMenu)
-		//app.GET("/get_menu", v1.GetMenus)
-		//app.POST("/get_submenu", v1.GetSubMenus)
+		app.GET("/tags/get_tags", v1.GetTagList)
+		app.POST("/tags/create_tag", v1.CreateTag)
 	}
 }

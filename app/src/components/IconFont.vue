@@ -12,5 +12,5 @@ const props = defineProps({
         default: false
     }
 })
-const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_3yp9vnllt1n.js' });
+const IconFont = Icon.addFromIconFontCn({ src: 'https://at.alicdn.com/t/font_3178565_a9xd4lsdgje.js' });
 </script>

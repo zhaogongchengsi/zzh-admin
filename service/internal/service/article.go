@@ -21,9 +21,22 @@ func CreateArticle(article *model.Article) (ar *model.Article, err error)  {
 	return article, err
 }
 
+// 分页获取文章
 func GetArticleList(lo request.LimitOffset) (arts []model.Article, num int64, err error) {
 	var art []model.Article
 	var number int64
 	err = global.DBEngine.Preload("ArticleTags").Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
+	return art,number, err
+}
+
+func CreateTag(tag *model.ArticleTags) (ar *model.ArticleTags, err error)  {
+	err = global.DBEngine.Create(&tag).Error
+	return tag, err
+}
+
+func GetTagLis(lo request.LimitOffset) (arts []model.ArticleTags, num int64, err error) {
+	var art []model.ArticleTags
+	var number int64
+	err = global.DBEngine.Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
 	return art,number, err
 }

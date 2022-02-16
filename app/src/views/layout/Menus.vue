@@ -54,6 +54,12 @@ const onRoute = (href: string) => {
           </template>
           创建文章
         </blog-menu-item>
+        <blog-menu-item key="1-2" @click="onRoute('/tags')" >
+          <template #icon>
+            <icon-font type="icon-yanshoubiaoqianguanli" />
+          </template>
+          标签管理
+        </blog-menu-item>
       </blog-sub-menu>
       <blog-sub-menu key="2">
         <template #icon>
