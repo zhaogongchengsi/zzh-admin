@@ -3,6 +3,7 @@ package fileService
 import (
 	"github.com/gin-gonic/gin"
 	"github/gin-react-admin/internal/service"
+	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
 )
 
@@ -45,7 +46,7 @@ type StringFile struct {
 }
 
 
-// @Tags Article
+// @Tags File
 // @Summary 上传文件
 // @Produce  application/json
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
@@ -75,4 +76,31 @@ func UpStringWritFile (c *gin.Context) {
 	resok.Send(c)
 }
 
+
+// @Tags File
+// @Summary 获取文件列表
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/upload_download/get_files [get]
+func GetFiles (c *gin.Context) {
+	fileType := c.DefaultQuery("type", "image")
+	host := c.Request.Host
+	lo := request.GetLimitOffset(c)
+	files, err := service.FindFiles(*lo, fileType)
+	if err != nil {
+		reuse := response.Response{
+			Err: err,
+			State: response.State{
+				Message: "文件保存失败",
+			},
+		}
+		reuse.SendError(c)
+		return
+	}
+	resok := response.Response{ Data: map[string]interface{}{
+		"file_list": files,
+		"host": host,
+	}}
+	resok.Send(c)
+}
 

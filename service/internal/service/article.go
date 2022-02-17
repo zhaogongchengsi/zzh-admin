@@ -17,15 +17,15 @@ func CreateArticle(article *model.Article, tags []int) (ar *model.Article, err e
 		article.ArticleUrl = file.SavaPath
 		article.ArticleFileName = file.FileName
 	}
-	var tagslist []model.ArticleTags
+	var tastiest []model.ArticleTags
 	for _, i := range tags {
 		ta, err := GetTag(i)
 		if err != nil {
 			return article, err
 		}
-		tagslist = append(tagslist, ta)
+		tastiest = append(tastiest, ta)
 	}
-	article.ArticleTags = tagslist
+	article.ArticleTags = tastiest
 	err = global.DBEngine.Create(&article).Error
 	return article, err
 }

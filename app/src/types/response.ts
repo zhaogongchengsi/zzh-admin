@@ -72,3 +72,17 @@ export interface cosPutObj {
   Location: string;
   RequestId: string;
 }
+
+export interface file {
+  CreatedAt: string;
+  ID: number;
+  UpdatedAt: string;
+  coverage_times: number;
+  file_broad_type: string;
+  file_ext: string;
+  file_name: string;
+  file_specific_type: string;
+  is_hash: boolean;
+  overwrite: boolean;
+  sava_path: string;
+}
