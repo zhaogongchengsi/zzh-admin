@@ -25,6 +25,10 @@ http.interceptors.request.use(function (config:AxiosRequestConfig) {
 
 // 添加响应拦截器
 http.interceptors.response.use(function (response) {
+    const newtokn = response.headers['new-token'];
+    if (newtokn) {
+      localStorage.setItem('z_token', newtokn)
+    }
     return response;
 }, function (error) {
     // 对响应错误做点什么

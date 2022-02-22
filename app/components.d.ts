@@ -4,8 +4,8 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AAlert: typeof import('@arco-design/web-vue')['Alert']
     AButton: typeof import('@arco-design/web-vue')['Button']
+    ACard: typeof import('@arco-design/web-vue')['Card']
     ACascader: typeof import('@arco-design/web-vue')['Cascader']
     ACol: typeof import('@arco-design/web-vue')['Col']
     ACollapse: typeof import('@arco-design/web-vue')['Collapse']
@@ -16,7 +16,6 @@ declare module 'vue' {
     AForm: typeof import('@arco-design/web-vue')['Form']
     AFormItem: typeof import('@arco-design/web-vue')['FormItem']
     AImage: typeof import('@arco-design/web-vue')['Image']
-    AImagePreviewGroup: typeof import('@arco-design/web-vue')['ImagePreviewGroup']
     AInput: typeof import('@arco-design/web-vue')['Input']
     AList: typeof import('@arco-design/web-vue')['List']
     AListItem: typeof import('@arco-design/web-vue')['ListItem']

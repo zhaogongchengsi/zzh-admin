@@ -59,8 +59,13 @@ const tagFrom = reactive({
 });
 const taglist = ref<tags[]>([]);
 onMounted(async () => {
-  const res = await getTagList(10, 0);
-  taglist.value = res.tag_list;
+  try {
+    const res = await getTagList(10, 0);
+    taglist.value = res.tag_list;
+  } catch (e) {
+    console.error(e);
+  }
+
 });
 
 const createTga = () => (visible.value = true);
