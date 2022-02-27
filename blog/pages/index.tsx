@@ -1,23 +1,26 @@
 import type { NextPage } from 'next'
+import React, { useMemo, useState } from 'react';
 import Head from 'next/head'
-import homeStyle from "../styles/home.module.css"
-import Menu from "../components/Menus"
-import { MoonIcon } from '@heroicons/react/solid'
-
+import homeStyle from '../styles/home.module.css'
+import articleStyle from '../styles/article.module.css'
 const Home: NextPage = () => {
+
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-start bg-white dark:bg-gray-800">
+    <>
       <Head>
         <title>ZZH Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container md:pt-3">
-        <Menu />
+      <div  className={articleStyle.articleList} data-layout="article">
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
+          <div className={articleStyle.articleItem} data-layout="article-item">1231</div>
       </div>
-      <div className="w-12 h-12 rounded-full dark:bg-light-600 bg-gray-800 flex items-center justify-center fixed right-4 bottom-4">
-        <MoonIcon className="w-6 bg-light-600 dark:bg-gray-800" />
-      </div>
-    </div>
+    </>
+
   )
 }
 
