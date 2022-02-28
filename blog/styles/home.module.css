@@ -1,3 +1,4 @@
+
 .blogHomeContainer {
     min-width: 1200px;
     width: 100%;
@@ -5,7 +6,7 @@
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: rgb(229, 236, 241);
+    background-color: rgb(230, 228, 228);
     padding-bottom: 30px;
 }
 
@@ -51,6 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 99;
     /* -webkit-animation: color-change-2x 2s linear infinite alternate-reverse both;
 	        animation: color-change-2x 2s linear infinite alternate-reverse both; */
 }

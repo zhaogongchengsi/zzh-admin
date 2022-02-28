@@ -3,6 +3,17 @@
 @tailwind utilities;
 @import '~@douyinfe/semi-ui/dist/css/semi.min.css';
 
+
+.article-prev {
+    width: 1200px;
+    min-width: 1200px;
+    margin-top: 30px;
+}
+.ed-my {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
 .layout-grid [data-layout="article"] {
     display: grid;
     grid-template-columns: repeat(4,1fr);

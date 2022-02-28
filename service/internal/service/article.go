@@ -38,6 +38,12 @@ func GetArticleList(lo request.LimitOffset) (arts []model.Article, num int64, er
 	return art,number, err
 }
 
+func GetArticleById(id int) (model.Article, error)  {
+	var article model.Article
+	err := global.DBEngine.Where("id = ?", id).Find(&article).Error
+	return article, err
+}
+
 func CreateTag(tag *model.ArticleTags) (ar *model.ArticleTags, err error)  {
 	err = global.DBEngine.Create(&tag).Error
 	return tag, err

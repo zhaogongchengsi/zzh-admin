@@ -8,6 +8,7 @@ import (
 	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/pkg/response"
 	"github/gin-react-admin/utils"
+	"strconv"
 )
 
 
@@ -74,6 +75,22 @@ func GetArticleList(c *gin.Context) {
 	resOk.Send(c)
 }
 
+func ArticleById(c *gin.Context) {
+	id := c.DefaultQuery("id", "1")
+	_id, _ := strconv.Atoi(id)
+	submenus, super := service.GetArticleById(_id)
+	if super != nil {
+		subtrees := response.Response{Err: super, State: response.State{
+			Code: errcode.NotFound,
+			Message: "文章信息获取失败",
+		}}
+		subtrees.SendError(c)
+	}
+	deOk := response.Response{
+		Data: submenus,
+	}
+	deOk.Send(c)
+}
 
 // @Tags Article
 // @Summary 创建标签
