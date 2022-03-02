@@ -3,28 +3,45 @@
 @tailwind utilities;
 @import '~@douyinfe/semi-ui/dist/css/semi.min.css';
 
-
 .article-prev {
-    width: 1200px;
-    min-width: 1200px;
-    margin-top: 30px;
+  width: 1200px;
+  min-width: 1200px;
+  margin-top: 30px;
+  display: flex;
 }
+
+.content-list {
+  width: 200px;
+  margin-left: 30px;
+  background-color: #fff;
+  align-self: flex-start;
+  padding: 10px;
+  box-sizing: border-box;
+  top: 80px;
+}
+
+/* [theme-mode='dark'] .ed-my {
+  background-color: rgb(27, 26, 26);
+  color: #fff;
+} */
+
 .ed-my {
-    padding: 20px;
-    box-sizing: border-box;
+  padding: 20px;
+  box-sizing: border-box;
+  flex: 1;
+  border-style: double !important;
 }
 
-.layout-grid [data-layout="article"] {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    grid-row-gap: 15px;
-    grid-column-gap: 15px;
+.layout-grid [data-layout='article'] {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 15px;
+  grid-column-gap: 15px;
 }
 
-
-.layout-list [data-layout="article"] {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-row-gap: 15px;
-    grid-column-gap: 15px;
+.layout-list [data-layout='article'] {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 15px;
+  grid-column-gap: 15px;
 }

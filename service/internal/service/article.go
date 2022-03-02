@@ -34,7 +34,7 @@ func CreateArticle(article *model.Article, tags []int) (ar *model.Article, err e
 func GetArticleList(lo request.LimitOffset) (arts []model.Article, num int64, err error) {
 	var art []model.Article
 	var number int64
-	err = global.DBEngine.Preload("ArticleTags").Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
+	err = global.DBEngine.Preload("ArticleTags").Offset(lo.Offset-1).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
 	return art,number, err
 }
 
@@ -52,7 +52,7 @@ func CreateTag(tag *model.ArticleTags) (ar *model.ArticleTags, err error)  {
 func GetTagLis(lo request.LimitOffset) (arts []model.ArticleTags, num int64, err error) {
 	var art []model.ArticleTags
 	var number int64
-	err = global.DBEngine.Offset(lo.Offset).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
+	err = global.DBEngine.Offset(lo.Offset-1).Limit(lo.Limit).Find(&art).Offset(-1).Limit(-1).Count(&number).Error
 	return art,number, err
 }
 

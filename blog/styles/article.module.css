@@ -1,12 +1,11 @@
-
 .articleList {
-    width: 1200px;
-    min-width: 1200px;
-    margin: 0 auto;
-    margin-top: 30px;
+  width: 1200px;
+  min-width: 1200px;
+  margin: 0 auto;
+  margin-top: 30px;
 }
 .articleItem {
-    height: 200px;
-    background-color: #fff;
-    border-radius: 5px;
+  height: 200px;
+  background-color: #fff;
+  border-radius: 5px;
 }

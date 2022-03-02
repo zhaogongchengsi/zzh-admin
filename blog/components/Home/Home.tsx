@@ -14,12 +14,19 @@ const HomeContainer: NextPage = ({children}) => {
 
     function isDark () {
       const body = document.body;
+      const editor = document.querySelector('.ed-my')
       if (DarkTheme === false) {
         window.document.documentElement.classList.add('dark')
         body.setAttribute('theme-mode', 'dark');
+        if (editor != null) {
+          editor.classList.add('md-dark')
+        } 
       } else {
         window.document.documentElement.classList.remove('dark')
         body.removeAttribute('theme-mode');
+        if (editor != null) {
+          editor.classList.remove('md-dark')
+        }
       }
     }
 
@@ -57,7 +64,7 @@ const HomeContainer: NextPage = ({children}) => {
                       <Space>
                         <IconMoon />
                         <Text>{DarkTheme ? '暗黑模式' : '白色模式'}</Text>
-                        <Switch size="small" onChange={onDarkEvent} />
+                        <Switch size="small" checked={DarkTheme} onChange={onDarkEvent} />
                       </Space>
                     </Nav.Item>
                     <Nav.Item itemKey={'layui'} text={'布局'} >
