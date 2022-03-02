@@ -38,17 +38,20 @@ func GetArticleList(lo request.LimitOffset) (arts []model.Article, num int64, er
 	return art,number, err
 }
 
+// 根据文章id 获取文章信息
 func GetArticleById(id int) (model.Article, error)  {
 	var article model.Article
 	err := global.DBEngine.Where("id = ?", id).Find(&article).Error
 	return article, err
 }
 
+// 创建文章标签
 func CreateTag(tag *model.ArticleTags) (ar *model.ArticleTags, err error)  {
 	err = global.DBEngine.Create(&tag).Error
 	return tag, err
 }
 
+// 获取标签列表
 func GetTagLis(lo request.LimitOffset) (arts []model.ArticleTags, num int64, err error) {
 	var art []model.ArticleTags
 	var number int64
@@ -62,4 +65,9 @@ func GetTag(id int) (model.ArticleTags, error) {
 	 err := global.DBEngine.Where("id = ?", id).First(&tag).Error
 	return tag, err
 
+}
+
+func CreateArtType (retype *model.ArticleType) (model.ArticleType, error) {
+	err := global.DBEngine.Create(&retype).Error
+	return *retype, err
 }

@@ -31,7 +31,8 @@ func CreateArticle(c *gin.Context)  {
 			ArticleAuthor: value.NickName,
 			ArticleName: newArticle.FileName,
 			ArticleStorageType: newArticle.ArticleStorageType,
-			ArticleType: newArticle.ArticleType,
+			// 文章类型
+			//ArticleType: newArticle.ArticleType,
 			ArticleTitle: newArticle.ArticleTitle,
 			ArticleUrl: newArticle.ArticleUrl,
 			UUID: value.UUID,
@@ -125,7 +126,11 @@ func CreateTag (c *gin.Context)  {
 }
 
 
-
+// @Tags Article
+// @Summary 获取文章标签列表
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/tags/get_tags [get]
 func GetTagList (c *gin.Context) {
 	lo := request.GetLimitOffset(c)
 	tags, con , err := service.GetTagLis(*lo)
@@ -142,5 +147,37 @@ func GetTagList (c *gin.Context) {
 		"limit_offset": lo,
 		"count":con,
 	}}
+	resOk.Send(c)
+}
+
+
+// @Tags Article
+// @Summary 创建文章类型
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/create_article_type [post]
+func CreateArticleTyoe (c *gin.Context)  {
+	var newType request.ArticleType
+	if err := c.ShouldBindJSON(&newType); err != nil {
+		res := response.Response{Err: err}
+		res.SendInputParameterError(c)
+		return
+	}
+	//value, _ := utils.GetHeaderUser(c)
+	ar := model.ArticleType{
+		Type: newType.Type,
+		TypeDesc: newType.TypeDesc,
+		TypeLogo: newType.TypeLogo,
+	}
+	art, er := service.CreateArtType(&ar)
+	if er != nil {
+		res := response.Response{
+			Err: er,
+			State: response.State{Message: "文章类型失败", Code: errcode.CreateError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: art}
 	resOk.Send(c)
 }

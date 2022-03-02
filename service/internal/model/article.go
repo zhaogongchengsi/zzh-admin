@@ -16,7 +16,7 @@ type Article struct {
 	ArticleAuthor string `gorm:"comment:文章作者" json:"article_author"`
 	ArticleContext string `gorm:"type:text;comment:文章内容(作为字符串存储在数据库时)" json:"article_context"`
 	ArticleFileName string `gorm:"comment: 文章的文件名字" json:"article_file_name"`
-	ArticleType string `gorm:"comment:文章类型" json:"article_type"`
+	ArticleType ArticleType `gorm:"comment:文章类型" json:"article_type"`
 	ArticleDesc string `gorm:"comment:文章介绍;default:暂无介绍" json:"article_desc"`
 	Likes int `gorm:"comment:点赞数" json:"likes"`
 	NumberViews int `gorm:"comment:观看数" json:"number_views"`
@@ -30,8 +30,11 @@ type ArticleTags struct {
 	TagDesc string `gorm:"tag_desc; comment:标签描述; default:暂无描述，请添加描述" json:"tag_desc"`
 	TagArticles []Article `gorm:"comment:标签下的文章;many2many:article_tag;" json:"tag_articles"`
 }
-//
-//type ArticleStorageType struct {
-//	ArticleStorage string `gorm:"article_storage; comment:文章存储类型; default: cos"`
-//	ArticleType string `gorm:"article_type; comment:文章的类型"`
-//}
+
+type ArticleType struct {
+	gorm.Model
+	Type string `gorm:"article_type; comment: 文章类型" json:"article_type"`
+	TypeDesc string `gorm:"article_type_desc; comment:文章类型描述; default:暂无描述，请添加描述" json:"article_type_desc"`
+	TypeArticle []Article `gorm:"foreignKey:ArticleName;comment:标签下的文章" json:"type_articles"`
+	TypeLogo string `gorm:"comment:文章类型的logo;default:类型无logo"`
+}

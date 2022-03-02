@@ -18,3 +18,10 @@ type Tag struct {
 	TagColor string `json:"tag_color"`
 	TagDesc string `json:"tag_desc"`
 }
+
+type ArticleType struct {
+	Type string `json:"article_type" binding:"required"`
+	TypeDesc string `json:"article_type_desc"`
+	TypeArticle []Article `json:"type_articles"`
+	TypeLogo string `json:"type_logo"`
+}
