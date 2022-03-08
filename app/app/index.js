@@ -1,11 +1,16 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain
+} = require("electron");
 const path = require("path");
 
 let win = null;
+
 function env() {
-  if (process.env.NODE_ENV === "production" /* 生产环境 */) {
+  if (process.env.NODE_ENV === "production" /* 生产环境 */ ) {
     return false;
-  } else if (process.env.NODE_ENV === "development" /* 开发环境 */) {
+  } else if (process.env.NODE_ENV === "development" /* 开发环境 */ ) {
     return true;
   }
   return false;
@@ -19,7 +24,7 @@ function createWindow() {
     preload: path.join(__dirname, "preload.js"),
     devTools: env(),
   };
-  const icon_path = env() ? "../public/favicon1.ico" : "./dist/favicon1.ico";
+  const icon_path = env() ? "../public/blog_logo.png" : "./dist/blog_logo.png";
   const options = {
     width: 1500,
     height: 800,

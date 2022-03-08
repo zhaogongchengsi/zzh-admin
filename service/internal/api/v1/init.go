@@ -20,10 +20,10 @@ type InitService struct {
 // AutoMigrated 数据库迁移接口
 func AutoMigrated(c *gin.Context) {
 	err := i.AutoMigrate()
-	i.Menus()
-	user, er := i.UserAdmin()
-	if err != nil || er != nil {
-		c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化失败", "err": err, "user": user})
+	//i.Menus()
+	//user, er := i.UserAdmin()
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化失败", "err": err})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"mag": "数据库初始化成功"})

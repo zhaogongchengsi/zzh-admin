@@ -1,10 +1,10 @@
 import { Post, confirmStatus, Get } from "@/utils/service";
-import { article, state, articleList } from "@/types/response";
-import {
+import type { article, state, articleList, ArticleType } from "@/types/response";
+import type {
   articleStorageType,
   CosTempKeyRequest,
   article_req,
-  tags
+  tags,
 } from "@/types/request";
 import { putObject } from "./cos";
 export async function getArticleList(
@@ -71,19 +71,19 @@ export async function postArticle(art: article_req): Promise<boolean> {
   });
 }
 
-export async function getTagList(limit:number, offset: number) :Promise<any> {
+export async function getTagList(limit: number, offset: number): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     Get(`article/tags/get_tags?limit=${limit}&offset=${offset}`)
-    .then(res => {
-       const state = confirmStatus(<state>res.data.state);
+      .then((res) => {
+        const state = confirmStatus(<state>res.data.state);
         if (state) {
           resolve(res.data.data);
         } else {
           reject(res.data.state);
         }
-    })
-    .catch(reject);
-  })
+      })
+      .catch(reject);
+  });
 }
 
 export async function createTag(tag: tags): Promise<boolean> {
@@ -99,4 +99,34 @@ export async function createTag(tag: tags): Promise<boolean> {
       })
       .catch(reject);
   });
+}
+
+export async function getArticleType(): Promise<Array<ArticleType>> {
+  return new Promise<Array<ArticleType>>((resolve, reject) => {
+    Get(`article/types/get_types`)
+      .then((res) => {
+        const state = confirmStatus(<state>res.data.state);
+        if (state) {
+          resolve(res.data.data);
+        } else {
+          reject(res.data.state);
+        }
+      })
+      .catch(reject);
+  });
+}
+
+export async function createArticleType (atype: ArticleType) : Promise<ArticleType> {
+  return new Promise<ArticleType>((resolve, reject) => {
+    Post('article/types/create_type', atype)
+    .then(res => {
+       const state = confirmStatus(<state>res.data.state);
+        if (state) {
+          resolve(res.data.data);
+        } else {
+          reject(res.data.state);
+        }
+    })
+    .catch(reject)
+  })
 }

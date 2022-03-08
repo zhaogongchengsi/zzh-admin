@@ -66,8 +66,14 @@ func GetTag(id int) (model.ArticleTags, error) {
 	return tag, err
 
 }
-
+// 创建文章类型
 func CreateArtType (retype *model.ArticleType) (model.ArticleType, error) {
 	err := global.DBEngine.Create(&retype).Error
 	return *retype, err
+}
+
+func GetArticleType () ([]model.ArticleType, error) {
+	var typist []model.ArticleType
+	err := global.DBEngine.Find(&typist).Error
+	return typist, err
 }

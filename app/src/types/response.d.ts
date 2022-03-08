@@ -86,3 +86,12 @@ export interface file {
   overwrite: boolean;
   sava_path: string;
 }
+
+export interface ArticleType {
+  ID?:number
+  article_type: string
+  article_type_desc: string,
+  type_articles?: any[],
+  type_logo: string
+  [property: string]: any
+}

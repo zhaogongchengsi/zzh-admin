@@ -1,16 +1,16 @@
 import { confirmStatus, Post, Get } from "@/utils/service";
 import { state, file } from "@/types/response";
 
-export async function uploadFile(option: any): Promise<boolean> {
+export async function uploadFile(option: any): Promise<any> {
   const { onProgress, onError, onSuccess, fileItem, name } = option;
   const fd = new FormData();
   fd.append("file", fileItem.file);
-  return new Promise<boolean>((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     Post("/upload_download/upload", fd)
       .then((response) => {
         const state = confirmStatus(<state>response.data.state);
         if (state) {
-          resolve(true);
+          resolve(response.data.data);
           onSuccess(response);
         } else {
           onError(response);

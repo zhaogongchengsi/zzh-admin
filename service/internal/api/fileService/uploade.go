@@ -15,6 +15,7 @@ import (
 // @Router /api/v1/upload_download/upload [post]
 func UpLoad(c *gin.Context)  {
 	file, err := c.FormFile("file")
+	host := c.Request.Host
 	if err != nil {
 	 	reset := response.Response{
 			Err: err,
@@ -36,7 +37,10 @@ func UpLoad(c *gin.Context)  {
 		reuse.SendError(c)
 		return
 	}
-	resok := response.Response{ Data:fileMo }
+	resok := response.Response{ Data: map[string]interface{}{
+		"file": fileMo,
+		"host": host,
+	}}
 	resok.Send(c)
 }
 

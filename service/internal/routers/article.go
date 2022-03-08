@@ -14,5 +14,8 @@ func NewArticle (g *gin.Engine) {
 
 		app.GET("/tags/get_tags", v1.GetTagList)
 		app.POST("/tags/create_tag", v1.CreateTag)
+
+		app.POST("/types/create_type", v1.CreateArticleType)
+		app.GET("/types/get_types", v1.GetArticleTypes)
 	}
 }

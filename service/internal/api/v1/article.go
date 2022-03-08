@@ -156,7 +156,7 @@ func GetTagList (c *gin.Context) {
 // @Produce  application/json
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/article/create_article_type [post]
-func CreateArticleTyoe (c *gin.Context)  {
+func CreateArticleType(c *gin.Context)  {
 	var newType request.ArticleType
 	if err := c.ShouldBindJSON(&newType); err != nil {
 		res := response.Response{Err: err}
@@ -173,11 +173,25 @@ func CreateArticleTyoe (c *gin.Context)  {
 	if er != nil {
 		res := response.Response{
 			Err: er,
-			State: response.State{Message: "文章类型失败", Code: errcode.CreateError},
+			State: response.State{Message: "创建文章类型失败", Code: errcode.CreateError},
 		}
 		res.SendError(c)
 		return
 	}
 	resOk := response.Response{Data: art}
+	resOk.Send(c)
+}
+
+func GetArticleTypes (c *gin.Context) {
+	typist, err := service.GetArticleType()
+	if err != nil {
+		res := response.Response{
+			Err: err,
+			State: response.State{Message: "查询文章类型失败", Code: errcode.FindError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: typist}
 	resOk.Send(c)
 }

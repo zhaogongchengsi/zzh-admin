@@ -47,7 +47,7 @@ const Home = (props) => {
 }
 
 export async function getServerSideProps() {
-  const _res = await get(`article/get_article_list?limit=${10}&offset=${1}`)
+  const _res = await get(`article/get_article_list?limit=${10}&offset=${0}`)
   const res = confirm(_res)
   if (res) {
     return {

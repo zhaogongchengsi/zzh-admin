@@ -23,5 +23,5 @@ type ArticleType struct {
 	Type string `json:"article_type" binding:"required"`
 	TypeDesc string `json:"article_type_desc"`
 	TypeArticle []Article `json:"type_articles"`
-	TypeLogo string `json:"type_logo"`
+	TypeLogo int `json:"type_logo"`
 }

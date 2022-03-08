@@ -59,6 +59,12 @@ const onRoute = (href: string) => {
           </template>
           标签管理
         </blog-menu-item>
+        <blog-menu-item key="1-3" @click="onRoute('/article_type')" >
+          <template #icon>
+            <icon-font type="icon-xiangmuleixingtongji" />
+          </template>
+          类型管理
+        </blog-menu-item>
       </blog-sub-menu>
       <blog-sub-menu key="2">
         <template #icon>
