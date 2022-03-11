@@ -17,9 +17,6 @@
           <a-form-item field="articleType" label="文章类型">
             <a-input v-model="articleFrom.articleType" placeholder="请输入文章类型" />
           </a-form-item>
-          <a-form-item field="fileName" label="文件名">
-            <a-input v-model="articleFrom.fileName" placeholder="请输入文件名" />
-          </a-form-item>
           <a-form-item field="articleStorageType" label="存储类型">
             <a-select
               v-model="articleFrom.articleStorageType"
@@ -29,6 +26,9 @@
               <a-option :value="articleStorageType.oos">对象存储</a-option>
               <a-option :value="articleStorageType.databases">数据库</a-option>
             </a-select>
+          </a-form-item>
+          <a-form-item field="fileName" label="文件名">
+            <a-input v-model="articleFrom.fileName" placeholder="请输入文件名" :disabled="fileDisabled" />
           </a-form-item>
           <a-form-item field="articleTags" label="文章标签">
             <a-select
@@ -40,8 +40,8 @@
               <a-option
                 v-for="(item, index) in taglist"
                 :key="index"
-                :value="item"
-              >{{item}}</a-option>
+                :value="item.ID"
+              >{{item.tag}}</a-option>
             </a-select>
           </a-form-item>
           <a-form-item field="article_desc" label="文章描述">
@@ -50,6 +50,7 @@
         </a-form>
       </div>
     </a-modal>
+
     <a-modal :visible="subVisible" @ok="okSubVisible" @cancel="clearSubVisible">
       <template #title>选择对象存储路径</template>
       <div>
@@ -68,7 +69,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { onBeforeRouteLeave } from 'vue-router'
 import { useMenuStore } from "@/pinia";
 import {
   article_req,
@@ -76,7 +78,8 @@ import {
   CosTempKeyRequest,
   tags,
 } from "@/types/request";
-import { createArticle } from "@/api/article";
+import { createArticle, getTagList, postArticle } from "@/api/article";
+import { Message } from '@arco-design/web-vue';
 const mdString = ref("");
 const visible = ref(false);
 const subVisible = ref(false);
@@ -93,7 +96,27 @@ const articleFrom: article_req = reactive<article_req>({
   article_desc: "",
 });
 const strType = ref([]);
-const taglist = ref<string[]>(['javascript', 'golang']);
+const taglist = ref<tags[]>([]);
+const fileDisabled = ref<Boolean>(false)
+const menuStore = useMenuStore();
+const getdata = async () => {
+  const res = await getTagList(10, 0)
+  taglist.value = res.tag_list
+  const s = localStorage.getItem("z_word_draft")
+  if (s != null) {
+    mdString.value = s
+  }
+}
+onMounted(async () => getdata())
+
+let isSave = false
+onBeforeRouteLeave((to, from) => {
+  if (isSave === false && mdString.value !== "") {
+    localStorage.setItem("z_word_draft", mdString.value)
+    Message.warning("文章以保存为草稿")
+  }
+  return true
+})
 
 const cosOpt: CosTempKeyRequest = {
   Region: "ap-nanjing",
@@ -114,7 +137,7 @@ const options = [
   },
 ];
 
-const menuStore = useMenuStore();
+
 const save = (text: string, html: string) => {
   articleFrom.articleContext = text;
   visible.value = true;
@@ -127,15 +150,28 @@ const handleSubmit = () => {
 const onRadChange = (value: string) => {
   if (value === articleStorageType.oos) {
     subVisible.value = true;
+  } else {
+    fileDisabled.value = true
   }
 };
+
 // 创建
 const handleOk = async () => {
-  // console.log(articleFrom);
-  let key = await createArticle(articleFrom,articleStorageType.oos, strType.value)
-  console.log(key);
-  // visible.value = false;
+  try {
+    let key = await createArticle(articleFrom, strType.value)
+    if (key) {
+      Message.success("创建成功")
+      getdata()
+      isSave = true
+      visible.value = false;
+    }
+    return
+  } catch (e) {
+    console.log(e)
+  }
+  Message.error("创建失败")
 };
+
 const handleCancel = () => {
   visible.value = false;
 };

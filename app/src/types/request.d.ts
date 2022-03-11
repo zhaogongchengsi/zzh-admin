@@ -32,7 +32,7 @@ export interface article_req {
   articleAuthor: string
   articleType: string
   articleContext: string
-  articleTags: Array<article_tags>
+  articleTags: Array<number>
   article_desc: string
 }
 
@@ -44,5 +44,8 @@ export interface CosTempKeyRequest {
 
 export interface tags {
   tag:string
-	details: string
+	tag_desc:string
+  tag_color:string
+  ID:number
 }
+

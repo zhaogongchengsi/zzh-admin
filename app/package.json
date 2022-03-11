@@ -1,14 +1,17 @@
 {
   "name": "blog-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "app/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "start": "electron .",
-    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./app/dist/favicon.ico"
+    "start": "cross-env NODE_ENV=development electron .",
+    "view": "cross-env NODE_ENV=production electron .",
+    "build:app":"electron-packager ./app blogApp --platform=win32 --icon=public/favicon1.ico --asar",
+    "package": "vue-tsc --noEmit && vite build && electron-packager ./app blogApp --platform=win32 --icon=./public/favicon1.ico --asar",
+    "app": "vue-tsc --noEmit && vite build && cross-env NODE_ENV=production electron-builder build"
   },
   "dependencies": {
     "@heroicons/vue": "^1.0.5",
@@ -27,11 +30,26 @@
     "@arco-design/web-vue": "^2.16.2",
     "@types/node": "^17.0.17",
     "@vitejs/plugin-vue": "^2.2.0",
+    "cross-env": "^7.0.3",
     "electron": "^17.0.0",
+    "electron-builder": "^22.14.13",
     "electron-packager": "^15.4.0",
     "sass": "^1.49.7",
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8"
+  },
+  "build": {
+    "productName": "blog-app",
+    "appId": "zzhblog.cn",
+    "copyright": "zzh",
+    "directories": {
+      "output": "build"
+    },
+    "files": ["./dist/*", "./app/*"],
+    "asar": true,
+    "win": {
+      "icon": "./public/logo.png"
+    }
   }
 }

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github/gin-react-admin/global"
@@ -17,6 +18,7 @@ type Claims struct {
 	ID       uint
 	Username string
 	NickName string
+	BufferTime int64
 	jwt.StandardClaims
 }
 
@@ -24,11 +26,18 @@ type Claims struct {
 func CreateToken(uuid uuid.UUID, id uint, username string, nickname string) (string, error) {
 	nowTime := time.Now()                                                      // token 生效时间
 	expireTime := nowTime.Add(time.Duration(global.Jwt.ExpiresAt) * time.Hour) // token 有效时间 小时为单位
+	if global.Jwt.BufferTime > global.Jwt.ExpiresAt {
+		fmt.Printf(`token 缓冲时间:%v大于有效时间:%v， 确认是否这样配置(单位：小时)`, global.Jwt.BufferTime, global.Jwt.ExpiresAt)
+	}
+
+	bufferTime := global.Jwt.BufferTime  *  3600 // 计算缓冲时间 小时为单位
+
 	claims := Claims{
 		UUID:     uuid,
 		ID:       id,
 		Username: username,
 		NickName: nickname,
+		BufferTime: bufferTime,
 		StandardClaims: jwt.StandardClaims{
 			// 过期时间
 			ExpiresAt: expireTime.Unix(),
@@ -50,11 +59,11 @@ func ParseToken(token string) (*Claims, int) {
 
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
-			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+			if ve.Errors & jwt.ValidationErrorMalformed != 0 {
 				return nil, errcode.UnauthorizedTokenNotEffective
-			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
+			} else if ve.Errors & jwt.ValidationErrorExpired != 0 {
 				return nil, errcode.UnauthorizedTokenTimeout
-			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
+			} else if ve.Errors & jwt.ValidationErrorNotValidYet != 0 {
 				return nil, errcode.UnauthorizedTokenError
 			} else {
 				return nil, errcode.UnauthorizedTokenError
@@ -74,5 +83,5 @@ func ParseToken(token string) (*Claims, int) {
 
 func GetHeaderUser(c *gin.Context) (*Claims, int) {
 	authHeader := c.Request.Header.Get("z_token")
-	return ParseToken(authHeader)
+	 return ParseToken(authHeader)
 }

@@ -8,6 +8,7 @@ declare module 'vue' {
     AButton: typeof import('@arco-design/web-vue')['Button']
     ACard: typeof import('@arco-design/web-vue')['Card']
     ACascader: typeof import('@arco-design/web-vue')['Cascader']
+    ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
     ACol: typeof import('@arco-design/web-vue')['Col']
     ACollapse: typeof import('@arco-design/web-vue')['Collapse']
     ACollapseItem: typeof import('@arco-design/web-vue')['CollapseItem']
@@ -38,6 +39,7 @@ declare module 'vue' {
     ATypographyParagraph: typeof import('@arco-design/web-vue')['TypographyParagraph']
     ATypographyText: typeof import('@arco-design/web-vue')['TypographyText']
     ATypographyTitle: typeof import('@arco-design/web-vue')['TypographyTitle']
+    AUpload: typeof import('@arco-design/web-vue')['Upload']
     IconFont: typeof import('./src/components/IconFont.vue')['default']
     TopTool: typeof import('./src/components/TopTool.vue')['default']
   }

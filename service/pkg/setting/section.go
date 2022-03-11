@@ -41,7 +41,8 @@ type Captcha struct {
 type JWT struct {
 	Issuer     string
 	SigningKey string
-	ExpiresAt  int
+	ExpiresAt  int64
+	BufferTime int64
 }
 
 type Cos struct {

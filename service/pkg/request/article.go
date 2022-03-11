@@ -9,6 +9,19 @@ type Article struct {
 	ArticleAuthor string `json:"articleAuthor"` // 文章作者
 	ArticleType string `json:"articleType"` // 文章的类型
 	ArticleContext string `json:"articleContext"` // 文章的内容主题 若文章不是存储在数据库 则本字段为空
-	ArticleTags []string `json:"articleTags"`
+	ArticleTags []int `json:"articleTags"`
 	ArticleDesc string `json:"article_desc"`
+}
+
+type Tag struct {
+	Tag string `json:"tag"`
+	TagColor string `json:"tag_color"`
+	TagDesc string `json:"tag_desc"`
+}
+
+type ArticleType struct {
+	Type string `json:"article_type" binding:"required"`
+	TypeDesc string `json:"article_type_desc"`
+	TypeArticle []Article `json:"type_articles"`
+	TypeLogo int `json:"type_logo"`
 }

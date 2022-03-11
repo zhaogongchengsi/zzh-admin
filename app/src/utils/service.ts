@@ -13,7 +13,7 @@ const http:AxiosInstance = axios.create({
 http.interceptors.request.use(function (config:AxiosRequestConfig) {
     // 在发送请求之前做些什么
     const token = localStorage.getItem('z_token')
-    if (token) {
+    if (token && config.headers) {
       config.headers['z_token'] = token;
     }
     
@@ -25,6 +25,10 @@ http.interceptors.request.use(function (config:AxiosRequestConfig) {
 
 // 添加响应拦截器
 http.interceptors.response.use(function (response) {
+    const newtokn = response.headers['new-token'];
+    if (newtokn) {
+      localStorage.setItem('z_token', newtokn)
+    }
     return response;
 }, function (error) {
     // 对响应错误做点什么

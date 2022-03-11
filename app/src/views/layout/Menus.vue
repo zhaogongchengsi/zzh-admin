@@ -28,8 +28,7 @@ const onRoute = (href: string) => {
       :style="{ width: '200px', borderRadius: '4px' }"
       :theme="menuStore.theme" 
       :collapsed="menuStore.collapsed"
-      :default-open-keys="[0]"
-      :default-selected-keys="['1-0']"
+      :selected-keys="[0]"
     >
       <blog-menu-item key="0" @click="onRoute('/home')" >
           <template #icon>
@@ -37,12 +36,12 @@ const onRoute = (href: string) => {
           </template>
           控制台
       </blog-menu-item>
-      <blog-sub-menu key="1">
+      <blog-sub-menu key="article">
         <template #icon>
           <icon-font type="icon-wenzhang" />
         </template>
         <template #title>文章管理</template>
-        <blog-menu-item key="1-0" @click="onRoute('/article_list')" >
+        <blog-menu-item key="articleList" @click="onRoute('/article_list')" >
           <template #icon>
             <icon-font type="icon-yuwen" />
           </template>
@@ -53,6 +52,18 @@ const onRoute = (href: string) => {
             <icon-font type="icon-bianji" />
           </template>
           创建文章
+        </blog-menu-item>
+        <blog-menu-item key="1-2" @click="onRoute('/tags')" >
+          <template #icon>
+            <icon-font type="icon-yanshoubiaoqianguanli" />
+          </template>
+          标签管理
+        </blog-menu-item>
+        <blog-menu-item key="1-3" @click="onRoute('/article_type')" >
+          <template #icon>
+            <icon-font type="icon-xiangmuleixingtongji" />
+          </template>
+          类型管理
         </blog-menu-item>
       </blog-sub-menu>
       <blog-sub-menu key="2">

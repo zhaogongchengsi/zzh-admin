@@ -12,7 +12,6 @@ import (
 // @Tags Menu
 // @Summary 创建菜单
 // @Produce  application/json
-// @Param data body request.Menus "是否开启， 菜单名， 菜单文件路径， 菜单路径， icon图标， 排序标记，展示名， 父级ID"
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/role/create_menu [post]
 func CreateMenu(c *gin.Context) {
@@ -118,7 +117,6 @@ func GetMenuByID(c *gin.Context)  {
 // @Tags Menu
 // @Summary 根据ID更新菜单
 // @Produce  application/json
-// @Param data body request.Menus
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/menu/up_menu [post]
 func UpMenu(c *gin.Context)  {
@@ -149,7 +147,6 @@ func UpMenu(c *gin.Context)  {
 // @Tags Menu
 // @Summary 根据ID获取子节点
 // @Produce  application/json
-// @Param data body []request.Menus
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/menu/get_submenu [post]
 func GetSubMenus (c *gin.Context) {

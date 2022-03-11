@@ -50,7 +50,7 @@
     </a-col>
     <a-col :span="6">
       <div class="home-img">
-        <img src="/bg3.svg" alt />
+        <img src="/bg3.svg" alt="bg" />
       </div>
     </a-col>
   </a-row>

@@ -41,6 +41,7 @@ export interface article {
   number_views: number;
   uuid: string;
   ID: number | string;
+  article_desc: string;
 }
 
 export interface limit_offset {
@@ -70,4 +71,27 @@ export interface cosPutObj {
   ETag: string;
   Location: string;
   RequestId: string;
+}
+
+export interface file {
+  CreatedAt: string;
+  ID: number;
+  UpdatedAt: string;
+  coverage_times: number;
+  file_broad_type: string;
+  file_ext: string;
+  file_name: string;
+  file_specific_type: string;
+  is_hash: boolean;
+  overwrite: boolean;
+  sava_path: string;
+}
+
+export interface ArticleType {
+  ID?:number
+  article_type: string
+  article_type_desc: string,
+  type_articles?: any[],
+  type_logo: string
+  [property: string]: any
 }

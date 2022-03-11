@@ -14,7 +14,7 @@ import { defineProps, ref } from 'vue'
 import { useMenuStore } from '@/pinia'
 import sendMessage from '@/sysetm';
 import { useRouter } from 'vue-router'
-import { useInfoStore } from "@/pinia/user.ts"
+import { useInfoStore } from "@/pinia/user"
 const userStore = useInfoStore()
 const router = useRouter()
 const menuStore = useMenuStore()

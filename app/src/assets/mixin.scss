@@ -1,0 +1,190 @@
+// 设置多行文字截断
+@mixin texthidden($clamp: 1) {
+  @if $clamp == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: $clamp;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@mixin paddingLeft($size, $box) {
+  @if $box != false {
+    padding-left: $size;
+    box-sizing: border-box;
+  }
+  else {
+    padding-left: $size;
+  }
+}
+// 设置方位
+@mixin position($value) {
+  position: absolute;
+  @if $value == "left" {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+
+  @if $value == "right" {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+
+  @if $value == "top" {
+    right: 0;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+  }
+  @if $value == "bottom" {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0 auto;
+  }
+
+  @if $value == "center" {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    margin: auto;
+  }
+}
+// 去掉滚动条
+@mixin scrollNone {
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    // 火狐下隐藏滚动条
+    width: 0px;
+    height: 0px;
+  }
+}
+
+// 设置前缀图标
+@mixin afterIcon($po) {
+  & {
+    position: relative;
+  }
+  &::after {
+    display: block;
+    content: "";
+    @include position($po);
+    @content;
+  }
+}
+
+// 清楚浮动
+@mixin clearfix {
+  &::after,
+  &::before {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+  }
+}
+// 一行文字截断
+.one-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 设置滚动条样式
+@mixin scroll($width: 5px, $color: rgba(8, 131, 247, 0.7)) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+  // 滚动槽
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+  }
+  // 滚动条滑块
+  &::-webkit-scrollbar-thumb {
+    width: 5px;
+    border-radius: 15px;
+    background: $color;
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+  }
+  &::-webkit-scrollbar-thumb:window-inactive {
+    width: 5px;
+    background: $color;
+  }
+}
+// 设置图片大小
+@mixin setImgSize($width, $height) {
+  @if $height == null {
+    width: $width;
+    height: $width;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  } @else {
+    width: $width;
+    height: $height;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+// 取消双击选中默认文字
+@mixin userSelect($value: none) {
+  -moz-user-select: $value;
+  -webkit-user-select: $value;
+  -ms-user-select: $value;
+  -khtml-user-select: $value;
+  user-select: $value;
+}
+
+@mixin scroll-container(
+  $width: 8px,
+  $bgcolor: transparent,
+  $borRad: 4px,
+  $tracolor: transparent
+) {
+  &::-webkit-scrollbar {
+    width: $width;
+    background: $bgcolor;
+  }
+  &::-webkit-scrollbar-corner, /* 滚动条角落 */
+ &::-webkit-scrollbar-thumb,
+ &::-webkit-scrollbar-track {
+    border-radius: $borRad;
+  }
+  &::-webkit-scrollbar-corner,
+  &::-webkit-scrollbar-track {
+    background-color: $tracolor;
+    box-shadow: inset 0 0 1px $tracolor;
+  }
+  &::-webkit-scrollbar-thumb {
+    @content;
+  }
+}
+// 清除选择框的默认样式
+@mixin clearSelect {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  &::-ms-expand {
+    display: none;
+  }
+  @content;
+}

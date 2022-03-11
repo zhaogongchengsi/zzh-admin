@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { login } from "@/api/user";
-import { user } from "@/types"
+import { user } from "@/types/request"
 import router from "@/router"
 export const useInfoStore = defineStore("user", {
   state: () => {

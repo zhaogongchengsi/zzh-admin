@@ -7,10 +7,11 @@ import (
 
 var modelList = []interface{}{
 	//model.Menu{},
-	model.Article{},
+	//model.Article{},
 	//model.AuthRole{},
 	//model.File{},
 	//model.AdminUser{},
+	model.ArticleType{},
 }
 
 func AutoMigrate () error {

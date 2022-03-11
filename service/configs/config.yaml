@@ -1,4 +1,5 @@
 Server:
+#  debug release
   RenMode: debug
   HttpPort: 8000
   ReadTimeout: 60
@@ -29,7 +30,8 @@ Captcha:
 JWT:
   Issuer: gin_react_admin
   SigningKey: "zhaozunhong..3132"
-  ExpiresAt: 3
+  ExpiresAt: 7
+  BufferTime: 2
 FileService:
   UploadPath: "assets/upload"
   StaticPath: "./assets"

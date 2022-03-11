@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github/gin-react-admin/global"
 	"github/gin-react-admin/internal/model"
+	"github/gin-react-admin/pkg/request"
 	"github/gin-react-admin/utils"
 	"mime/multipart"
 	"path"
@@ -31,6 +32,13 @@ func FirstFile(fileName string, fileExr string) ([]model.File ,error)  {
 	var files []model.File
  	e := global.DBEngine.Model(&model.File{}).Where("`file_name` LIKE ? AND `coverage_times` > ? AND file_ext = ?", "%" + fileName + "%", 0, fileExr).Find(&files).Error
 	return files, e
+}
+
+func FindFiles(lo request.LimitOffset, t string) ([]model.File, error) {
+	var files []model.File
+	var number int64
+	err := global.DBEngine.Offset(lo.Offset).Limit(lo.Limit).Find(&files, "file_broad_type = ?", t).Offset(-1).Limit(-1).Count(&number).Error
+	return files, err
 }
 
 

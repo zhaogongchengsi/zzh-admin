@@ -31,18 +31,14 @@ func CreateArticle(c *gin.Context)  {
 			ArticleAuthor: value.NickName,
 			ArticleName: newArticle.FileName,
 			ArticleStorageType: newArticle.ArticleStorageType,
-			ArticleType: newArticle.ArticleType,
+			// 文章类型
+			//ArticleType: newArticle.ArticleType,
 			ArticleTitle: newArticle.ArticleTitle,
 			ArticleUrl: newArticle.ArticleUrl,
 			UUID: value.UUID,
 			ArticleDesc: newArticle.ArticleDesc,
 	}
-	for _,tag := range newArticle.ArticleTags {
-		ar.ArticleTags = append(ar.ArticleTags, model.ArticleTags{
-			Tag:tag,
-		})
-	}
-	art, er := service.CreateArticle(&ar)
+	art, er := service.CreateArticle(&ar, newArticle.ArticleTags)
 	if er != nil {
 		res := response.Response{
 			Err: er,
@@ -62,11 +58,7 @@ func CreateArticle(c *gin.Context)  {
 // @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
 // @Router /api/v1/article/get_article_list [get]
 func GetArticleList(c *gin.Context) {
-	limits := c.DefaultQuery("limit", "10")
-	offsets := c.DefaultQuery("offset", "1")
-	limit, _ := strconv.Atoi(limits)
-	offset, _ := strconv.Atoi(offsets)
-	lo := request.NewLimit(limit, offset)
+	lo := request.GetLimitOffset(c)
 	artist, con,  err := service.GetArticleList(*lo)
 	if err != nil {
 		res := response.Response{
@@ -81,5 +73,125 @@ func GetArticleList(c *gin.Context) {
 		"limit_offset": lo,
 		"count":con,
 	}}
+	resOk.Send(c)
+}
+
+func ArticleById(c *gin.Context) {
+	id := c.DefaultQuery("id", "1")
+	_id, _ := strconv.Atoi(id)
+	submenus, super := service.GetArticleById(_id)
+	if super != nil {
+		subtrees := response.Response{Err: super, State: response.State{
+			Code: errcode.NotFound,
+			Message: "文章信息获取失败",
+		}}
+		subtrees.SendError(c)
+	}
+	deOk := response.Response{
+		Data: submenus,
+	}
+	deOk.Send(c)
+}
+
+// @Tags Article
+// @Summary 创建标签
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/tags/create_tag [post]
+func CreateTag (c *gin.Context)  {
+	var newtag request.Tag
+	if err := c.ShouldBindJSON(&newtag); err != nil {
+		res := response.Response{Err: err}
+		res.SendInputParameterError(c)
+		return
+	}
+
+	ar := model.ArticleTags {
+		Tag: newtag.Tag,
+		TagColor: newtag.TagColor,
+		TagDesc: newtag.TagDesc,
+	}
+
+	tag, er := service.CreateTag(&ar)
+	if er != nil {
+		res := response.Response{
+			Err: er,
+			State: response.State{Message: "标签创建失败", Code: errcode.CreateError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: *tag}
+	resOk.Send(c)
+}
+
+
+// @Tags Article
+// @Summary 获取文章标签列表
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/tags/get_tags [get]
+func GetTagList (c *gin.Context) {
+	lo := request.GetLimitOffset(c)
+	tags, con , err := service.GetTagLis(*lo)
+	if err != nil {
+		res := response.Response{
+			Err: err,
+			State: response.State{Message: "标签获取失败", Code: errcode.FindError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data:map[string]interface{}{
+		"tag_list":tags,
+		"limit_offset": lo,
+		"count":con,
+	}}
+	resOk.Send(c)
+}
+
+
+// @Tags Article
+// @Summary 创建文章类型
+// @Produce  application/json
+// @Success 200 {string} string "{state:{code:0, msg:"成功"},"data":{ }}"
+// @Router /api/v1/article/create_article_type [post]
+func CreateArticleType(c *gin.Context)  {
+	var newType request.ArticleType
+	if err := c.ShouldBindJSON(&newType); err != nil {
+		res := response.Response{Err: err}
+		res.SendInputParameterError(c)
+		return
+	}
+	//value, _ := utils.GetHeaderUser(c)
+	ar := model.ArticleType{
+		Type: newType.Type,
+		TypeDesc: newType.TypeDesc,
+		TypeLogo: newType.TypeLogo,
+	}
+	art, er := service.CreateArtType(&ar)
+	if er != nil {
+		res := response.Response{
+			Err: er,
+			State: response.State{Message: "创建文章类型失败", Code: errcode.CreateError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: art}
+	resOk.Send(c)
+}
+
+func GetArticleTypes (c *gin.Context) {
+	typist, err := service.GetArticleType()
+	if err != nil {
+		res := response.Response{
+			Err: err,
+			State: response.State{Message: "查询文章类型失败", Code: errcode.FindError},
+		}
+		res.SendError(c)
+		return
+	}
+	resOk := response.Response{Data: typist}
 	resOk.Send(c)
 }
